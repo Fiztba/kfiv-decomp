@@ -115,4 +115,31 @@ typedef struct EffectActor {
     int unk6C;                      /* 0x6C */
 } EffectActor;
 
+/* a request to spawn an effect at a position (func_00214660) */
+typedef struct {
+    s32 pending;                    /* 0x00 cleared once the effect is spawned */
+    char pad04[0x04];
+    char kind;                      /* 0x08 */
+    char pad09[0x07];
+    u8 unk10;                       /* 0x10 */
+    char pad11[0x07];
+    u8 unk18;                       /* 0x18 */
+    char pad19[0x07];
+    f32 unk20;                      /* 0x20 */
+    char pad24[0x04];
+    f32 pos_x;                      /* 0x28 */
+    char pad2C[0x04];
+    f32 pos_y;                      /* 0x30 */
+    char pad34[0x04];
+    f32 pos_z;                      /* 0x38 */
+} SpawnRequest;
+
+/* a task that feeds the cosine of an angle to a command (func_00214DC0) */
+typedef struct {
+    s32 active;                     /* 0x00 cleared after one step */
+    char pad04[0x04];
+    f32 angle;                      /* 0x08 radians */
+    char command[4];                /* 0x0C the command func_00211D90 fills in */
+} AngleTask;
+
 #endif

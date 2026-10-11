@@ -32,4 +32,31 @@ typedef struct {
     void (*stage[3])(void *upload);
 } ChunkUploadStages;
 
+/* IopLoadContext.buffer */
+typedef struct {
+    char pad00[0x0C];
+    s32 unk0C;                      /* 0x0C */
+    char pad10[0x04];
+    s32 size;                       /* 0x14 */
+} IopLoadBuffer;
+
+/* the request func_001CCD78 reads: the data size and a second value */
+typedef struct {
+    char pad00[0x10];
+    s32 size;                       /* 0x10 rounded up to 16 */
+    char pad14[0x04];
+    s32 unk18;                      /* 0x18 */
+} IopLoadRequest;
+
+/* an IOP heap block load: the sizes it settled on and the heap it got */
+typedef struct {
+    IopLoadBuffer *buffer;          /* 0x00 */
+    char pad04[0x04];
+    s32 size;                       /* 0x08 */
+    s32 unk0C;                      /* 0x0C */
+    s32 heap;                       /* 0x10 */
+    char pad14[0x04];
+    s32 heap_size;                  /* 0x18 */
+} IopLoadContext;
+
 #endif

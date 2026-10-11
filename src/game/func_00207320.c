@@ -3,14 +3,14 @@
 extern int D_005DDDC0[];
 
 int FlushCache(int);
-void sceGsSyncPath(int, int);
+int sceGsSyncPath(int, int);
 
 #define GIF_CTRL (*(volatile u32 *)0x1000A000)
 #define GIF_MODE (*(volatile u32 *)0x1000A010)
 #define GIF_STAT (*(volatile u32 *)0x1000A020)
 #define GIF_TAG0 (*(volatile u32 *)0x1000A030)
 
-void func_00207320(int arg0, s64 arg1) {
+s32 func_00207320(int arg0, s64 arg1) {
     int *p;
 
     p = D_005DDDC0;
@@ -29,5 +29,6 @@ void func_00207320(int arg0, s64 arg1) {
     GIF_MODE = (u32)D_005DDDC0 & 0x7FFFFFFF;
     GIF_TAG0 = 0;
     GIF_CTRL = 0x105;
+    /* match: retail tail-calls sceGsSyncPath and returns its result; a written return defeats the tail call */
     sceGsSyncPath(0, 0);
 }
