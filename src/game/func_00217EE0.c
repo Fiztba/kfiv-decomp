@@ -1,6 +1,6 @@
 #include "common.h"
 
-int vsprintf(char *, char *, char *);
+int vsprintf(char *, const char *, char *);
 u32 strlen(char *);
 void *memcpy(void *, const void *, u32);
 extern char D_01E0E9C0[];

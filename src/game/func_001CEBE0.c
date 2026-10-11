@@ -9,7 +9,7 @@ typedef struct {
     u16 active;
 } DmaCtx;
 
-int func_001CBAE0(int, int);
+int func_001CBAE0();
 int sceSifDmaStat(int);
 int sceSifSetDma(int *, int);
 extern DmaCtx *D_004471D4;

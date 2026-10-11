@@ -21,7 +21,7 @@ typedef struct {
 
 void func_001AEC48(void *);
 void func_001AED58(void *);
-u16 func_001AF0B0(void *);
+void func_001AF0B0(char *);
 
 /* Advances the counter at +0x4C and scales the controller's float at +0xE8 by sub.unk20 / 1000. */
 void func_001AC1F8(Obj *arg0) {

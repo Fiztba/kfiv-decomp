@@ -11,7 +11,7 @@ typedef struct {
 } Target;
 
 void func_00109A50(void);
-void func_00109A80(int, u64);
+void func_00109A80(int, s64);
 void func_00109AD0(void);
 void func_0010AEB8(void *arg0);
 

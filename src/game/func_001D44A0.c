@@ -1,6 +1,6 @@
 #include "common.h"
 
-void FlushCache(int);
+int FlushCache(int);
 void func_002007C0(char *);
 
 typedef struct {

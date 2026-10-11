@@ -1,6 +1,6 @@
 #include "common.h"
 
-void sceVu0RotMatrixX(float, int *, int *);
+void sceVu0RotMatrixX(float *, float *, float);
 void sceVu0RotMatrixY(float, int *, int *);
 void sceVu0ApplyMatrix(float *, int *, float *);
 extern int D_00431AF0[];
@@ -24,7 +24,7 @@ void func_001A8678(char *actor) {
     direction[0] = direction[2] = direction[3] = 0.0f;
     direction[1] = 1.0f;
     func_001AF5B0(angles, *(char **)(actor + 0x60) + 0x10);
-    sceVu0RotMatrixX(angles[0], matrix, D_00431AF0);
+    sceVu0RotMatrixX((float *)matrix, (float *)D_00431AF0, angles[0]);
     sceVu0RotMatrixY(angles[1], matrix, matrix);
     sceVu0ApplyMatrix(direction, matrix, direction);
     func_001AF5B0(*(char **)(actor + 0x50) + 0xD0, direction);

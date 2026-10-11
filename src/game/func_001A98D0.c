@@ -28,7 +28,7 @@ void func_001AEC48(void *);
 void func_001AED58(void *);
 void func_001AF0B0(void *);
 void func_001AF298(void *, void *);
-int func_001A2A18(void *);
+void func_001A2A18(void *);
 int func_001C0E40(float, void *);
 void sceVu0AddVector(void *, void *, void *);
 

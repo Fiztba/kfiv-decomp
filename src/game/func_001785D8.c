@@ -1,6 +1,6 @@
 #include "common.h"
 
-int func_00192C98(void *, int, int, int, int);
+int func_00192C98(void *, int, int, u32, int);
 
 typedef struct {
     char pad0[0x10];

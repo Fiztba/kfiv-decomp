@@ -3,8 +3,8 @@
 
 extern void func_00102228(void);
 extern int func_001CE510(u32);
-extern void func_001CE408(int);
-extern void func_001CD6E0(int);
+extern int func_001CE408(int);
+extern int func_001CD6E0(u32);
 extern int D_00446858;
 extern int D_0044685C;
 

@@ -4,7 +4,7 @@ extern int D_00446858;
 extern u8 D_00446896;
 extern char D_004FF558[];
 
-int func_001CEF48(char);
+int func_001CEF48(u32);
 int func_001CEE78(int, s16, s16, s16, s16, s16, s16, int);
 
 typedef struct {

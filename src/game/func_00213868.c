@@ -28,7 +28,7 @@ typedef struct {
     float z1;
 } Obj;
 
-void func_001A1C58(int, Vec4 *, Vec4 *, char *);
+void func_001A1C58(int, char *, int, void *);
 
 void func_00213868(Obj *arg0) {
     Vec4 out_a = (Vec4){ arg0->x0, arg0->y0, arg0->z0, 0 };

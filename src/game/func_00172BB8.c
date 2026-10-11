@@ -18,7 +18,7 @@ typedef struct {
     int *target;
 } Actor;
 
-float func_001954A8(int, int *);
+float func_001954A8(float *, float *);
 float func_001957B8(float, float);
 
 /* Returns 0 with no target, 1 if the turn to it is within the limit, else 0x101/0x201 by turn direction. */
@@ -31,7 +31,7 @@ int func_00172BB8(Actor *arg0) {
         return 0;
     }
     result = 1;
-    angle = func_001954A8((int)arg0->body + 0xC0, arg0->target);
+    angle = func_001954A8((float *)((int)arg0->body + 0xC0), (float *)arg0->target);
     angle = func_001957B8(arg0->body->unkD4, angle);
     limit = arg0->ctrl->limit;
     if (0.0f <= angle ? limit < angle : limit < -angle) {

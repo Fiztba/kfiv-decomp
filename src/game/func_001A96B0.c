@@ -28,11 +28,11 @@ typedef struct {
 
 void func_001AEC48(void *);
 void func_001AED58(void *);
-int func_001AF0B0(void *);
+int func_001AF0B0(void *);  // match: callee return value must be visible (int) for retail register allocation; other callers differ
 void func_001AF298(void *, void *);
 void sceVu0AddVector(void *, void *, void *);
-int func_001A2A18(void *);
-void func_001A1E28(int, void *, void *, int, u16, void *);
+void func_001A2A18(void *);
+int func_001A1E28(int, int, int, int, u16, int);
 
 void func_001A96B0(Actor *actor) {
     Sub *sub;
@@ -44,7 +44,7 @@ void func_001A96B0(Actor *actor) {
     sceVu0AddVector(actor->target + 0xC0, actor->target + 0xC0, sub);
     if (actor->frame > sub->end_frame) {
         if (sub->mode == 5 || sub->mode == 3) {
-            func_001A1E28(0x15, actor->target + 0xC0, actor->target + 0xD0, actor->effect_arg, actor->effect_param, actor->owner);
+            func_001A1E28(0x15, (int)(actor->target + 0xC0), (int)(actor->target + 0xD0), actor->effect_arg, actor->effect_param, (int)actor->owner);
         }
         func_001A2A18(actor);
         return;

@@ -2,7 +2,7 @@
 
 void func_001AF928(char *, int);
 void func_001AF640(void *, int);
-int func_001A2838(u16, void *);
+int func_001A2838(int, void *);
 
 void func_001AA230(char *actor, int arg1) {
     char *state;

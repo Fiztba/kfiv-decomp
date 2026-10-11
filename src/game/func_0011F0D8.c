@@ -1,7 +1,7 @@
 #include "common.h"
 
 extern int D_00446770;
-void func_0019E9E0(char);
+int func_0019E9E0(char);
 
 void func_0011F0D8(char *object) {
     char *source;

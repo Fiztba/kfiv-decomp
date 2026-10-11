@@ -2,7 +2,7 @@
 
 void func_001AF928(void *, int);
 void func_001AF640(void *, int);
-void func_001AF538(float, void *, void *);
+void func_001AF538(float *, float *, float);
 
 /* Re-seeds the sub-object from its linked controller, then sets bit 58 of the flags at +0x40. */
 void func_001AE278(char *arg0, int arg1) {
@@ -11,6 +11,6 @@ void func_001AE278(char *arg0, int arg1) {
     sub = arg0 + 0x10;
     func_001AF928(arg0, arg1);
     func_001AF640(arg0, arg1);
-    func_001AF538(*(float *)(*(char **)(arg0 + 0x54) + 0xD8), sub, *(char **)(arg0 + 0x50) + 0xD0);
+    func_001AF538(sub, (float *)(*(char **)(arg0 + 0x50) + 0xD0), *(float *)(*(char **)(arg0 + 0x54) + 0xD8));
     *(s64 *)(arg0 + 0x40) |= (s64)0x8000 << 0x2B;
 }

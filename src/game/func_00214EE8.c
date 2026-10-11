@@ -4,7 +4,7 @@ void sceVu0RotMatrixY(float, int *, int *);
 void sceVu0ApplyMatrix(float *, int *, float *);
 void KF_Vector_Scale(void *, void *, float);
 void func_00216C48(void *, void *, void *);
-int func_00211D90(void *, double);
+int func_00211D90(void *, double);  // match: retail converts the float argument to double at the call site (fptodp), as the definition takes float
 extern int D_00431AF0[];
 extern float D_00413F80[];
 

@@ -7,7 +7,7 @@ typedef char *va_list;
 extern int D_004471DC;
 extern int D_004471EC;
 extern u8 D_005C5A18[];
-int vsprintf(char *, const char *, va_list);
+int vsprintf(char *, const char *, char *);
 
 /* Formats a message into the next 0x108-byte debug log slot. */
 void func_001CFBB0(char *fmt, ...) {

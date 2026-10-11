@@ -1,7 +1,7 @@
 #include "common.h"
 
 int func_001CBD20(void);
-void func_001CEFA0(char);
+void func_001CEFA0(u32);
 extern s32 D_00446868;
 extern u8 D_00446895;
 extern char D_004470E1;

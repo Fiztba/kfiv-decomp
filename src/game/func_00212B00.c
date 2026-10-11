@@ -28,7 +28,7 @@ typedef struct {
 } Mover;
 
 Rec *func_0011E1F0(int, int);
-int func_0019B9F0(float *, float, int);
+int func_0019B9F0(float, float *, int);
 
 /* Eases a record's position toward a goal over frames_left frames, then stops. */
 void func_00212B00(Mover *arg0) {
@@ -44,9 +44,9 @@ void func_00212B00(Mover *arg0) {
         arg0->active = 0;
         return;
     }
-    func_0019B9F0(&rec->target->x, arg0->goal_x, arg0->frames_left);
-    func_0019B9F0(&rec->target->y, arg0->goal_y, arg0->frames_left);
-    func_0019B9F0(&rec->target->z, arg0->goal_z, arg0->frames_left);
+    func_0019B9F0(arg0->goal_x, &rec->target->x, arg0->frames_left);
+    func_0019B9F0(arg0->goal_y, &rec->target->y, arg0->frames_left);
+    func_0019B9F0(arg0->goal_z, &rec->target->z, arg0->frames_left);
     if (--arg0->frames_left < 0) {
         arg0->active = 0;
     }

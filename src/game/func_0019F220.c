@@ -2,7 +2,7 @@
 
 int func_001CBAC0(void);
 int func_001CBD20(void);
-void func_001CEFA0(char);
+void func_001CEFA0(u32);
 extern int D_00446858;
 extern u8 D_00446896;
 extern char D_004470E2;

@@ -2,7 +2,7 @@
 
 int sceSifFreeIopHeap(int);
 int puts(char *);
-void FlushCache(int);
+int FlushCache(int);
 extern char *D_004471D4;
 extern char D_004469F0[];
 

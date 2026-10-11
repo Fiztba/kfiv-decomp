@@ -6,7 +6,7 @@ typedef struct {
 } Actor;
 
 void *func_00116160(int, int);
-int func_00211D90(void *, double);
+int func_00211D90(void *, double);  // match: retail converts the float argument to double at the call site (fptodp), as the definition takes float
 extern int D_00446770;
 
 /* Feed the target actor's x/y/z position to three func_00211D90 commands, then clear the command. */

@@ -8,8 +8,8 @@ extern int D_004470F4;
 
 void func_00102218(void);
 int func_00102230(void);
-int func_00102238(char *, int, int);
-int func_001025C0(int, int, int);
+int func_00102238(int, int, int);
+int func_001025C0(int, void *, int);
 int func_00102900(int);
 int func_001CBD20(void);
 int sprintf(char *, char *, ...);

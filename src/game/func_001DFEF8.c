@@ -10,7 +10,7 @@ extern u16 D_00446DE8;
 extern Node *D_005CE880[];
 extern Node *D_005CE890[];
 extern Node *D_005CE8A0[];
-int func_0019CDC0(int);
+s32 func_0019CDC0(s32); /* tail-jumps to func_001CE690, whose result it returns */
 void func_001D4F50(void);
 void func_001D52D8(int);
 void func_001D5460(int);

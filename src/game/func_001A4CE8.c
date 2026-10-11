@@ -29,8 +29,8 @@ void func_001AEC48(void *);
 void func_001AED58(void *);
 void func_001AF0B0(void *);
 int func_001B4F90(void *);
-int func_001A2A18(void *);
-void func_001A1E28(u16, void *, void *, int, u16, void *);
+void func_001A2A18(void *);
+int func_001A1E28(int, int, int, int, u16, int);
 void sceVu0AddVector(void *, void *, void *);
 
 void func_001A4CE8(Actor *actor) {
@@ -46,7 +46,7 @@ void func_001A4CE8(Actor *actor) {
     }
     if (func_001B4F90(actor) != 0 || *(u16 *)(velocity + 0x10) == actor->frame) {
         target = actor->target;
-        func_001A1E28(actor->ctl->end_effect, target + 0xC0, target + 0xD0, actor->effect_arg, actor->effect_param, actor->owner);
+        func_001A1E28(actor->ctl->end_effect, (int)(target + 0xC0), (int)(target + 0xD0), actor->effect_arg, actor->effect_param, (int)actor->owner);
         func_001A2A18(actor);
     }
     actor->frame = actor->frame + 1;
