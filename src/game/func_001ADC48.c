@@ -2,7 +2,7 @@
 
 void func_001AEC48(void *);
 void func_001AED58(void *);
-void func_001AF0B0(char *);
+int func_001AF0B0(char *);
 void func_00216C48(void *, void *, void *);
 
 /* Advances the frame counter and moves the model by its velocity. */

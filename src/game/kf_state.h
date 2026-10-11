@@ -20,4 +20,10 @@ typedef struct {
     char unk15;                     /* 0x15 */
 } ModeState;
 
+/* what the D_00440B70 handlers build; func_00207478 dispatches it by kind */
+typedef struct {
+    char pad00[0x31];
+    u8 kind;                        /* 0x31 picks the function that consumes the object */
+} KindObject;
+
 #endif

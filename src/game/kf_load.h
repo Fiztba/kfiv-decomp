@@ -59,4 +59,29 @@ typedef struct {
     s32 heap_size;                  /* 0x18 */
 } IopLoadContext;
 
+/* StreamSlot.stream */
+typedef struct {
+    char pad00[0x04];
+    void *buf;                      /* 0x04 read destination */
+} StreamBuf;
+
+/* a chain of sectors, each followed by its file data */
+typedef struct {
+    char pad00[0x14];
+    void *next;                     /* 0x14 */
+    char pad18[0x10];
+    u8 data[0];                     /* 0x28 size unknown */
+} SectorChain;
+
+/* a streaming read slot (func_001D4118) */
+typedef struct {
+    char pad00[0x08];
+    s32 file_handle;                /* 0x08 */
+    StreamBuf *stream;              /* 0x0C */
+    SectorChain *chain;             /* 0x10 */
+    char pad14[0x08];
+    s32 sector_count;               /* 0x1C */
+    s32 done;                       /* 0x20 */
+} StreamSlot;
+
 #endif

@@ -2,7 +2,7 @@
 
 void func_001AEC48(void *);
 void func_001AED58(void *);
-int func_001AF0B0(void *);  // match: callee return value must be visible (int) for retail register allocation
+int func_001AF0B0(void *);
 void func_001A2A18(void *);
 int func_001C0E40(float, void *);
 void func_00216778(void *, void *);

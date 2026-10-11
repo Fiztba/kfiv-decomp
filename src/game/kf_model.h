@@ -161,7 +161,8 @@ typedef struct {
 /* what D_004469D8 points at */
 typedef struct {
     char pad00[0x18];
-    ModelInstance *model;           /* 0x18 */
+    ModelInstance *model;           /* 0x18 non-null while the node is in use */
+    char pad1C[0x20];
 } ModelNode;
 
 /* a motion that turns a model by a fixed step each frame (func_00212778) */

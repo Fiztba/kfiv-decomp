@@ -4,7 +4,7 @@
 extern SpritePacket D_005DD760[];
 
 SpritePacket *func_002052C0(SpritePacket *src_packet, int amount) {
-    float ratio = (float)amount / (float)src_packet->pad40[1];
+    float ratio = (float)amount / (float)src_packet->unk41;
     int offset;
 
     D_005DD760[0] = *src_packet;
