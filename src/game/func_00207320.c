@@ -10,7 +10,7 @@ int sceGsSyncPath(int, int);
 #define GIF_STAT (*(volatile u32 *)0x1000A020)
 #define GIF_TAG0 (*(volatile u32 *)0x1000A030)
 
-s32 func_00207320(int arg0, s64 arg1) {
+s32 func_00207320(int reg_address, s64 reg_value) {
     int *p;
 
     p = D_005DDDC0;
@@ -18,9 +18,9 @@ s32 func_00207320(int arg0, s64 arg1) {
     *p++ = 0x10004000;
     *p++ = 0xE;
     *p++ = 0;
-    *(s64 *)p = arg1;
+    *(s64 *)p = reg_value;
     p += 2;
-    *p++ = arg0;
+    *p++ = reg_address;
     *p = 0;
     FlushCache(0);
     p++;
