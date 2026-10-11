@@ -4,7 +4,7 @@
 extern char D_0038CD20[];
 extern int D_00446770;
 
-void func_001A1C58(int, void *, void *, void *);
+int func_001A1C58(int, void *, void *, void *);
 
 void func_00213868(ScriptPointCommand *command) {
     VuVector4 out_a = (VuVector4){ command->from_x.value, command->from_y.value, command->from_z.value, 0.0f };

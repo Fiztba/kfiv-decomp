@@ -18,6 +18,12 @@ typedef struct {
     f32 value;
 } ScriptFloatArg;
 
+/* an argument whose value is a u16 */
+typedef struct {
+    int opcode;
+    u16 value;
+} ScriptShortArg;
+
 /* reads a float's bits as an int */
 typedef union {
     f32 as_float;
@@ -73,5 +79,31 @@ typedef struct {
     char pad0C[0x78];
     int started;                    /* 0x84 */
 } ScriptWaitCommand;
+
+/* acts on one object (func_002166F8) */
+typedef struct {
+    int active;                     /* 0x00 */
+    ScriptArg object_id;            /* 0x04 value at 0x08 */
+} ScriptObjectCommand;
+
+/* runs func_001C8CB0 on an object with its spawn_info->unk38 set to `value`
+   (func_00212690) */
+typedef struct {
+    int active;                     /* 0x00 */
+    ScriptShortArg value;           /* 0x04 value at 0x08 */
+    ScriptArg object_id;            /* 0x0C value at 0x10 */
+} ScriptSetValueCommand;
+
+/* stores the distance between points a and b in `result` (func_00215FE0) */
+typedef struct {
+    int active;                     /* 0x00 */
+    ScriptFloatArg a_x;             /* 0x04 value at 0x08 */
+    ScriptFloatArg a_y;             /* 0x0C value at 0x10 */
+    ScriptFloatArg a_z;             /* 0x14 value at 0x18 */
+    ScriptFloatArg b_x;             /* 0x1C value at 0x20 */
+    ScriptFloatArg b_y;             /* 0x24 value at 0x28 */
+    ScriptFloatArg b_z;             /* 0x2C value at 0x30 */
+    ScriptArg result;               /* 0x34 */
+} ScriptDistanceCommand;
 
 #endif

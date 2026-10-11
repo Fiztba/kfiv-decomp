@@ -12,7 +12,9 @@
 typedef struct {
     char pad00[0x04];
     f32 spawn_y;                    /* 0x04 */
-    char pad08[0x39];
+    char pad08[0x30];
+    u16 unk38;                      /* 0x38 */
+    char pad3A[0x07];
     u8 variant;                     /* 0x41 picks the animation set */
     char pad42[0x06];
     u16 vertical_despawn_range;     /* 0x48 0: no vertical limit */
@@ -27,11 +29,15 @@ typedef struct {
     char pad1C[0x14];
     char unk30[0x18];               /* 0x30 (Entity+0x110) passed by address */
     f32 unk48;                      /* 0x48 */
-    char pad4C[0x1C];
+    f32 unk4C;                      /* 0x4C */
+    f32 unk50;                      /* 0x50 */
+    char pad54[0x14];
     s16 unk68;                      /* 0x68 */
     char pad6A[0x10];
     char unk7A;                     /* 0x7A */
-    char pad7B[0x05];
+    char pad7B;
+    char unk7C;                     /* 0x7C */
+    char pad7D[0x03];
     char unk80[0x08];               /* 0x80 (Entity+0x160) passed by address */
     char unk88[0x08];               /* 0x88 (Entity+0x168) passed by address */
 } EntityUnkE0;
@@ -87,11 +93,14 @@ typedef struct Entity {
     void *target;                   /* 0x5C */
     char pad60[0x04];
     f32 distance_to_player;         /* 0x64 */
-    char pad68[0x34];
+    char pad68[0x1A];
+    u16 unk82;                      /* 0x82 */
+    char pad84[0x18];
     u16 timer;                      /* 0x9C */
     char pad9E[0x02];
     u16 unkA0;                      /* 0xA0 */
-    char padA2[0x26];
+    char padA2[0x24];
+    u16 unkC6;                      /* 0xC6 */
     s16 unkC8;                      /* 0xC8 */
     char padCA[0x02];
     u8 state;                       /* 0xCC */

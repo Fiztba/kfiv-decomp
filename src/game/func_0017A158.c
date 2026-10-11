@@ -1,34 +1,35 @@
-#include "common.h"
+#include "kf_entity.h"
+#include "kf_map.h"
 
-void func_001958B8(char *, void (*)(void), int);
-extern char D_0038CD20[];
+void func_001958B8(void *, void (*)(void), int);
+extern MapSlot D_0038CD20[];
 extern int D_00446770;
 
 /* Copy the actor position to its model, relative to the map origin when on another map. */
-void func_0017A158(char *arg0, int arg1) {
-    char *sub;
-    char *out;
-    char *map_entry;
-    char *origin;
+void func_0017A158(Entity *entity, int invoke_now) {
+    EntityUnkE0 *sub;
+    ModelInstance *model;
+    MapSlot *slot;
+    Vector4 *origin;
     float x;
     float y;
     float z;
 
-    sub = arg0 + 0xE0;
-    out = *(char **)arg0;
-    x = *(float *)(sub + 0x48);
-    *(float *)(out + 0xC0) = x;
-    y = *(float *)(sub + 0x4C);
-    *(float *)(out + 0xC4) = y;
-    z = *(float *)(sub + 0x50);
-    *(float *)(out + 0xC8) = z;
-    if (*(char *)(arg0 + 0xD5) != D_00446770) {
-        map_entry = D_0038CD20 + D_00446770 * 0x60;
-        origin = *(char **)(map_entry + 0x1C) + *(s16 *)(*(char **)(arg0 + 0xC) + 0x43A) * 0x10;
-        *(float *)(out + 0xC0) = x - *(float *)origin;
-        *(float *)(out + 0xC4) = y - *(float *)(origin + 4);
-        *(float *)(out + 0xC8) = z - *(float *)(origin + 8);
+    sub = &entity->unkE0;
+    model = ENTITY_MODEL(entity);
+    x = sub->unk48;
+    model->position.x = x;
+    y = sub->unk4C;
+    model->position.y = y;
+    z = sub->unk50;
+    model->position.z = z;
+    if (entity->group_id != D_00446770) {
+        slot = &D_0038CD20[D_00446770];
+        origin = &slot->origins[ENTITY_CONTROLLER(entity)->unk43A];
+        model->position.x = x - origin->x;
+        model->position.y = y - origin->y;
+        model->position.z = z - origin->z;
     }
-    *(int *)(out + 0xD4) = 0;
-    func_001958B8(arg0, *(void (**)(void))(sub + 0x18), arg1);
+    model->rotation.y = 0.0f;
+    func_001958B8(entity, sub->unk18, invoke_now);
 }

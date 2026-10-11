@@ -1,14 +1,14 @@
-#include "common.h"
+#include "kf_effect.h"
 
-void func_001AF928(char *, int);
+void func_001AF928(void *, int);
 void func_001AF640(void *, int);
 
-void func_001ABBE0(char *actor, int frame) {
-    char *state;
+void func_001ABBE0(EffectActor *actor, int frame) {
+    BurstMotion *motion;
 
-    state = actor + 0x10;
+    motion = (BurstMotion *)&actor->motion;
     func_001AF928(actor, frame);
     func_001AF640(actor, frame);
-    *(char *)(state + 0x1C) = 0;
-    *(s64 *)(actor + 0x40) |= 0x8000L << 43;
+    motion->unk1C = 0;
+    actor->flags |= 0x8000L << 43;
 }

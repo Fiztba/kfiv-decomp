@@ -1,23 +1,24 @@
-#include "common.h"
+#include "kf_effect.h"
 
-void func_001AF928(char *, int);
+void func_001AF928(void *, int);
 void func_001AF640(void *, int);
-int func_001A2838(int, void *);
+s32 func_001A2838(u16, void *);
 
-void func_001AA230(char *actor, int arg1) {
-    char *state;
-    char *ctl;
+/* Starts an effect: copies its collision radius and interval, then spawns its start effects. */
+void func_001AA230(EffectActor *actor, int frame) {
+    PulseMotion *motion;
+    EffectDef *def;
 
-    state = actor + 0x10;
-    func_001AF928(actor, arg1);
-    func_001AF640(actor, arg1);
-    ctl = *(char **)(actor + 0x54);
-    *(u16 *)(actor + 0x10) = *(u16 *)(ctl + 0xEC);
-    *(u16 *)(state + 2) = *(u16 *)(ctl + 0xEE);
-    if (*(u16 *)(ctl + 0xF0) != 0) {
-        func_001A2838(*(u16 *)(ctl + 0xF0), actor);
+    motion = (PulseMotion *)&actor->motion;
+    func_001AF928(actor, frame);
+    func_001AF640(actor, frame);
+    def = actor->def;
+    motion->radius_half = def->radius_half;
+    motion->interval = def->interval;
+    if (def->unkF0 != 0) {
+        func_001A2838(def->unkF0, actor);
     }
-    if (*(u16 *)(*(char **)(actor + 0x54) + 0xF2) != 0) {
-        func_001A2838(*(u16 *)(*(char **)(actor + 0x54) + 0xF2), actor);
+    if (actor->def->unkF2 != 0) {
+        func_001A2838(actor->def->unkF2, actor);
     }
 }

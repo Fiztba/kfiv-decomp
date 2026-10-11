@@ -37,6 +37,34 @@ typedef struct {
     void *current;                  /* 0x50 the event being run */
 } EventRunner;
 
+/* an event func_00120130 hands to func_0011FDD0 */
+typedef struct {
+    char pad00[0x10];
+    u32 flags;                      /* 0x10 */
+} GameEvent;
+
+/* D_00431CE8: func_0020CD00 advances its counter once a frame */
+typedef struct {
+    char pad00[0x08];
+    int ticks;                      /* 0x08 */
+} GameClock;
+
+/* D_00432820: what decides whether func_0020CD00 advances GameClock.ticks */
+typedef struct {
+    char pad00[0x213];
+    char unk213;                    /* 0x213 nonzero: the clock stops */
+    char unk214;                    /* 0x214 nonzero: the clock stops */
+    char pad215[0x73];
+    int flags;                      /* 0x288 0x200: tick every fourth frame */
+} ClockControl;
+
+/* D_01E0E9C0: the 0x800-byte text buffer func_00217EE0 appends to */
+typedef struct {
+    char pad00[0x4C];
+    int used;                       /* 0x4C bytes of text */
+    char text[0x800];               /* 0x50 */
+} TextLog;
+
 /* one of the three 0x180-byte records at *D_0044733C, cleared by func_001FBAC8 */
 typedef struct {
     char flag0;                     /* 0x00 */

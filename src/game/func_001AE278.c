@@ -1,16 +1,16 @@
-#include "common.h"
+#include "kf_effect.h"
 
 void func_001AF928(void *, int);
 void func_001AF640(void *, int);
 void func_001AF538(float *, float *, float);
 
-/* Re-seeds the sub-object from its linked controller, then sets bit 58 of the flags at +0x40. */
-void func_001AE278(char *arg0, int arg1) {
-    char *sub;
+/* Re-seeds the motion from the model and definition, then sets bit 58 of the flags. */
+void func_001AE278(EffectActor *actor, int frame) {
+    EffectMotion *motion;
 
-    sub = arg0 + 0x10;
-    func_001AF928(arg0, arg1);
-    func_001AF640(arg0, arg1);
-    func_001AF538(sub, (float *)(*(char **)(arg0 + 0x50) + 0xD0), *(float *)(*(char **)(arg0 + 0x54) + 0xD8));
-    *(s64 *)(arg0 + 0x40) |= (s64)0x8000 << 0x2B;
+    motion = &actor->motion;
+    func_001AF928(actor, frame);
+    func_001AF640(actor, frame);
+    func_001AF538(&motion->velocity.x, &actor->model->rotation.x, actor->def->speed);
+    actor->flags |= (s64)0x8000 << 0x2B;
 }
