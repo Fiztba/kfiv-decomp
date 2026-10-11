@@ -64,6 +64,8 @@ segments:
       - [0x0025C0, asm, text_001025C0]
       - [0x009A38, c, game/func_00109A38]
       - [0x009A50, asm, text_00109A50]
+      - [0x00AE90, c, game/func_0010AE90]
+      - [0x00AEB8, asm, text_0010AEB8]
       - [0x01FAA0, c, game/func_0011FAA0]
       - [0x01FAB0, asm, text_0011FAB0]
       - [0x020D78, c, game/func_00120D78]
