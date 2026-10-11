@@ -100,9 +100,9 @@ static page) and the table below; commit those with each batch of work.
 <!-- progress:start -->
 | | code | functions | units complete |
 | --- | ---: | ---: | ---: |
-| overall | 13.08% | 978 / 3838 | 14 / 487 |
-| game | 1.00% | 159 / 2990 | 0 / 299 |
-| sce | 97.10% | 819 / 848 | 14 / 188 |
+| overall | 14.28% | 1042 / 3839 | 14 / 595 |
+| game | 2.38% | 223 / 2991 | 0 / 406 |
+| sce | 97.10% | 819 / 848 | 14 / 189 |
 <!-- progress:end -->
 
 ## Contributing
@@ -118,8 +118,8 @@ match) and writes `build/kfiv.us.yaml` (the template `config/kfiv.us.yaml`
 plus a subsegment per unit), `build/link_order.us.txt` and
 `build/symbol_addrs.carve.txt`. `./build.sh` runs it whenever `src/` or
 `config/` changed, and splits again when the units changed. A unit owns its
-stretch of `.text`, `.data`, `.rodata`, the float literal pool `.lit4` and
-`.bss`; the stretches between units stay assembly. Adding a unit is adding
+stretch of `.text`, `.data`, `.rodata`, the float literal pool `.lit4`,
+`.sdata` and `.bss`; the stretches between units stay assembly. Adding a unit is adding
 its source file. `tools/tu_scan.py` reports which game functions must
 share a unit (see [`docs/ROADMAP.md`](docs/ROADMAP.md), step 3).
 

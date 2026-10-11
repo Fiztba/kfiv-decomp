@@ -18,7 +18,7 @@ to the retail one. Then:
 
   * build/kfiv.us.yaml is config/kfiv.us.yaml with, between its markers, one
     subsegment per unit and section, and an asm
-    (or data/rodata/lit4/bss) subsegment for each stretch between units that no
+    (or data/rodata/lit4/sdata/bss) subsegment for each stretch between units that no
     unit claims. A stretch that is only the next unit's alignment fill gets
     none: ld reproduces it.
   * build/link_order.us.txt gets one order that every section agrees with:
@@ -72,6 +72,7 @@ SECTIONS = [
     (".data", "data", ".data", "data", 0x00249680, 0x0043B1C8, 4),
     (".rodata", "rodata", ".rodata", "rodata", 0x0043D980, 0x00444B58, 4),
     (".lit4", "lit4", ".lit4", "lit4", 0x00444B80, 0x004466F4, 4),
+    (".sdata", "sdata", ".sdata", "sdata", 0x00446700, 0x00446FE4, 4),
     (".bss", "bss", ".bss", "bss", 0x00447480, 0x01E57C70, 4),
 ]
 BSS_ROM = 0x346FE4
@@ -80,14 +81,13 @@ BSS_ROM = 0x346FE4
 # they follow.
 FIXED = {
     ".data": ['      - { start: 0x33B1D0, type: data, name: vudata, linker_section: .vudata }'],
-    ".lit4": ['      - [0x346700, sdata, sdata]',
-              '      - { start: 0x346FE4, type: sbss, vram: 0x00447000, name: sbss }'],
+    ".sdata": ['      - { start: 0x346FE4, type: sbss, vram: 0x00447000, name: sbss }'],
 }
 GAME_UNITS = ["asm/text.s", "asm/data/data.data.s", "asm/data/vudata.data.s",
               "asm/data/rodata.rodata.s", "asm/data/lit4.lit4.s", "asm/data/sdata.sdata.s",
               "asm/data/sbss.sbss.s", "asm/data/bss.bss.s"]
 # the asm units of the sections carve.py leaves whole
-FIXED_UNITS = ["asm/data/vudata.data.s", "asm/data/sdata.sdata.s", "asm/data/sbss.sbss.s"]
+FIXED_UNITS = ["asm/data/vudata.data.s", "asm/data/sbss.sbss.s"]
 # defined by config/kfiv.us.ld.in, not by any unit (_gp is named for splat: the
 # units reference it through %hi/%lo)
 LINKER_SYMS = {"_fbss", "_end", "_stack", "_stack_size", "_heap_size"}
@@ -133,6 +133,7 @@ def is_pad(sec, cursor, addr, align):
 def asm_path(sec, name):
     return {".text": f"asm/{name}.s", ".data": f"asm/data/{name}.data.s",
             ".rodata": f"asm/data/{name}.rodata.s", ".lit4": f"asm/data/{name}.lit4.s",
+            ".sdata": f"asm/data/{name}.sdata.s",
             ".bss": f"asm/data/{name}.bss.s"}[sec]
 
 
