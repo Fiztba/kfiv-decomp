@@ -1,14 +1,14 @@
 #include "common.h"
 
 typedef struct {
-    unsigned char bits[0x20];
-    unsigned char tags[0x10];
-    unsigned char values[0x10];
+    u8 bits[0x20];
+    u8 tags[0x10];
+    u8 values[0x10];
 } Block;
 
 typedef struct {
     char unk0;
-    unsigned char tag;
+    u8 tag;
     char pad2[0x18 - 0x2];
     Block *blocks;
     char pad1C[0x60 - 0x1C];

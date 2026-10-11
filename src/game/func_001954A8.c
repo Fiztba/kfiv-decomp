@@ -1,3 +1,5 @@
+#include "common.h"
+
 float atan2f(float, float);
 
 float func_001954A8(float *arg0, float *arg1) {

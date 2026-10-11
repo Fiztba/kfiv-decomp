@@ -1,10 +1,12 @@
+#include "common.h"
+
 int func_001CBAE0();
 extern char *D_004471D4;
 
 /* Send slot arg0's two words with arg1, and arg2 with its bit fields re-packed (some inverted). */
-void func_001CF2E8(int arg0, int arg1, unsigned int arg2) {
+void func_001CF2E8(int arg0, int arg1, u32 arg2) {
     char *temp_t0;
-    unsigned int packed;
+    u32 packed;
 
     temp_t0 = D_004471D4 + (arg0 << 5);
     packed = (arg2 >> 31) << 31;

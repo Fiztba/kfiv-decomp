@@ -5,7 +5,7 @@ void func_00216BC0(void *, void *, void *);
 
 typedef struct {
     float v[3];
-    unsigned char bone;
+    u8 bone;
     char pad[3];
 } BoneSource;
 

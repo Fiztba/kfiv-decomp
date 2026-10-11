@@ -2,7 +2,7 @@
 
 extern int D_0044733C;
 
-void *memset(void *, int, unsigned int);
+void *memset(void *, int, u32);
 
 typedef struct {
     char flag0;

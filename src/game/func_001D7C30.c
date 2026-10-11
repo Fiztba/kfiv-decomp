@@ -1,6 +1,6 @@
 #include "common.h"
 
-void *memset(void *, int, unsigned int);
+void *memset(void *, int, u32);
 void func_001D7C90(void);
 extern char D_00425510[];
 extern char D_00425910[];

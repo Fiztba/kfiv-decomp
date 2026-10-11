@@ -15,7 +15,7 @@ typedef struct {
 
 typedef struct {
     char pad_00[0xE];
-    short unk0E;
+    s16 unk0E;
 } TurnCmd;
 
 /* Turns the heading by a signed angle and wraps the result to [-pi, pi]. */

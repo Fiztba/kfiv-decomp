@@ -1,8 +1,8 @@
 #include "common.h"
 
 int vsprintf(char *, char *, char *);
-unsigned int strlen(char *);
-void *memcpy(void *, const void *, unsigned int);
+u32 strlen(char *);
+void *memcpy(void *, const void *, u32);
 extern char D_01E0E9C0[];
 
 void func_00217EE0(char *fmt, char *args) {

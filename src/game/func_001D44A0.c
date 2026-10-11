@@ -14,12 +14,12 @@ typedef struct {
 
 /* Walk every chunk of the loaded package, hand each payload to func_002007C0, then flush. */
 void func_001D44A0(Obj *arg0) {
-    unsigned int i;
-    unsigned int *header;
+    u32 i;
+    u32 *header;
     char *next;
     char *chunk;
 
-    header = *(unsigned int **)(arg0->p0C + 4);
+    header = *(u32 **)(arg0->p0C + 4);
     chunk = (char *)header + 0x10;
     for (i = 0; i < *header; i++) {
         next = chunk + *(int *)(chunk + 0xC);

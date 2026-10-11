@@ -11,13 +11,13 @@ typedef struct {
     char pad0[0x5C];
     int f5C;
     char pad1[0xD8 - 0x60];
-    unsigned long long flags;
+    u64 flags;
 } Actor;
 
 void func_00150768(char *arg0) {
     Actor *a = (Actor *)arg0;
-    unsigned long long f;
-    unsigned long long state;
+    u64 f;
+    u64 state;
 
     func_00190A30(arg0);
     a->f5C = 0;

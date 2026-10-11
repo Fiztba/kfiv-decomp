@@ -8,9 +8,9 @@ typedef struct {
 
 typedef struct {
     char pad0[0x78];
-    unsigned long low : 39;
-    unsigned long level : 7;
-    unsigned long high : 18;
+    u64 low : 39;
+    u64 level : 7;
+    u64 high : 18;
 } Slot;
 
 typedef struct {

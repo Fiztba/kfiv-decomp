@@ -1,3 +1,5 @@
+#include "common.h"
+
 double sqrt(double);
 int func_00211D90(void *, double);
 

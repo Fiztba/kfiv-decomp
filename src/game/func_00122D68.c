@@ -1,7 +1,7 @@
 #include "common.h"
 
 int func_0010EA08(int, void *, int *, int *, float);
-void *memset(void *, int, unsigned int);
+void *memset(void *, int, u32);
 
 /* Advances the float at +0x50 toward 2000, then calls func_0010EA08; on a zero result sets state 1 and clears the float. */
 void func_00122D68(char *arg0) {

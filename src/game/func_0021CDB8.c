@@ -1,8 +1,8 @@
 #include "common.h"
 
-#define HW_1000B400 (*(volatile unsigned int *)0x1000B400)
-#define HW_1000F520 (*(volatile unsigned int *)0x1000F520)
-#define HW_1000F590 (*(volatile unsigned int *)0x1000F590)
+#define HW_1000B400 (*(volatile u32 *)0x1000B400)
+#define HW_1000F520 (*(volatile u32 *)0x1000F520)
+#define HW_1000F590 (*(volatile u32 *)0x1000F590)
 
 int DIntr(void);
 int EIntr(void);

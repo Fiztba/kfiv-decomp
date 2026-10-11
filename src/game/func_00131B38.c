@@ -1,20 +1,20 @@
 #include "common.h"
 
 extern int D_00413F80[];
-short func_00190F90(float, char *, int);
+s16 func_00190F90(float, char *, int);
 void func_001958B8(char *, void (*)(void), int);
 
 typedef struct {
     char pad0[0x5C];
     int *p5C;
     char pad60[0xC8 - 0x60];
-    short sC8;
+    s16 sC8;
     char padCA[0xD8 - 0xCA];
-    unsigned long b0 : 9;
-    unsigned long b9 : 1;
-    unsigned long b10 : 1;
-    unsigned long b11 : 3;
-    unsigned long b14 : 50;
+    u64 b0 : 9;
+    u64 b9 : 1;
+    u64 b10 : 1;
+    u64 b11 : 3;
+    u64 b14 : 50;
 } Actor;
 
 void func_00131B38(char *arg0, int arg1) {

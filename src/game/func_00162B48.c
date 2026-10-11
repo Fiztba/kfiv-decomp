@@ -17,7 +17,7 @@ void func_00162B48(char *arg0) {
         object = func_001267B0(i + 0x65);
         if (object != NULL) {
             next = count + 1;
-            count = (((*(long *)(object + 0xD8)) & 0xF) ^ 3) ? count : next;
+            count = (((*(s64 *)(object + 0xD8)) & 0xF) ^ 3) ? count : next;
         }
         i += 1;
     } while (i < 6);

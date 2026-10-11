@@ -1,9 +1,9 @@
 #include "common.h"
 
 typedef struct Func0019B150Node {
-    unsigned char pad00[0x20];
+    u8 pad00[0x20];
     int unk20;
-    unsigned char pad24[0x18];
+    u8 pad24[0x18];
     struct Func0019B150Node *unk3C;
 } Func0019B150Node;
 

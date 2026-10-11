@@ -1,18 +1,20 @@
+#include "common.h"
+
 typedef struct E {
     char pad[0x78];
-    unsigned long addr : 32;
-    unsigned long pad2 : 21;
-    unsigned long count : 11;
+    u64 addr : 32;
+    u64 pad2 : 21;
+    u64 count : 11;
 } E;
 
 typedef struct O {
     char pad[0xF0];
-    unsigned short n;
+    u16 n;
     char pad2[6];
     E *e;
 } O;
 
-void func_0010E6A8(O *arg0, long arg1, long arg2) {
+void func_0010E6A8(O *arg0, s64 arg1, s64 arg2) {
     E *e;
     char *a;
     char *base;
@@ -20,7 +22,7 @@ void func_0010E6A8(O *arg0, long arg1, long arg2) {
     int j;
     int c;
     int n;
-    unsigned short cnt;
+    u16 cnt;
     int t;
     int b;
     int m;
@@ -38,7 +40,7 @@ void func_0010E6A8(O *arg0, long arg1, long arg2) {
         a = (char *)(int)e->addr;
         for (j = 0; j < c; j++) {
             base = a;
-            cnt = *(unsigned short *)base;
+            cnt = *(u16 *)base;
             a += 0x70;
             t = *(int *)(a + 4) & 0x03FF8000;
             *(int *)(a + 4) = (t & ~m) | b | (*(int *)(a + 4) & 0xFC007FFF);

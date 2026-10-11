@@ -9,7 +9,7 @@ typedef struct {
     char pad0[0x5C];
     int f5C;
     char pad1[0xD8 - 0x60];
-    unsigned long long flags;
+    u64 flags;
 } Actor;
 
 /* When the state field in flags is 2, resets the actor and registers func_00169990; then sets state 2. */

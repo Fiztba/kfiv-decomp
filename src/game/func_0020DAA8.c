@@ -4,7 +4,7 @@ char *func_0020D0B0(char *, int);
 
 typedef struct {
     int unk0;
-    unsigned int entry_count;
+    u32 entry_count;
     char pad08[0x10 - 0x8];
 } TableHeader;
 
@@ -18,7 +18,7 @@ char *func_0020DAA8(char *base, int arg1) {
     char *cursor;
     TableHeader *header;
     TableEntry *entry;
-    unsigned int i;
+    u32 i;
 
     cursor = base;
     header = (TableHeader *)cursor;

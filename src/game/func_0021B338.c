@@ -1,3 +1,5 @@
+#include "common.h"
+
 int sceMcInit();
 
 typedef struct

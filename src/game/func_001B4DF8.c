@@ -2,14 +2,14 @@
 
 typedef struct {
     char unk0[0x12];
-    unsigned char level;
-    unsigned char exp;
+    u8 level;
+    u8 exp;
     char unk14[0xE];
 } Rec22;
 
 typedef struct {
     char unk0[0x37];
-    unsigned char exp_per_level;
+    u8 exp_per_level;
     char unk38[8];
 } Def40;
 

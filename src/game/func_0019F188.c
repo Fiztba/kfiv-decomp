@@ -1,20 +1,20 @@
 #include "common.h"
 
 extern int D_00446858;
-extern unsigned char D_00446896;
+extern u8 D_00446896;
 extern char D_004FF558[];
 
 int func_001CEF48(char);
-int func_001CEE78(int, short, short, short, short, short, short, int);
+int func_001CEE78(int, s16, s16, s16, s16, s16, s16, int);
 
 typedef struct {
     int flags;
-    short a;
-    short b;
-    short c;
-    short d;
-    short e;
-    short f;
+    s16 a;
+    s16 b;
+    s16 c;
+    s16 d;
+    s16 e;
+    s16 f;
 } Entry;
 
 int func_0019F188(void *arg0, int arg1) {

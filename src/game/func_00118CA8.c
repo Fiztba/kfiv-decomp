@@ -9,7 +9,7 @@ typedef struct {
 extern Fade D_0038D680;
 
 void func_00109A50(void);
-void func_00109A80(int, long);
+void func_00109A80(int, s64);
 void func_00109AD0(void);
 void func_0010A4E8(int, int, int, int, int);
 void func_00114198(int);

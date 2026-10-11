@@ -6,7 +6,7 @@ typedef struct {
     int unk4C8;
     int dest;
     char unk4D0[6];
-    unsigned short active;
+    u16 active;
 } DmaCtx;
 
 int func_001CBAE0(int, int);

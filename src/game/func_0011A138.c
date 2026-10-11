@@ -11,7 +11,7 @@ typedef struct {
     Pos *pos;
 } Rec;
 
-extern unsigned char D_00349690[];
+extern u8 D_00349690[];
 void func_0011E0C8(Rec *);
 void func_0011E140(Rec *);
 Rec *func_0011E1F0(int, int);

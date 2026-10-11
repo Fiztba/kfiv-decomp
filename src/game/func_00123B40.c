@@ -1,8 +1,8 @@
 #include "common.h"
 
 typedef struct {
-    union { unsigned int w; struct { unsigned char a; unsigned short b; } f; } u;
-    short c; unsigned char d; int e; int f;
+    union { u32 w; struct { u8 a; u16 b; } f; } u;
+    s16 c; u8 d; int e; int f;
 } Entry;
 extern Entry D_003D6DF0[];
 
@@ -21,7 +21,7 @@ int func_00123B40(void) {
         if (p->u.f.a != 4) { continue; }
         if (p->c != 0) { continue; }
         if (p->d != 0) { continue; }
-        if (best == -1 || (unsigned int)p->e < (unsigned int)D_003D6DF0[best].e) {
+        if (best == -1 || (u32)p->e < (u32)D_003D6DF0[best].e) {
             best = i;
         }
     }

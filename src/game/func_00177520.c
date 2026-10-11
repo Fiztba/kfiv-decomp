@@ -36,7 +36,7 @@ typedef struct {
 /* Aim: turn the angle toward the target into a clamped value, smooth it, and copy it to the slot. */
 void func_00177520(Actor *actor) {
     Obj *o = actor->obj;
-    Slot *slot = (Slot *)(o->pF8 + (*(short *)(actor->ctrl + 0x434) << 7));
+    Slot *slot = (Slot *)(o->pF8 + (*(s16 *)(actor->ctrl + 0x434) << 7));
     Sub *sub = &actor->sub;
     float a;
 

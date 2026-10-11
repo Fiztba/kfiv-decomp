@@ -17,7 +17,7 @@ typedef struct {
 
 /* Steps the actor's four-state timer machine. */
 void func_0018E9C0(Actor *actor) {
-    long next;
+    s64 next;
 
     next = actor->state;
     actor->prev_state = next;

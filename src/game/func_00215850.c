@@ -11,9 +11,9 @@ typedef struct {
 typedef struct {
     ObjPos *pos;                /* 0x00 */
     char pad04[0x28];
-    unsigned short unk2C;       /* 0x2C */
+    u16 unk2C;       /* 0x2C */
     char pad2E[0xAA];
-    long flags;                 /* 0xD8 */
+    s64 flags;                 /* 0xD8 */
 } Obj;
 
 /* the command being run */

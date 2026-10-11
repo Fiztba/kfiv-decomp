@@ -2,9 +2,9 @@
 
 typedef struct {
     char pad00[0x2C];
-    unsigned short unk2C;       /* 0x2C */
+    u16 unk2C;       /* 0x2C */
     char pad2E[0xAA];
-    long flags;                 /* 0xD8 */
+    s64 flags;                 /* 0xD8 */
 } Obj;
 
 /* the command being run */

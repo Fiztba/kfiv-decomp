@@ -6,7 +6,7 @@ typedef struct Node {
     struct Node *prev;
 } Node;
 
-extern unsigned short D_00446DE8;
+extern u16 D_00446DE8;
 extern Node *D_005CE880[];
 extern Node *D_005CE890[];
 extern Node *D_005CE8A0[];

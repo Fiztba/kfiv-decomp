@@ -2,8 +2,8 @@
 
 typedef struct {
     char pad0[3];
-    signed char a3;
-    unsigned char a4;
+    s8 a3;
+    u8 a4;
 } TblA;
 
 extern TblA D_0038CC50[];

@@ -7,19 +7,19 @@ extern void func_001816A0(void);
 
 typedef struct {
     char pad0[0xD8];
-    unsigned long long flags;
+    u64 flags;
 } Actor;
 
 typedef struct {
     char pad0[0x68];
-    short f68;
+    s16 f68;
 } ActorSub;
 
 void func_0014E068(char *arg0) {
     Actor *a = (Actor *)arg0;
     ActorSub *s = (ActorSub *)(arg0 + 0xE0);
-    unsigned long long f;
-    unsigned long long state;
+    u64 f;
+    u64 state;
 
     func_00190A30(arg0);
     a->flags &= ~0x200;

@@ -2,7 +2,7 @@
 #include "kf_file.h"
 
 extern void func_00102228(void);
-extern int func_001CE510(unsigned int);
+extern int func_001CE510(u32);
 extern void func_001CE408(int);
 extern void func_001CD6E0(int);
 extern int D_00446858;

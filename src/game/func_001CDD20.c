@@ -8,7 +8,7 @@ typedef struct {
     char pad4[8];
     int unkC;
     char pad10[8];
-    short unk18;
+    s16 unk18;
     char pad1A;
     char unk1B;
     int unk1C;
@@ -27,7 +27,7 @@ int func_001CDD20(int arg0) {
     int i;
 
     slot->unk1C = 1;
-    if (*(unsigned short *)(D_004471D4 + 0x4D6) != 0) {
+    if (*(u16 *)(D_004471D4 + 0x4D6) != 0) {
         func_001CBAE0(1, 0x50);
     }
     if (func_001CBAE0(1, 0x1010, slot->unk18, slot->unkC, slot->unk0, slot->unk1B) != 0) {
@@ -41,7 +41,7 @@ int func_001CDD20(int arg0) {
             }
         }
     }
-    if (*(unsigned short *)(D_004471D4 + 0x4D6) != 0) {
+    if (*(u16 *)(D_004471D4 + 0x4D6) != 0) {
         func_001CBAE0(1, 0x40);
     }
     return result;

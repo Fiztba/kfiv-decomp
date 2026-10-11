@@ -2,7 +2,7 @@
 
 typedef struct {
     char pad00[0x10];
-    unsigned short flags;           /* 0x10 */
+    u16 flags;           /* 0x10 */
 } EntityUnk0C;
 
 void func_001243E8(char);

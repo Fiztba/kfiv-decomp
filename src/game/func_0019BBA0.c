@@ -1,12 +1,12 @@
 #include "common.h"
 
-void *memset(void *, int, unsigned int);
+void *memset(void *, int, u32);
 int FlushCache(int);
 int sceClose(int);
 int sceOpen(const char *, int);
 int sceWrite(int, const void *, int);
 void sceGsSyncPath(int, int);
-void sceGsSetDefStoreImage(void *, short, short, short, short, short, short, short);
+void sceGsSetDefStoreImage(void *, s16, s16, s16, s16, s16, s16, s16);
 void sceGsExecStoreImage(void *, void *);
 extern char D_0043EBB0[];
 

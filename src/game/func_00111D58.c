@@ -3,8 +3,8 @@
 typedef struct {
     float amp_x;
     float amp_y;
-    short x;
-    short y;
+    s16 x;
+    s16 y;
     float phase;
 } Entry;
 

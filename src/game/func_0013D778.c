@@ -2,12 +2,12 @@
 
 typedef struct {
     char pad[0x430];
-    short unk430;
+    s16 unk430;
 } Ctl;
 
 typedef struct {
     char pad[0x68];
-    short unk68;
+    s16 unk68;
 } Sub;
 
 typedef struct {
@@ -16,12 +16,12 @@ typedef struct {
     char pad1[0x5C - 0x10];
     int unk5C;
     char pad2[0xD8 - 0x60];
-    unsigned long b0 : 18;
-    unsigned long b18 : 1;
-    unsigned long b19 : 1;
-    unsigned long b20 : 1;
-    unsigned long b21 : 1;
-    unsigned long b22 : 42;
+    u64 b0 : 18;
+    u64 b18 : 1;
+    u64 b19 : 1;
+    u64 b20 : 1;
+    u64 b21 : 1;
+    u64 b22 : 42;
     Sub sub;
 } Actor;
 

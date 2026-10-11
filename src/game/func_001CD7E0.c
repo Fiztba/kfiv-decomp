@@ -1,3 +1,5 @@
+#include "common.h"
+
 int sceSifFreeIopHeap(int);
 int puts(char *);
 void FlushCache(int);

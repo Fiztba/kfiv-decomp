@@ -24,7 +24,7 @@ void func_0017A158(char *arg0, int arg1) {
     *(float *)(out + 0xC8) = z;
     if (*(char *)(arg0 + 0xD5) != D_00446770) {
         map_entry = D_0038CD20 + D_00446770 * 0x60;
-        origin = *(char **)(map_entry + 0x1C) + *(short *)(*(char **)(arg0 + 0xC) + 0x43A) * 0x10;
+        origin = *(char **)(map_entry + 0x1C) + *(s16 *)(*(char **)(arg0 + 0xC) + 0x43A) * 0x10;
         *(float *)(out + 0xC0) = x - *(float *)origin;
         *(float *)(out + 0xC4) = y - *(float *)(origin + 4);
         *(float *)(out + 0xC8) = z - *(float *)(origin + 8);

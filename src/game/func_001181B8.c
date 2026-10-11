@@ -18,7 +18,7 @@ void func_001181B8(void) {
     u8 *slot_entry;
 
     other_slot = D_00446770 == 0;
-    slot_entry = (unsigned char *)(D_00446770 == 0 ? D_0038CD20 + 0x60 : D_0038CD20);
+    slot_entry = (u8 *)(D_00446770 == 0 ? D_0038CD20 + 0x60 : D_0038CD20);
     if (D_0038D610[5] != 0) {
         if (*slot_entry != 0) {
             *slot_entry = 0;

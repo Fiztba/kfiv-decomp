@@ -12,5 +12,5 @@ void func_001AE278(char *arg0, int arg1) {
     func_001AF928(arg0, arg1);
     func_001AF640(arg0, arg1);
     func_001AF538(*(float *)(*(char **)(arg0 + 0x54) + 0xD8), sub, *(char **)(arg0 + 0x50) + 0xD0);
-    *(long *)(arg0 + 0x40) |= (long)0x8000 << 0x2B;
+    *(s64 *)(arg0 + 0x40) |= (s64)0x8000 << 0x2B;
 }
