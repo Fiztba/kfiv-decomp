@@ -20,6 +20,10 @@ src/game/func_00109A38.c
 asm/text_00109A50.s
 src/game/func_00120D78.c
 asm/text_00120D88.s
+src/game/func_001A15C0.c
+asm/text_001A15D0.s
+src/game/func_001B0950.c
+asm/text_001B0970.s
 src/game/func_001C0890.c
 asm/text_001C08A0.s
 src/game/func_001CFC48.c
