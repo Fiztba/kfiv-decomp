@@ -1,0 +1,29 @@
+int func_00192C98(void *, int, int, int, int);
+
+typedef struct {
+    char pad0[0x10];
+    struct {
+        char pad0[0x41];
+        unsigned char c41;
+    } *c;
+    char pad1[0xD8 - 0x14];
+    long flags;
+} Actor;
+
+void func_001785D8(Actor *a) {
+    if (a->c->c41 == 1) {
+        func_00192C98(a, 0x12, 0, 0, 0);
+    } else {
+        func_00192C98(a, 0x13, 0, 0, 0);
+    }
+    a->flags |= 0x40000;
+    a->flags |= 0x100000;
+    a->flags |= 0x200000;
+    a->flags |= 0x400000;
+    a->flags |= 0x800000;
+    a->flags |= 0x1000000;
+    a->flags |= 0x2000000;
+    a->flags |= 0x4000000;
+    a->flags |= 0x10000;
+    a->flags |= 0x10000000;
+}
