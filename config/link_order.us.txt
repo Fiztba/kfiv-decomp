@@ -43,6 +43,8 @@ src/game/func_00195898.c
 asm/text_001958A8.s
 src/game/func_0019CCB0.c
 asm/text_0019CD10.s
+src/game/func_001A0D08.c
+asm/text_001A0D20.s
 src/game/func_001A15C0.c
 asm/text_001A15D0.s
 src/game/func_001B0950.c
@@ -56,6 +58,8 @@ src/game/func_001FAFB0.c
 asm/text_001FAFC0.s
 src/game/func_001FB6F8.c
 asm/text_001FB710.s
+src/game/func_001FB948.c
+asm/text_001FB960.s
 src/game/func_001FBBA8.c
 src/game/func_001FBBB8.c
 src/game/func_001FBBD0.c
