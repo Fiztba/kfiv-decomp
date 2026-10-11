@@ -1,10 +1,5 @@
 #include "kf_entity.h"
 
-typedef struct {
-    char pad00[0x10];
-    u16 flags;           /* 0x10 */
-} EntityUnk0C;
-
 void func_001243E8(char);
 void func_001A32A8(Entity *);
 
@@ -17,7 +12,7 @@ void func_001240B8(int group_id) {
     entity = D_004470B0;
     while (entity != NULL) {
         if (group_id == entity->unkD3 ||
-            (((EntityUnk0C *)entity->unk0C)->flags & 0x8000 && entity->unkD3 == other && entity->unkD3 >= 0)) {
+            (ENTITY_CONTROLLER(entity)->flags & 0x8000 && entity->unkD3 == other && entity->unkD3 >= 0)) {
             next = entity->next;
             func_00124CA0(entity);
             func_00124BC8(entity);

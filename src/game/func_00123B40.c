@@ -1,34 +1,30 @@
-#include "common.h"
+#include "kf_entity.h"
 
-typedef struct {
-    union { u32 w; struct { u8 a; u16 b; } f; } u;
-    s16 c; u8 d; int e; int f;
-} Entry;
-extern Entry D_003D6DF0[];
+extern EntityPoolSlot D_003D6DF0[];
 
 /* Claims the first free pool block, else the unused block with the lowest size; returns its index. */
 int func_00123B40(void) {
     int i;
     int best;
-    Entry *p;
+    EntityPoolSlot *slot;
 
     best = -1;
     for (i = 0; i < 5; i++) {
-        p = &D_003D6DF0[i];
-        if ((p->u.w >> 9) & 1) { continue; }
-        if ((p->u.w >> 8) & 1) { continue; }
-        if (p->u.f.a == 0) { return i; }
-        if (p->u.f.a != 4) { continue; }
-        if (p->c != 0) { continue; }
-        if (p->d != 0) { continue; }
-        if (best == -1 || (u32)p->e < (u32)D_003D6DF0[best].e) {
+        slot = &D_003D6DF0[i];
+        if ((slot->head.word >> 9) & 1) { continue; }
+        if ((slot->head.word >> 8) & 1) { continue; }
+        if (slot->head.fields.kind == 0) { return i; }
+        if (slot->head.fields.kind != 4) { continue; }
+        if (slot->unk4 != 0) { continue; }
+        if (slot->unk6 != 0) { continue; }
+        if (best == -1 || (u32)slot->age < (u32)D_003D6DF0[best].age) {
             best = i;
         }
     }
     if (best >= 0) {
-        D_003D6DF0[best].u.f.a = 0;
-        if ((i = best + 1) < 5 && D_003D6DF0[i].u.f.a == 5) {
-            D_003D6DF0[i].u.f.a = 0;
+        D_003D6DF0[best].head.fields.kind = 0;
+        if ((i = best + 1) < 5 && D_003D6DF0[i].head.fields.kind == 5) {
+            D_003D6DF0[i].head.fields.kind = 0;
         }
     }
     return best;

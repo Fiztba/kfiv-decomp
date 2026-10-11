@@ -1,36 +1,19 @@
-#include "common.h"
+#include "kf_script.h"
+#include "kf_entity.h"
 
-typedef struct {
-    char pad00[0x2C];
-    u16 unk2C;       /* 0x2C */
-    char pad2E[0xAA];
-    s64 flags;                 /* 0xD8 */
-} Obj;
-
-/* the command being run */
-typedef struct {
-    int active;                 /* 0x00 */
-    int pad04;
-    int target_id;              /* 0x08 */
-    int pad0C;
-    int frames_left;            /* 0x10 */
-    int pad14;
-    int unk18;                  /* 0x18 */
-} MoveCmd;
-
-Obj *func_001267B0(int);
+Entity *func_001267B0(int);
 int func_00192EB0(void *, int);
 
-/* Each frame, run the callback on the target object until the frame count runs out. */
-void func_002151C0(MoveCmd *cmd) {
-    Obj *obj;
+/* Each frame, run the callback on the target entity until the frame count runs out. */
+void func_002151C0(ScriptMotionCommand *command) {
+    Entity *entity;
 
-    obj = func_001267B0(cmd->target_id);
-    if (obj != NULL && (obj->flags & 0xF) == 3 && obj->unk2C != 0) {
-        func_00192EB0(obj, cmd->unk18);
-        if (--cmd->frames_left != 0) {
+    entity = func_001267B0(command->target_id.value);
+    if (entity != NULL && (entity->flags & 0xF) == 3 && entity->unk2C != 0) {
+        func_00192EB0(entity, command->motion.value);
+        if (--command->frames.value != 0) {
             return;
         }
     }
-    cmd->active = 0;
+    command->active = 0;
 }

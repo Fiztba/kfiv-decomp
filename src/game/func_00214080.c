@@ -1,30 +1,26 @@
-#include "common.h"
+#include "kf_script.h"
+#include "kf_model.h"
 
-typedef struct {
-    char pad[0x7C];
-    char *act;
-} Actor;
-
-void *func_00116160(int, int);
+MapProp *func_00116160(int, int);
 float func_0019B838(float);
 extern int D_00446770;
 
-/* Step the target actor's x/y/z position by this command's per-frame deltas, ending the command when its step count runs out. */
-void func_00214080(char *command) {
-    Actor *actor;
+/* Step the target prop's x/y/z position by this command's per-frame deltas, ending the command when its step count runs out. */
+void func_00214080(ScriptMoveCommand *command) {
+    MapProp *prop;
     int steps_left;
 
-    actor = func_00116160(D_00446770, *(int *)(command + 0x8));
-    if (actor == NULL || *(int *)(command + 0x28) <= 0) {
-        *(int *)command = 0;
+    prop = func_00116160(D_00446770, command->target_id.value);
+    if (prop == NULL || command->frames.value <= 0) {
+        command->active = 0;
         return;
     }
-    *(float *)(actor->act + 0xD0) = func_0019B838(*(float *)(actor->act + 0xD0) + *(float *)(command + 0x10));
-    *(float *)(actor->act + 0xD4) = func_0019B838(*(float *)(actor->act + 0xD4) + *(float *)(command + 0x18));
-    *(float *)(actor->act + 0xD8) = func_0019B838(*(float *)(actor->act + 0xD8) + *(float *)(command + 0x20));
-    steps_left = *(int *)(command + 0x28) - 1;
-    *(int *)(command + 0x28) = steps_left;
+    prop->model->rotation.x = func_0019B838(prop->model->rotation.x + command->x.value);
+    prop->model->rotation.y = func_0019B838(prop->model->rotation.y + command->y.value);
+    prop->model->rotation.z = func_0019B838(prop->model->rotation.z + command->z.value);
+    steps_left = command->frames.value - 1;
+    command->frames.value = steps_left;
     if (steps_left < 0) {
-        *(int *)command = 0;
+        command->active = 0;
     }
 }

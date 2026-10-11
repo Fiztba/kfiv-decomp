@@ -1,30 +1,24 @@
-#include "common.h"
+#include "kf_entity.h"
 
-typedef struct Ent {
-    char pad0[0x18];
-    struct Ent *prev;
-    struct Ent *next;
-} Ent;
-
-extern Ent *D_004470A8;
-extern Ent *D_004470AC;
+extern Entity *D_004470AC;
 extern int D_004470B8;
 
-Ent *func_00124C08(Ent *e) {
-    Ent *next;
+/* Unlinks an entity from its list and returns the next one. */
+Entity *func_00124C08(Entity *entity) {
+    Entity *next;
 
-    next = e->next;
-    if (D_004470A8 == e) {
+    next = entity->next;
+    if (D_004470A8 == entity) {
         D_004470A8 = next;
     }
-    if (D_004470AC == e) {
-        D_004470AC = e->prev;
+    if (D_004470AC == entity) {
+        D_004470AC = entity->prev;
     }
-    if (e->prev != NULL) {
-        e->prev->next = next;
+    if (entity->prev != NULL) {
+        entity->prev->next = next;
     }
-    if (e->next != NULL) {
-        e->next->prev = e->prev;
+    if (entity->next != NULL) {
+        entity->next->prev = entity->prev;
     }
     D_004470B8--;
     return next;

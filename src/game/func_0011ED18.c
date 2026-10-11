@@ -11,15 +11,15 @@ void func_00109A80(int, s64);
 void func_00109AD0(void);
 
 void func_0011ED18(void) {
-    struct { int w[10]; } *a;
-    int *b;
+    int (*entry)[10];
+    int *value;
 
-    a = (void *)D_00474AC0;
-    b = (int *)D_00474B60;
-    func_0010A880(a++, b++);
-    func_0010A880(a++, b++);
-    func_0010A880(a++, b++);
-    func_0010A880(a++, b++);
+    entry = (void *)D_00474AC0;
+    value = (int *)D_00474B60;
+    func_0010A880(entry++, value++);
+    func_0010A880(entry++, value++);
+    func_0010A880(entry++, value++);
+    func_0010A880(entry++, value++);
     func_00109E88();
     func_0010A008();
     func_00109A50();

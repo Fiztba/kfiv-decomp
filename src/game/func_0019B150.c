@@ -1,28 +1,22 @@
 #include "common.h"
-
-typedef struct Func0019B150Node {
-    u8 pad00[0x20];
-    int unk20;
-    u8 pad24[0x18];
-    struct Func0019B150Node *unk3C;
-} Func0019B150Node;
+#include "kf_entity.h"
 
 void func_00216C48(void *, void *, void *);
-extern void *D_004470C8[2];
+extern LinkedPoint *D_004470C8[2];
 
-void func_0019B150(void *arg0) {
+void func_0019B150(void *transform) {
     int i;
-    Func0019B150Node *node;
+    LinkedPoint *node;
 
     i = 0;
     do {
-        node = (Func0019B150Node *)D_004470C8[i];
+        node = D_004470C8[i];
         if (node != NULL) {
             do {
-                if (node->unk20 != 0) {
-                    func_00216C48(node, node, arg0);
+                if (node->follow != NULL) {
+                    func_00216C48(node, node, transform);
                 }
-                node = node->unk3C;
+                node = node->next;
             } while (node != NULL);
         }
         i++;

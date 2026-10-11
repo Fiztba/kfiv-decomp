@@ -1,22 +1,12 @@
-#include "common.h"
+#include "kf_load.h"
 
 extern char D_0043F730[];
 
-typedef struct {
-    void (*fn[3])(void *);
-} HandlerTable;
+/* Call the stage handler selected by upload->stage unless upload->done is set. */
+void func_001D4360(ChunkUpload *upload) {
+    ChunkUploadStages handlers = *(ChunkUploadStages *)D_0043F730;
 
-typedef struct {
-    char pad[0x1C];
-    int index;
-    int flag;
-} Owner;
-
-/* Call the handler selected by owner->index unless owner->flag is set. */
-void func_001D4360(Owner *owner) {
-    HandlerTable handlers = *(HandlerTable *)D_0043F730;
-
-    if (owner->flag == 0) {
-        handlers.fn[owner->index](owner);
+    if (upload->done == 0) {
+        handlers.stage[upload->stage](upload);
     }
 }

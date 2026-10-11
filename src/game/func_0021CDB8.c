@@ -1,16 +1,13 @@
 #include "common.h"
-
-#define HW_1000B400 (*(volatile u32 *)0x1000B400)
-#define HW_1000F520 (*(volatile u32 *)0x1000F520)
-#define HW_1000F590 (*(volatile u32 *)0x1000F590)
+#include <eeregs.h>
 
 int DIntr(void);
 int EIntr(void);
 
-void func_0021CDB8(int value) {
+void func_0021CDB8(int chcr) {
     DIntr();
-    HW_1000F590 = HW_1000F520 | 0x10000;
-    HW_1000B400 = value;
-    HW_1000F590 = HW_1000F520 & 0xFFFEFFFF;
+    *D_ENABLEW = *D_ENABLER | 0x10000;
+    *D4_CHCR = chcr;
+    *D_ENABLEW = *D_ENABLER & 0xFFFEFFFF;
     EIntr();
 }

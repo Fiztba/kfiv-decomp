@@ -1,22 +1,16 @@
-#include "common.h"
+#include "kf_screen.h"
 
-typedef struct {
-    float unk00;
-    int unk04;
-    char pad08[4];
-    float unk0C;
-} Entry;
+extern WaveOscillator D_00471DE0[];
 
-extern char D_00471DE0[];
-
+/* Resets the 16 screen wobble oscillators, spreading their phases over one turn. */
 void func_00111D00(void) {
-    Entry *entry = (Entry *)D_00471DE0;
+    WaveOscillator *oscillator = D_00471DE0;
     int i;
 
     for (i = 0; i < 16; i++) {
-        entry->unk00 = 0.01f;
-        entry->unk04 = 0;
-        entry->unk0C = (float)i * 6.2831855f * 0.0625f;
-        entry++;
+        oscillator->amp_x = 0.01f;
+        oscillator->amp_y = 0.0f;
+        oscillator->phase = (float)i * 6.2831855f * 0.0625f;
+        oscillator++;
     }
 }

@@ -1,4 +1,4 @@
-#include "common.h"
+#include "kf_script.h"
 
 void sceVu0RotMatrixY(float, int *, int *);
 void sceVu0ApplyMatrix(float *, int *, float *);
@@ -8,19 +8,8 @@ int func_00211D90(void *, double);  // match: retail converts the float argument
 extern int D_00431AF0[];
 extern float D_00413F80[];
 
-typedef struct {
-    int unk0;
-    char pad4[4];
-    int unk8;
-    int x;
-    int pad10;
-    int y;
-    int pad18;
-    int z;
-} Target;
-
 /* Rotates the vector at D_00413F80+0x1AC about Y, scales it, and stores the three components as ints. */
-void func_00214EE8(Target *target) {
+void func_00214EE8(ScriptPointCommand *command) {
     int matrix[16];
     float vec[4];
     float out[4];
@@ -31,10 +20,10 @@ void func_00214EE8(Target *target) {
     vec[3] = 0.0f;
     sceVu0RotMatrixY(D_00413F80[0x14 / 4], matrix, D_00431AF0);
     sceVu0ApplyMatrix(vec, matrix, vec);
-    KF_Vector_Scale(vec, vec, (float)target->unk8);
+    KF_Vector_Scale(vec, vec, (float)command->object_id.value);
     func_00216C48(out, D_00413F80, vec);
-    func_00211D90(&target->x, out[0]);
-    func_00211D90(&target->y, out[1]);
-    func_00211D90(&target->z, out[2]);
-    target->unk0 = 0;
+    func_00211D90(&command->from_x, out[0]);
+    func_00211D90(&command->from_y, out[1]);
+    func_00211D90(&command->from_z, out[2]);
+    command->active = 0;
 }

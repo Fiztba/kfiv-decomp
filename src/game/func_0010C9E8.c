@@ -1,36 +1,26 @@
-#include "common.h"
+#include "kf_model.h"
 
 void func_00216778(void *, void *);
 void func_00216BC0(void *, void *, void *);
 
-typedef struct {
-    float v[3];
-    u8 bone;
-    char pad[3];
-} BoneSource;
-
-typedef struct {
-    float m[4];
-} BoneMatrixRow;
-
 /* Builds 32 transformed bone vectors from the actor source table. */
-void func_0010C9E8(char *actor) {
-    float vec[4];
+void func_0010C9E8(ModelInstance *actor) {
+    float point[4];
     int i;
-    BoneSource *src;
-    BoneMatrixRow *dst;
+    BoneAnchor *anchor;
+    Vector4 *position;
 
-    src = *(BoneSource **)(actor + 0x120);
-    dst = *(BoneMatrixRow **)(actor + 0x124);
+    anchor = actor->bone_anchors;
+    position = actor->bone_positions;
     if (actor != NULL) {
-        for (i = 0; i < 32; i++, src++, dst++) {
-            if (src->bone != 0xFF) {
-                func_00216778(vec, src);
-                vec[3] = 1.0f;
-                func_00216BC0(dst, *(char **)(actor + 0xF8) + (src->bone << 7), vec);
-                func_00216BC0(dst, actor + 0x40, dst);
+        for (i = 0; i < 32; i++, anchor++, position++) {
+            if (anchor->bone != 0xFF) {
+                func_00216778(point, anchor);
+                point[3] = 1.0f;
+                func_00216BC0(position, &actor->parts[anchor->bone], point);
+                func_00216BC0(position, actor->unk40, position);
             } else {
-                func_00216778(dst, actor + 0xC0);
+                func_00216778(position, &actor->position);
             }
         }
     }

@@ -1,33 +1,23 @@
-#include "common.h"
+#include "kf_script.h"
 
 int func_00211A58(void *, int, int);
 int func_00211AD0(void *, int, int);
 int func_00211B48(void *, int, int);
 extern char D_00432924[];
 
-typedef struct {
-    int unk0;
-    int value;
-} Operand;
-
-typedef union {
-    float f;
-    int i;
-} FloatBits;
-
 /* Dispatch on the low byte of command[0] (0x11-0x13) with the float as the operand value. */
 int func_00211D90(int *command, float value) {
-    Operand operand;
+    ScriptArg operand;
     FloatBits bits;
     int opcode;
     int high;
     int param;
     int result;
 
-    bits.f = value;
+    bits.as_float = value;
     opcode = command[0];
     param = command[1];
-    operand.value = bits.i;
+    operand.value = bits.as_int;
     high = opcode >> 8;
     switch (opcode & 0xFF) {
     case 0x11:

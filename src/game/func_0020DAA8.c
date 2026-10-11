@@ -1,32 +1,21 @@
-#include "common.h"
+#include "kf_texture.h"
 
 char *func_0020D0B0(char *, int);
 
-typedef struct {
-    int unk0;
-    u32 entry_count;
-    char pad08[0x10 - 0x8];
-} TableHeader;
-
-typedef struct {
-    int offset; /* from the table base */
-    char pad04[0x10 - 0x4];
-} TableEntry;
-
 /* Walks a chunk table, handing each entry's chunk to func_0020D0B0; returns the read cursor. */
-char *func_0020DAA8(char *base, int arg1) {
+char *func_0020DAA8(char *base, int chunk_arg) {
     char *cursor;
-    TableHeader *header;
-    TableEntry *entry;
+    TextureTableHeader *header;
+    TextureTableEntry *entry;
     u32 i;
 
     cursor = base;
-    header = (TableHeader *)cursor;
-    cursor += sizeof(TableHeader);
-    entry = (TableEntry *)cursor;
-    cursor += header->entry_count * sizeof(TableEntry);
+    header = (TextureTableHeader *)cursor;
+    cursor += sizeof(TextureTableHeader);
+    entry = (TextureTableEntry *)cursor;
+    cursor += header->entry_count * sizeof(TextureTableEntry);
     for (i = 0; i < header->entry_count; i++) {
-        cursor = func_0020D0B0((char *)(entry[i].offset + (int)base), arg1);
+        cursor = func_0020D0B0((char *)(entry[i].offset + (int)base), chunk_arg);
     }
     return cursor;
 }

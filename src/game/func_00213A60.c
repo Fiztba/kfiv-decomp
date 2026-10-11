@@ -1,36 +1,19 @@
-#include "common.h"
+#include "kf_game.h"
+#include "kf_script.h"
 
-typedef struct {
-    char pad0[3];
-    s8 a3;
-    u8 a4;
-} TblA;
-
-extern TblA D_0038CC50[];
+extern GameStatus D_0038CC50;
 extern float D_004325A0[];
 
-typedef struct {
-    int unk00;
-    char pad04[4];
-    int unk08;
-    char pad0C[4];
-    float unk10;
-    char pad14[4];
-    float unk18;
-    char pad1C[4];
-    float unk20;
-} Ctl;
-
-void func_00213A60(Ctl *arg0) {
-    if (D_0038CC50->a3) {
-        if (arg0->unk08 >= 0) {
-            if (arg0->unk08 < 2) {
-                D_0038CC50->a4 = arg0->unk08;
-                D_004325A0[8] = arg0->unk10;
-                D_004325A0[9] = arg0->unk18;
-                D_004325A0[10] = arg0->unk20;
+void func_00213A60(ScriptPointCommand *command) {
+    if (D_0038CC50.unk03) {
+        if (command->object_id.value >= 0) {
+            if (command->object_id.value < 2) {
+                D_0038CC50.unk04 = command->object_id.value;
+                D_004325A0[8] = command->from_x.value;
+                D_004325A0[9] = command->from_y.value;
+                D_004325A0[10] = command->from_z.value;
             }
         }
     }
-    arg0->unk00 = 0;
+    command->active = 0;
 }

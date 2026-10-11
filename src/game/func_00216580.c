@@ -1,16 +1,17 @@
-#include "common.h"
+#include "kf_model.h"
+#include "kf_script.h"
 
-void *func_001267B0(int);
+MapObject *func_001267B0(int);
 
 /* Move the looked-up object to the command's x/y/z, then clear the command. */
-void func_00216580(char *command) {
-    char *object;
+void func_00216580(ScriptPointCommand *command) {
+    MapObject *object;
 
-    object = func_001267B0(*(int *)(command + 0x8));
+    object = func_001267B0(command->object_id.value);
     if (object != NULL) {
-        *(float *)(*(char **)object + 0xC0) = *(float *)(command + 0x10);
-        *(float *)(*(char **)object + 0xC4) = *(float *)(command + 0x18);
-        *(float *)(*(char **)object + 0xC8) = *(float *)(command + 0x20);
+        object->model->position.x = command->from_x.value;
+        object->model->position.y = command->from_y.value;
+        object->model->position.z = command->from_z.value;
     }
-    *(int *)command = 0;
+    command->active = 0;
 }

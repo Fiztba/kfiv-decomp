@@ -1,27 +1,13 @@
-#include "common.h"
+#include "kf_packet.h"
 
-typedef struct {
-    u64 X : 16;
-    u64 Y : 16;
-    u64 Z : 32;
-} Xyz;
+extern SpritePacket D_005DD4C0;
 
-typedef struct {
-    Xyz a;
-    s64 pad8;
-    Xyz b;
-    char pad18[0x3F - 0x18];
-    s8 f3F;
-    char pad40[0x60 - 0x40];
-} S;
-
-extern S D_005DD4C0;
-
-S *func_00204EC8(S *arg0, int arg1) {
-    if (arg0->f3F == arg1) {
-        D_005DD4C0 = *arg0;
-        D_005DD4C0.a.X -= 0xF0;
-        D_005DD4C0.b.X -= 0xF0;
+/* Copies the packet to D_005DD4C0 with both corners moved left 0xF0, if its slot matches. */
+SpritePacket *func_00204EC8(SpritePacket *packet, int slot) {
+    if (packet->slot == slot) {
+        D_005DD4C0 = *packet;
+        D_005DD4C0.xyz0.X -= 0xF0;
+        D_005DD4C0.xyz1.X -= 0xF0;
         return &D_005DD4C0;
     }
     return NULL;

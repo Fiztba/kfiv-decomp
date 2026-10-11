@@ -1,28 +1,19 @@
-#include "common.h"
+#include "kf_script.h"
 
 int func_00208168();
 int func_00208170(int);
 
-typedef struct
+void func_002120E0(ScriptWaitCommand *command)
 {
-  int unk00;
-  int pad04;
-  int unk08;
-  char pad0c[0x78];
-  int unk84;
-} Obj;
-
-void func_002120E0(Obj *arg0)
-{
-  if (arg0->unk84 == 0)
+  if (command->started == 0)
   {
-    if (func_00208170(arg0->unk08) != 0)
+    if (func_00208170(command->object_id.value) != 0)
     {
-      arg0->unk84 = 1;
+      command->started = 1;
     }
   }
   else if (func_00208168() == 0)
   {
-    arg0->unk00 = 0;
+    command->active = 0;
   }
 }

@@ -1,24 +1,19 @@
-#include "common.h"
+#include "kf_script.h"
 
 int func_00211A58(void *, int, int);
 int func_00211AD0(void *, int, int);
 int func_00211B48(void *, int, int);
 extern char D_00432923[];
 
-typedef struct {
-    int unk0;
-    int value;
-} Operand;
-
-/* Dispatch on the low byte of command[0] (0x11-0x13) with the int as the operand value. */
-int func_00211CF8(int *command, int value) {
-    Operand operand;
+/* Dispatch on the low byte of command->opcode (0x11-0x13) with the int as the operand value. */
+int func_00211CF8(ScriptArg *command, int value) {
+    ScriptArg operand;
     int opcode;
     int high;
     int param;
 
-    opcode = command[0];
-    param = command[1];
+    opcode = command->opcode;
+    param = command->value;
     operand.value = value;
     high = opcode >> 8;
     switch (opcode & 0xFF) {

@@ -9,11 +9,11 @@ extern char D_00432F50[];
 extern int D_00446F78;
 extern int D_00446F7C;
 
-/* Swaps both double buffers, waiting for vsync first unless arg0 is set and the frame is already late. */
-void func_0020B780(int arg0) {
+/* Swaps both double buffers, waiting for vsync first unless allow_late_swap is set and the frame is already late. */
+void func_0020B780(int allow_late_swap) {
     int time_left = func_0020D088();
 
-    if (arg0 == 0 || time_left <= 0x4B0C7) {
+    if (allow_late_swap == 0 || time_left <= 0x4B0C7) {
         while (sceGsSyncV(0) != 1) {
         }
     }

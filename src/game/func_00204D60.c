@@ -1,16 +1,9 @@
 #include "common.h"
+#include "kf_texture.h"
 
 /* Copies out a texture's TEX0 word and, for a palettized PSM, the word after its CLUT. */
 
-typedef struct {
-    int unk0;
-    int image_size;
-    char pad8[0x10 - 0x8];
-    u64 tex0;
-    char pad18[0x20 - 0x18];
-} TexHeader;
-
-void func_00204D60(TexHeader *tex, u64 *tex0_out, u64 *trailer_out) {
+void func_00204D60(TextureHeader *tex, u64 *tex0_out, u64 *trailer_out) {
     char buf[0xC0]; /* unused, but retail reserves the 0xC0 bytes */
     u64 *trailer;
     int psm;

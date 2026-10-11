@@ -1,12 +1,7 @@
-#include "common.h"
+#include "kf_screen.h"
 #include "kf_gs.h"
 
-typedef struct {
-    char pad[0x28];
-    int timer;
-} Fade;
-
-extern Fade D_0038D680;
+extern ScreenFade D_0038D680;
 
 void func_00109A50(void);
 void func_00109A80(int, s64);

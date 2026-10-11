@@ -7,7 +7,7 @@ extern int D_00446858;
 extern u8 D_00446896;
 extern char D_004470E2;
 
-int func_0019F220(void *arg0, int mode) {
+int func_0019F220(void *actor, int mode) {
     if (mode != 0x12) {
         if (func_001CBAC0() != 0) {
             return -1;

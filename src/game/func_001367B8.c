@@ -5,8 +5,8 @@ void func_0019A310(char *, void (*)(void), int);
 void func_00195898(char *, u8);
 void func_001814B0(void);
 
-void func_001367B8(char *arg0) {
-    func_00190A30(arg0);
-    func_0019A310(arg0, func_001814B0, 0);
-    func_00195898(arg0, 3);
+void func_001367B8(char *actor) {
+    func_00190A30(actor);
+    func_0019A310(actor, func_001814B0, 0);
+    func_00195898(actor, 3);
 }
