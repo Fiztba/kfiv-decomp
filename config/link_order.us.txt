@@ -39,6 +39,9 @@ src/game/func_002080A0.c
 asm/text_002080B0.s
 src/game/func_00208158.c
 asm/text_00208168.s
+src/game/func_0020AF18.c
+src/game/func_0020AF28.c
+asm/text_0020AF38.s
 src/sce/libgraph/graph001.c
 src/sce/libgraph/graph002.c
 src/sce/libgraph/graph003.c
