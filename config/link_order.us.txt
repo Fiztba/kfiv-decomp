@@ -29,6 +29,8 @@ asm/text_001C08A0.s
 src/game/func_001CFC48.c
 src/game/func_001CFC58.c
 asm/text_001CFC68.s
+src/game/func_001FAFB0.c
+asm/text_001FAFC0.s
 src/game/func_001FBD70.c
 src/game/func_001FBD80.c
 asm/text_001FBD90.s
@@ -42,6 +44,9 @@ asm/text_00208168.s
 src/game/func_0020AF18.c
 src/game/func_0020AF28.c
 asm/text_0020AF38.s
+src/game/func_00215088.c
+src/game/func_002150A0.c
+asm/text_002150B0.s
 src/sce/libgraph/graph001.c
 src/sce/libgraph/graph002.c
 src/sce/libgraph/graph003.c
