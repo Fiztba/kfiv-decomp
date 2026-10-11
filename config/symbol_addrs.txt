@@ -735,59 +735,12 @@ index = 0x00241FD8; // type:func
 // linker script
 _end = 0x01E57C70;
 
-// game
-func_00120D78 = 0x00120D78; // type:func
+// library members whose bytes occur more than once in .text/.rodata: these
+// names say which copy tools/carve.py places them at
+__errno = 0x00241FC8; // type:func
+__malloc_lock = 0x00248180; // type:func
+__malloc_unlock = 0x00248188; // type:func
+__fdlib_version = 0x004441B8;
 
-// game (first batch)
-func_00109A38 = 0x00109A38; // type:func
-func_00102218 = 0x00102218; // type:func
-func_001CFC48 = 0x001CFC48; // type:func
-func_001FBD80 = 0x001FBD80; // type:func
-func_001FBDC8 = 0x001FBDC8; // type:func
-func_002080A0 = 0x002080A0; // type:func
-func_001CFC58 = 0x001CFC58; // type:func
-func_001FBD70 = 0x001FBD70; // type:func
-func_001FBDD8 = 0x001FBDD8; // type:func
-func_00208158 = 0x00208158; // type:func
-func_001C0890 = 0x001C0890; // type:func
-func_00102558 = 0x00102558; // type:func
-func_00123158 = 0x00123158; // type:func
-func_0019CCB0 = 0x0019CCB0; // type:func
-func_0011FAA0 = 0x0011FAA0; // type:func
-func_00120EC8 = 0x00120EC8; // type:func
-func_001217B0 = 0x001217B0; // type:func
-func_00121958 = 0x00121958; // type:func
-func_001226D0 = 0x001226D0; // type:func
-func_00195898 = 0x00195898; // type:func
-func_001A15C0 = 0x001A15C0; // type:func
-func_001B0950 = 0x001B0950; // type:func
-func_001FAFB0 = 0x001FAFB0; // type:func
-func_0020AF18 = 0x0020AF18; // type:func
-func_0020AF28 = 0x0020AF28; // type:func
-func_00215088 = 0x00215088; // type:func
-func_002150A0 = 0x002150A0; // type:func
-func_00194EE8 = 0x00194EE8; // type:func
-func_00194F00 = 0x00194F00; // type:func
-func_001FB6F8 = 0x001FB6F8; // type:func
-func_001FBBA8 = 0x001FBBA8; // type:func
-func_001FBBB8 = 0x001FBBB8; // type:func
-func_001FBBD0 = 0x001FBBD0; // type:func
-func_0021B458 = 0x0021B458; // type:func
-func_0021B468 = 0x0021B468; // type:func
-func_0021F830 = 0x0021F830; // type:func
-func_0010AE90 = 0x0010AE90; // type:func
-func_001A0D08 = 0x001A0D08; // type:func
-func_001FB948 = 0x001FB948; // type:func
-func_0010CAB8 = 0x0010CAB8; // type:func
-func_00122720 = 0x00122720; // type:func
-func_00164940 = 0x00164940; // type:func
-func_001958A8 = 0x001958A8; // type:func
-func_0021DF78 = 0x0021DF78; // type:func
-func_0021DFC0 = 0x0021DFC0; // type:func
-func_0021E658 = 0x0021E658; // type:func
-func_001A3E20 = 0x001A3E20; // type:func
-func_001A6818 = 0x001A6818; // type:func
-func_001A7100 = 0x001A7100; // type:func
-func_0021C810 = 0x0021C810; // type:func
-func_0021DFD8 = 0x0021DFD8; // type:func
-func_0021E588 = 0x0021E588; // type:func
+// game: names for game functions and data, in address order. A function
+// still called func_XXXXXXXX needs no line here.
