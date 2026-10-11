@@ -34,6 +34,9 @@ src/game/func_001226D0.c
 asm/text_001226E0.s
 src/game/func_00123158.c
 asm/text_001231C0.s
+src/game/func_00194EE8.c
+src/game/func_00194F00.c
+asm/text_00194F18.s
 src/game/func_00195898.c
 asm/text_001958A8.s
 src/game/func_0019CCB0.c
@@ -49,6 +52,12 @@ src/game/func_001CFC58.c
 asm/text_001CFC68.s
 src/game/func_001FAFB0.c
 asm/text_001FAFC0.s
+src/game/func_001FB6F8.c
+asm/text_001FB710.s
+src/game/func_001FBBA8.c
+src/game/func_001FBBB8.c
+src/game/func_001FBBD0.c
+asm/text_001FBBE0.s
 src/game/func_001FBD70.c
 src/game/func_001FBD80.c
 asm/text_001FBD90.s
@@ -65,6 +74,11 @@ asm/text_0020AF38.s
 src/game/func_00215088.c
 src/game/func_002150A0.c
 asm/text_002150B0.s
+src/game/func_0021B458.c
+src/game/func_0021B468.c
+asm/text_0021B478.s
+src/game/func_0021F830.c
+asm/text_0021F848.s
 src/sce/libgraph/graph001.c
 src/sce/libgraph/graph002.c
 src/sce/libgraph/graph003.c
