@@ -298,7 +298,7 @@ typedef struct {
     void (*unk00)(struct Entity *entity, s32 unknown); /* 0x00 */
     void (*unk04)(void);            /* 0x04 */
     void (*unk08)(void);            /* 0x08 */
-    char pad0C[0x04];
+    void (*unk0C)(void);            /* 0x0C */
     void (*unk10)(void);            /* 0x10 */
     void (*unk14)(void);            /* 0x14 */
     void (*unk18)(void);            /* 0x18 */
@@ -495,7 +495,9 @@ typedef struct {
     u16 unk12;                      /* 0x12 reload value for Entity.timer */
     char pad14[0x04];
     u16 unk18;                      /* 0x18 */
-    char pad1A[0x42];
+    u16 unk1A;                      /* 0x1A */
+    f32 unk1C;                      /* 0x1C */
+    char pad20[0x3C];
     f32 turn_limit;                 /* 0x5C */
     char pad60[0x64];
     u8 unkC4;                       /* 0xC4 */

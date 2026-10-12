@@ -14,7 +14,13 @@ typedef struct {
     u8 curve[3];                    /* 0x9C curve shape per segment */
     char pad9F[0x07];
     u8 unkA6;                       /* 0xA6 */
-    char padA7[0x31];
+    char padA7[0x19];
+    f32 origin_x;                   /* 0xC0 centre of the box a scattering effect starts in */
+    f32 origin_y;                   /* 0xC4 */
+    f32 origin_z;                   /* 0xC8 */
+    f32 spread_x;                   /* 0xCC half the box size */
+    f32 spread_y;                   /* 0xD0 */
+    f32 spread_z;                   /* 0xD4 */
     f32 speed;                      /* 0xD8 */
     f32 unkDC;                      /* 0xDC */
     f32 unkE0;                      /* 0xE0 */
@@ -94,6 +100,13 @@ typedef struct {
     char pad24[0x0C];
 } ScalerMotion;
 
+/* EffectMotion as func_001AB188 uses it: a countdown byte and a flag byte after the velocity */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    u8 count;                       /* 0x10 */
+    s8 flag;                        /* 0x11 cleared at the end of each step */
+    char pad12[0x1E];
+} CountedMotion;
 /* EffectMotion as func_001A52B8 uses it: a flag byte right after the velocity */
 typedef struct {
     Vector4 velocity;               /* 0x00 */
