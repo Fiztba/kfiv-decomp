@@ -124,4 +124,14 @@ typedef struct {
     ScriptArg result;               /* 0x24 value at 0x28 */
 } ScriptDistance2DCommand;
 
+/* D_01DFB3B0[24]: a script slot, 0xC4C bytes. `active` is nonzero while it runs; the
+   commands (ScriptMoveCommand and the like) sit in the area from 0x0C. */
+typedef struct {
+    u16 active;                     /* 0x00 */
+    char pad02[0x02];
+    s32 unk04;                      /* 0x04 */
+    char pad08[0x04];
+    u8 commands[0xC40];             /* 0x0C */
+} ScriptSlot;
+
 #endif

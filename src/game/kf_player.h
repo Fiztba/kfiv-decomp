@@ -26,7 +26,9 @@ typedef struct {
     f32 unk1B4;                     /* 0x1B4 */
     char pad1B8[0x10];
     u64 unk1C8;                     /* 0x1C8 status bits; bit 38 is tested */
-    char pad1D0[0x30];
+    char pad1D0[0x0C];
+    f32 unk1DC;                     /* 0x1DC */
+    char pad1E0[0x20];
     s32 unk200;                     /* 0x200 */
     s32 unk204;                     /* 0x204 */
     char pad208[0x4A];

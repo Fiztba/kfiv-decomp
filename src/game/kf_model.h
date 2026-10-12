@@ -107,7 +107,9 @@ typedef struct ModelInstance {
     char pad114[0x0C];
     BoneAnchor *bone_anchors;       /* 0x120 32 of them */
     Vector4 *bone_positions;        /* 0x124 32 of them, written from bone_anchors */
-    char pad128[0x34];
+    char pad128[0x1E];
+    s16 unk146;                     /* 0x146 */
+    char pad148[0x14];
     f32 alpha;                      /* 0x15C below 128: drawn without z writes */
     char pad160[0x30];
     u16 unk190;                     /* 0x190 */

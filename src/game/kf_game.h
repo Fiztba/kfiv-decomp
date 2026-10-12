@@ -75,4 +75,12 @@ typedef struct {
     int tail[2];                    /* 0x178 */
 } ScratchSlot;
 
+/* D_0042A8F0[32]: a pool of 0x70-byte slots chained into a free list through `next`;
+   D_00446DF0 holds the head */
+typedef struct PoolSlot {
+    char pad00[0x50];
+    struct PoolSlot *next;          /* 0x50 */
+    char pad54[0x1C];
+} PoolSlot;
+
 #endif

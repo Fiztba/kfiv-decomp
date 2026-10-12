@@ -58,4 +58,24 @@ typedef struct {
     char pad01[0x1F];
 } TriggerTypeDef;
 
+/* D_005B6100[map slot][16]: a map actor (0x2C bytes); flags bit 2 is the map slot */
+typedef struct {
+    u32 flags;                      /* 0x00 */
+    char pad04[0x0C];
+    ModelInstance *body;            /* 0x10 */
+    char pad14[0x10];
+    u8 unk24;                       /* 0x24 */
+    char pad25[0x07];
+} MapActor;
+
+/* D_00362928[MapSlot.tag][16]: where a map object is marked (0xA bytes) */
+typedef struct {
+    s16 x;                          /* 0x00 */
+    s16 y;                          /* 0x02 */
+    s16 z;                          /* 0x04 */
+    char radius;                    /* 0x06 */
+    u8 unk07;                       /* 0x07 */
+    u16 unk08;                      /* 0x08 */
+} ObjectMark;
+
 #endif

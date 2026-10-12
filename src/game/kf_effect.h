@@ -209,4 +209,12 @@ typedef struct {
     char command[4];                /* 0x0C the command func_00211D90 fills in */
 } AngleTask;
 
+/* D_00402DA8[]: a table entry of 0x110 bytes, indexed by effect id (func_001B4F30) */
+typedef struct {
+    char pad00[0x100];
+    u16 unk100;                     /* 0x100 */
+    s8 unk102;                      /* 0x102 nonzero: the effect cannot be started */
+    char pad103[0x0D];
+} FxTableEntry;
+
 #endif
