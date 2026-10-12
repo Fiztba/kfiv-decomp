@@ -66,9 +66,14 @@ typedef struct {
     u32 unk0C;                      /* 0x0C */
 } ModelStripList;
 
+/* a 4x4 float matrix, as four 128-bit rows, so a copy is one lq/sq per row */
+typedef struct {
+    Uint128 rows[4];
+} __attribute__((aligned(16))) Matrix4;
+
 /* one 0x80-byte part (joint) of a model, ModelInstance.parts[i] */
 typedef struct ModelPart {
-    char unk00[0x40];               /* 0x00 the part's matrix, passed by address */
+    Matrix4 unk00;                  /* 0x00 the part's matrix, passed by address */
     f32 unk40[4];                   /* 0x40 where it sits on its parent */
     f32 unk50;                      /* 0x50 an angle, wrapped to +-pi (about x) */
     f32 unk54;                      /* 0x54 angle about y */

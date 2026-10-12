@@ -733,7 +733,7 @@ typedef struct {
     u32 bit27 : 1;
     u32 bit28 : 1;
     u32 bit29 : 1;
-    u32 pad30 : 1;
+    u32 bit30 : 1;
     u32 bit31 : 1;
     u32 bit32 : 1;
     u32 bit33 : 1;
