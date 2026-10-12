@@ -55,7 +55,9 @@ typedef struct {
 /* D_0041A6F8[]: 0x20-byte definitions whose first byte is a trigger type */
 typedef struct {
     u8 type;                        /* 0x00 */
-    char pad01[0x1F];
+    char pad01[0x0D];
+    u16 flags;                      /* 0x0E bit 1 */
+    char pad10[0x10];
 } TriggerTypeDef;
 
 /* D_005B6100[map slot][16]: a map actor (0x2C bytes); flags bit 2 is the map slot */

@@ -18,7 +18,10 @@ typedef struct {
     u8 unk42;                       /* 0x42 */
     char pad43[0x15];
     s32 unk58;                      /* 0x58 */
-    char pad5C[0x58];
+    char pad5C[0x48];
+    s32 unkA4;                      /* 0xA4 */
+    s32 unkA8;                      /* 0xA8 */
+    char padAC[0x08];
     s32 unkB4;                      /* 0xB4 */
     char padB8[0xF4];
     f32 unk1AC;                     /* 0x1AC */
