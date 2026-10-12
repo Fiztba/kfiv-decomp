@@ -139,7 +139,8 @@ typedef struct {
     u8 unk03;                       /* 0x03 */
     char pad04[0x08];
     u8 unk0C;                       /* 0x0C */
-    char pad0D[0x03];
+    char pad0D;
+    s16 unk0E;                      /* 0x0E */
     EntityParamsUnk240Part unk10[3]; /* 0x10 */
 } EntityParamsUnk240;
 
