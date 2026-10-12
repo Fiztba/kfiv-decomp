@@ -18,15 +18,15 @@ int func_00199838(Entity *entity) {
         reach *= 0.5f;
     }
     // match: the window bounds re-read entity->params, which keeps a second copy of the pointer
-    window[0] = ENTITY_PARAMS_RANGED(entity->params)[0].reach_min != 0 ? entity->radius + 100.0f + ENTITY_PARAMS_RANGED(entity->params)[0].reach_min : 0.0f;
-    window[1] = ENTITY_PARAMS_RANGED(entity->params)[1].reach_min != 0 ? entity->radius + 100.0f + ENTITY_PARAMS_RANGED(entity->params)[1].reach_min : 0.0f;
-    window[2] = ENTITY_PARAMS_RANGED(entity->params)[2].reach_min != 0 ? entity->radius + 100.0f + ENTITY_PARAMS_RANGED(entity->params)[2].reach_min : 0.0f;
-    window[3] = (reach < ENTITY_PARAMS_RANGED(entity->params)[0].reach_max ? reach : ENTITY_PARAMS_RANGED(entity->params)[0].reach_max) + entity->radius + 100.0f;
-    window[4] = (reach < ENTITY_PARAMS_RANGED(entity->params)[1].reach_max ? reach : ENTITY_PARAMS_RANGED(entity->params)[1].reach_max) + entity->radius + 100.0f;
-    window[5] = (reach < ENTITY_PARAMS_RANGED(params)[2].reach_max ? reach : ENTITY_PARAMS_RANGED(params)[2].reach_max) + entity->radius + 100.0f;
-    if ((ENTITY_PARAMS_RANGED(params)[0].record.unk00 != 0 && window[0] <= entity->distance_to_player && entity->distance_to_player < window[3]) ||
-        (ENTITY_PARAMS_RANGED(params)[1].record.unk00 != 0 && window[1] <= entity->distance_to_player && entity->distance_to_player < window[4]) ||
-        (ENTITY_PARAMS_RANGED(params)[2].record.unk00 != 0 && window[2] <= entity->distance_to_player && entity->distance_to_player < window[5])) {
+    window[0] = entity->params->unk3D8[0].reach_min != 0 ? entity->radius + 100.0f + entity->params->unk3D8[0].reach_min : 0.0f;
+    window[1] = entity->params->unk3D8[1].reach_min != 0 ? entity->radius + 100.0f + entity->params->unk3D8[1].reach_min : 0.0f;
+    window[2] = entity->params->unk3D8[2].reach_min != 0 ? entity->radius + 100.0f + entity->params->unk3D8[2].reach_min : 0.0f;
+    window[3] = (reach < entity->params->unk3D8[0].reach_max ? reach : entity->params->unk3D8[0].reach_max) + entity->radius + 100.0f;
+    window[4] = (reach < entity->params->unk3D8[1].reach_max ? reach : entity->params->unk3D8[1].reach_max) + entity->radius + 100.0f;
+    window[5] = (reach < params->unk3D8[2].reach_max ? reach : params->unk3D8[2].reach_max) + entity->radius + 100.0f;
+    if ((params->unk3D8[0].record.unk00 != 0 && window[0] <= entity->distance_to_player && entity->distance_to_player < window[3]) ||
+        (params->unk3D8[1].record.unk00 != 0 && window[1] <= entity->distance_to_player && entity->distance_to_player < window[4]) ||
+        (params->unk3D8[2].record.unk00 != 0 && window[2] <= entity->distance_to_player && entity->distance_to_player < window[5])) {
         return 1;
     }
     return 0;

@@ -241,6 +241,19 @@ typedef struct {
     u8 unk03;                       /* 0x03 */
 } EntityParamsUnk3D8;
 
+typedef struct {
+    EntityParamsUnk3D8 record;      /* 0x00 */
+    u16 reach_min;                  /* 0x04 nearest distance (past the radius) the attack is used at, 0: none */
+    u16 reach_max;                  /* 0x06 farthest distance it is used at */
+    f32 unk08;                      /* 0x08 widest angle to the player for it */
+    u8 unk0C;                       /* 0x0C */
+    char pad0D;
+    s16 unk0E;                      /* 0x0E degrees its direction is off the entity's heading */
+    u8 unk10;                       /* 0x10 */
+    u8 unk11;                       /* 0x11 */
+    char pad12[0x0A];
+} EntityParamsUnk3D8Array;
+
 /* what Entity.params points at: per-kind tuning values. EntityController below is a second
    view of the same block; the two are to be unified. */
 typedef struct {
@@ -293,10 +306,7 @@ typedef struct {
     EntityUnaligned64 unk238;       /* 0x238 */
     EntityParamsUnk240 unk240[2];   /* 0x240 indexed by flag bits 58-59 */
     char unk350[0x88];              /* 0x350 */
-    EntityParamsUnk3D8 unk3D8;      /* 0x3D8 */
-    char pad3DC[0x34];
-    u8 unk410;                      /* 0x410 */
-    char pad411[0x1B];
+    EntityParamsUnk3D8Array unk3D8[3]; /* 0x3D8 */
     u8 unk42C;                      /* 0x42C how far below its position a floor may be to count (func_00186478) */
     u8 unk42D;                      /* 0x42D what it does at a ledge (func_00186B00): 0 walks off, 1 steps down at most Entity.unk34, else stops */
     u16 unk42E;                     /* 0x42E */
@@ -332,25 +342,11 @@ typedef struct {
     char pad05[0x03];
 } EntityParamsUnk1B0;
 
-/* EntityParams.unk3D8 is the first of several 0x1C-byte records */
-#define ENTITY_PARAMS_UNK3D8(params, index) (&((EntityParamsUnk3D8Array *)&(params)->unk3D8)[index].record)
-/* the same records whole: the three ranged attacks */
-#define ENTITY_PARAMS_RANGED(params) ((EntityParamsUnk3D8Array *)&(params)->unk3D8)
-
-#define ENTITY_PARAMS_RECORD(params, index) (&((EntityParamsUnk3D8Array *)&(params)->unk3D8)[index])
-
-typedef struct {
-    EntityParamsUnk3D8 record;      /* 0x00 */
-    u16 reach_min;                  /* 0x04 nearest distance (past the radius) the attack is used at, 0: none */
-    u16 reach_max;                  /* 0x06 farthest distance it is used at */
-    f32 unk08;                      /* 0x08 widest angle to the player for it */
-    u8 unk0C;                       /* 0x0C */
-    char pad0D;
-    s16 unk0E;                      /* 0x0E degrees its direction is off the entity's heading */
-    u8 unk10;                       /* 0x10 */
-    u8 unk11;                       /* 0x11 */
-    char pad12[0x0A];
-} EntityParamsUnk3D8Array;
+/* the first word of an EntityParams.unk3D8 record, as the AI functions take it */
+#define ENTITY_PARAMS_UNK3D8(params, index) (&(params)->unk3D8[index].record)
+/* the three ranged attacks */
+#define ENTITY_PARAMS_RANGED(params) ((params)->unk3D8)
+#define ENTITY_PARAMS_RECORD(params, index) (&(params)->unk3D8[index])
 
 /* the first word of EntityParams as plain bytes: unlike a bit-field read, a
    read through this does not depend on every store before it */

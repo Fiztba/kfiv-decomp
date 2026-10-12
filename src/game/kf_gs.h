@@ -22,6 +22,15 @@
 #define GS_REG_ZBUF_2       0x4F
 #define GS_REG_FINISH       0x61
 
+/* a color as four bytes, passed in an 8-byte argument (func_001FDCD0 stores it to D_00446D70..D_00446D73) */
+typedef struct {
+    u8 red;                         /* 0x00 */
+    u8 green;                       /* 0x01 */
+    u8 blue;                        /* 0x02 */
+    u8 alpha;                       /* 0x03 */
+    char pad04[0x04];
+} ColorBytes;
+
 /* the ALPHA registers (GS_REG_ALPHA_1/2) as a value to write */
 typedef union {
     s64 raw;

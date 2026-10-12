@@ -15,7 +15,7 @@ s32 func_00198D10(Entity *entity) {
         f32 heading;
         f32 turn;
 
-        turn = ENTITY_PARAMS_RECORD(entity->params, 0)->unk0E * 0.017453292f;
+        turn = entity->params->unk3D8[0].unk0E * 0.017453292f;
         if (!(entity->model->unkE0[0] >= 0.0f)) {
             turn = -turn;
         }
@@ -48,7 +48,7 @@ s32 func_00198D10(Entity *entity) {
         f32 heading;
         f32 turn;
 
-        turn = ENTITY_PARAMS_RECORD(entity->params, 1)->unk0E * 0.017453292f;
+        turn = entity->params->unk3D8[1].unk0E * 0.017453292f;
         if (!(entity->model->unkE0[0] >= 0.0f)) {
             turn = -turn;
         }
@@ -81,7 +81,7 @@ s32 func_00198D10(Entity *entity) {
         f32 heading;
         f32 turn;
 
-        turn = ENTITY_PARAMS_RECORD(entity->params, 2)->unk0E * 0.017453292f;
+        turn = entity->params->unk3D8[2].unk0E * 0.017453292f;
         if (!(entity->model->unkE0[0] >= 0.0f)) {
             turn = -turn;
         }
@@ -119,20 +119,20 @@ s32 func_00198D10(Entity *entity) {
     if (D_00413F80.unk45 == 0x9C) {
         range *= 0.5f;
     }
-    reach[0] = ENTITY_PARAMS_RECORD(entity->params, 0)->reach_min != 0 ? entity->radius + 100.0f + ENTITY_PARAMS_RECORD(entity->params, 0)->reach_min : 0.0f;
-    reach[1] = ENTITY_PARAMS_RECORD(entity->params, 1)->reach_min != 0 ? entity->radius + 100.0f + ENTITY_PARAMS_RECORD(entity->params, 1)->reach_min : 0.0f;
-    reach[2] = ENTITY_PARAMS_RECORD(entity->params, 2)->reach_min != 0 ? entity->radius + 100.0f + ENTITY_PARAMS_RECORD(entity->params, 2)->reach_min : 0.0f;
-    reach[3] = (range < ENTITY_PARAMS_RECORD(entity->params, 0)->reach_max ? range : ENTITY_PARAMS_RECORD(entity->params, 0)->reach_max) + entity->radius + 100.0f;
-    reach[4] = (range < ENTITY_PARAMS_RECORD(entity->params, 1)->reach_max ? range : ENTITY_PARAMS_RECORD(entity->params, 1)->reach_max) + entity->radius + 100.0f;
-    reach[5] = (range < ENTITY_PARAMS_RECORD(entity->params, 2)->reach_max ? range : ENTITY_PARAMS_RECORD(entity->params, 2)->reach_max) + entity->radius + 100.0f;
+    reach[0] = entity->params->unk3D8[0].reach_min != 0 ? entity->radius + 100.0f + entity->params->unk3D8[0].reach_min : 0.0f;
+    reach[1] = entity->params->unk3D8[1].reach_min != 0 ? entity->radius + 100.0f + entity->params->unk3D8[1].reach_min : 0.0f;
+    reach[2] = entity->params->unk3D8[2].reach_min != 0 ? entity->radius + 100.0f + entity->params->unk3D8[2].reach_min : 0.0f;
+    reach[3] = (range < entity->params->unk3D8[0].reach_max ? range : entity->params->unk3D8[0].reach_max) + entity->radius + 100.0f;
+    reach[4] = (range < entity->params->unk3D8[1].reach_max ? range : entity->params->unk3D8[1].reach_max) + entity->radius + 100.0f;
+    reach[5] = (range < entity->params->unk3D8[2].reach_max ? range : entity->params->unk3D8[2].reach_max) + entity->radius + 100.0f;
     if (top <= D_00413F80.position.y && D_00413F80.position.y - 230.0f <= bottom) {
-        if (ENTITY_PARAMS_RECORD(entity->params, 0)->record.unk00 != 0 && angle_off[0] < ENTITY_PARAMS_RECORD(entity->params, 0)->unk08 && reach[0] <= entity->distance_to_player && entity->distance_to_player < reach[3]) {
+        if (entity->params->unk3D8[0].record.unk00 != 0 && angle_off[0] < entity->params->unk3D8[0].unk08 && reach[0] <= entity->distance_to_player && entity->distance_to_player < reach[3]) {
             return 1;
         }
-        if (ENTITY_PARAMS_RECORD(entity->params, 1)->record.unk00 != 0 && angle_off[1] < ENTITY_PARAMS_RECORD(entity->params, 1)->unk08 && reach[1] <= entity->distance_to_player && entity->distance_to_player < reach[4]) {
+        if (entity->params->unk3D8[1].record.unk00 != 0 && angle_off[1] < entity->params->unk3D8[1].unk08 && reach[1] <= entity->distance_to_player && entity->distance_to_player < reach[4]) {
             return 1;
         }
-        if (ENTITY_PARAMS_RECORD(entity->params, 2)->record.unk00 != 0 && angle_off[2] < ENTITY_PARAMS_RECORD(entity->params, 2)->unk08 && reach[2] <= entity->distance_to_player && entity->distance_to_player < reach[5]) {
+        if (entity->params->unk3D8[2].record.unk00 != 0 && angle_off[2] < entity->params->unk3D8[2].unk08 && reach[2] <= entity->distance_to_player && entity->distance_to_player < reach[5]) {
             return 1;
         }
     }

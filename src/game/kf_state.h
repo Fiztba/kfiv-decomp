@@ -11,7 +11,7 @@ typedef struct {
     int arg;                        /* 0x08 */
 } HandlerContext;
 
-/* D_005CF3F0, D_005CF410: a mode record and its sub-state (0x20 bytes apart) */
+/* D_005CF3F0, D_005CF410: a mode record and its sub-state (0x20 bytes apart; copied whole) */
 typedef struct {
     s32 slot;                       /* 0x00 index into D_00428B80 */
     char pad04[0x0C];
@@ -24,6 +24,7 @@ typedef struct {
     u8 unk18;                       /* 0x18 */
     char pad19[0x02];
     s8 unk1B;                       /* 0x1B */
+    char pad1C[0x04];
 } ModeState;
 
 /* D_00428B80: the 0x28-byte entries of the slot table, indexed by the mode slot */
