@@ -20,7 +20,7 @@ int func_0019E110(s32, Vector4 *);
 float func_0019C640(float *, float *, float *);
 void func_0019C598(float, float *, float *);
 s8 func_0019C700(void);
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Each frame, updates the voice of every live sound channel: stops it out of range, else sets its volume and pan. */
 void func_0019DC00(void) {

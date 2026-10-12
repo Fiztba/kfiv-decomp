@@ -3,7 +3,7 @@
 extern u8 D_00349682[];
 extern int D_003EF5F8[];
 
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Plays menu sound `sound` on voice 1 unless it is 0xFF (none). */
 s32 func_0019CDC0(s32 sound) {

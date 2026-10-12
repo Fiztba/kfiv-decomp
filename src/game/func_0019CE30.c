@@ -9,7 +9,7 @@ int rand(void);
 float func_0019C640(float *, float *, float *);
 void func_0019C598(float, float *, float *);
 int func_0019C688(int);
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Plays a sound at a point, panned and scaled by its distance from the player and detuned at random. */
 int func_0019CE30(u8 sound, float *position) {

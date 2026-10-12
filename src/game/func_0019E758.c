@@ -10,7 +10,7 @@ extern SoundChannel D_003EF710[];
 s32 func_0019D980(s8, u8, u8, f32, Vector4Arg *);
 s32 func_0019DAA8(s8, u8, u8, Vector4Arg *, Vector4Arg *, f32);
 s8 func_0019C700(void);
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Starts the sounds queued in D_00500170 now that the driver is free, freeing each request. */
 void func_0019E758(void) {

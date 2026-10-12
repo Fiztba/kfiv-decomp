@@ -8,7 +8,7 @@ extern SoundChannel D_00500170[];
 extern SoundChannel D_003EF710[];
 
 s8 func_0019C700(void);
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Queues a sound in a free D_00500170 slot, or (with the driver busy) claims a free channel and starts it. */
 int func_0019D7D0(s8 sound, u8 voice, int volume) {

@@ -6,7 +6,7 @@ double sqrt(double);
 int rand(void);
 void func_0019C598(float, float *, float *);
 int func_0019C688(int);
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Plays a sound heard from the given direction, louder the nearer it is within its range, with a random detune. */
 void func_001A07D0(u8 sound, float range, float distance, float angle) {

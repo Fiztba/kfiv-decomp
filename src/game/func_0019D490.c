@@ -10,7 +10,7 @@ int rand(void);
 float func_0019C640(float *, float *, float *);
 void func_0019C598(float, float *, float *);
 int func_0019C688(int);
-void func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(int, int, int, char, int, char, s16, int);
 
 /* Plays a sound at a point with one of three volume levels by mode, panned toward it, if it is in range. */
 int func_0019D490(u8 sound, u8 mode, float *position, float range) {
