@@ -7,12 +7,18 @@
 
 /* the effect's definition, EffectActor.def */
 typedef struct {
-    char pad00[0xA6];
+    Vector4 keys[9];                /* 0x00 keyframe offsets (func_001AEC48) */
+    u16 unk90;                      /* 0x90 frame the second segment starts at */
+    u16 unk92;                      /* 0x92 frame the third segment starts at */
+    char pad94[0x08];
+    u8 curve[3];                    /* 0x9C curve shape per segment */
+    char pad9F[0x07];
     u8 unkA6;                       /* 0xA6 */
     char padA7[0x31];
     f32 speed;                      /* 0xD8 */
     f32 unkDC;                      /* 0xDC */
-    char padE0[0x0C];
+    f32 unkE0;                      /* 0xE0 */
+    char padE4[0x08];
     u16 radius_half;                /* 0xEC */
     u16 interval;                   /* 0xEE frames between collision checks */
     u16 unkF0;                      /* 0xF0 effect ids passed to func_001A2838 */
@@ -23,6 +29,8 @@ typedef struct {
     u16 max_frames;                 /* 0x108 0: no limit */
     char pad10A[0x0E];
     u16 end_effect;                 /* 0x118 spawned when the effect ends */
+    char pad11A[0x02];
+    f32 unk11C;                     /* 0x11C */
 } EffectDef;
 
 /* EffectActor+0x10, which the update functions keep a pointer to. Each kind of
@@ -172,6 +180,15 @@ typedef struct {
     u8 unk14;                       /* 0x14 */
     char pad15[0x0B];
 } ReseedMotion;
+
+/* EffectMotion as func_001AD558 uses it: spawns the end effect at end_frame */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    Vector4 end_position;           /* 0x10 where the end effect appears */
+    s32 end_frame;                  /* 0x20 */
+    s8 ended;                       /* 0x24 also the start of the block passed by address */
+    char pad25[0x0B];
+} EndingMotion;
 
 typedef struct EffectActor {
     char pad00[0x10];

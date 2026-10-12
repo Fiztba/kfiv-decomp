@@ -14,5 +14,5 @@ void func_001AAA60(EffectActor *actor, int frame) {
     func_001AF640(actor, frame);
     def = actor->def;
     motion->velocity.x = def->unkDC;
-    motion->velocity.y = *(f32 *)def->padE0;
+    motion->velocity.y = def->unkE0;
 }

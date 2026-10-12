@@ -759,14 +759,28 @@ typedef struct {
 
 extern EntityPoolSlot D_003D6DF0[ENTITY_POOL_SLOT_COUNT];
 
-/* the two point lists at D_004470C8: points that follow another vector */
+/* a node of the D_003E7500 pool (0x200 of them, chained through prev/next): a point
+   that eases toward a target over a duration or follows another vector. The two
+   active lists are at D_004470C8, the free list head at D_004470D0. */
 typedef struct LinkedPoint {
-    Vector4 position;               /* 0x00 w is kept when following */
-    char pad10[0x10];
+    Vector4 position;               /* 0x00 w is kept when following; w is 1 / duration while easing */
+    Vector4 target;                 /* 0x10 w is 1.0 */
     Vector4 *follow;                /* 0x20 NULL: stays put */
-    char pad24[0x18];
+    f32 progress_scale;             /* 0x24 1 / duration squared */
+    f32 duration;                   /* 0x28 */
+    u16 handle;                     /* 0x2C index in the pool */
+    char pad2E[0x02];
+    u8 kind_a;                      /* 0x30 */
+    u8 kind_b;                      /* 0x31 */
+    s16 unk32;                      /* 0x32 */
+    char pad34[0x04];
+    struct LinkedPoint *prev;       /* 0x38 */
     struct LinkedPoint *next;       /* 0x3C */
 } LinkedPoint;
+
+#define LINKED_POINT_COUNT 0x200
+
+extern LinkedPoint D_003E7500[LINKED_POINT_COUNT];
 
 /* upstream's typed views of the two blocks an Entity points at */
 #define ENTITY_MODEL(entity) ((ModelInstance *)(entity)->model)
@@ -792,6 +806,18 @@ typedef struct {
     u16 object_id;                  /* 0x3C */
     char pad3E[0x12];
 } ObjectSlot;
+
+/* what D_0044712C refers to: a record with a kind id at 0x30 (func_001BDD38) */
+typedef struct {
+    char pad00[0x30];
+    u16 unk30;                      /* 0x30 */
+} ReferencedObject;
+
+/* D_0044712C: points at the ReferencedObject */
+typedef struct {
+    char pad00[0x08];
+    ReferencedObject *unk08;        /* 0x08 */
+} ObjectReference;
 
 void KF_Entity_ResetAllLists(void);
 void KF_Entity_FreeAllInGroup(int group_id);
