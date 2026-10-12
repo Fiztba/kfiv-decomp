@@ -11,7 +11,7 @@ extern char *D_00447334;
 
 s32 func_0021B0C0(void);
 s32 func_001FBD90(s32);
-s32 func_00102258(s32, s32, s32);
+int func_00102258(char *, int, int);
 void func_001F9610(SlotRecord *);
 void func_001FBAC8(void);
 void *memset(void *, s32, u32);
@@ -39,7 +39,7 @@ s32 func_001F94C0(void) {
     }
     D_00447334 = (char *)addr;
     D_00447338 = D_005DD020;
-    file_handle = func_00102258((s32)D_004408E0, 0, 1);
+    file_handle = func_00102258(D_004408E0, 0, 1);
     func_001025C0(file_handle, D_005CF430, 0xDBF0);
     func_001024B0(file_handle);
     D_00428B80[0].unk0C = D_005CF430;
