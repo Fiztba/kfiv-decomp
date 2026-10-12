@@ -3,7 +3,7 @@
 
 int func_001AEC48(void *);
 int func_001AF0B0(void *);
-void func_0019B1E8(float, s16, void *);
+void func_0019B1E8(f32, s32, void *);
 
 void func_001AD7A0(EffectActor *actor) {
     func_001AEC48(actor);

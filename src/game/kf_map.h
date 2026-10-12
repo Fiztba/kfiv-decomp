@@ -71,7 +71,8 @@ typedef struct {
     u32 flags;                      /* 0x00 */
     char pad04[0x0C];
     ModelInstance *body;            /* 0x10 */
-    char pad14[0x10];
+    f32 unk14;                      /* 0x14 */
+    char pad18[0x0C];
     u8 unk24;                       /* 0x24 */
     char pad25[0x07];
 } MapActor;

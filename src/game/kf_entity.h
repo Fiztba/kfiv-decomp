@@ -486,7 +486,7 @@ typedef struct {
     f32 turn_limit;                 /* 0x5C */
     char pad60[0x64];
     u8 unkC4;                       /* 0xC4 */
-    char padC5;
+    u8 unkC5;                       /* 0xC5 */
     u16 unkC6;                      /* 0xC6 */
     char padC8[0x368];
     s16 unk430;                     /* 0x430 */
@@ -772,9 +772,10 @@ typedef struct LinkedPoint {
     f32 progress_scale;             /* 0x24 1 / duration squared */
     f32 duration;                   /* 0x28 */
     u16 handle;                     /* 0x2C index in the pool */
-    char pad2E[0x02];
+    u8 active;                      /* 0x2E */
+    char pad2F;
     u8 kind_a;                      /* 0x30 */
-    u8 kind_b;                      /* 0x31 */
+    s8 kind_b;                      /* 0x31 */
     s16 unk32;                      /* 0x32 */
     char pad34[0x04];
     struct LinkedPoint *prev;       /* 0x38 */
@@ -805,10 +806,21 @@ typedef struct {
     char pad00[0x20];
     s64 flags;                      /* 0x20 */
     Entity *owner;                  /* 0x28 */
-    char pad2C[0x10];
+    struct EffectActor *actor;      /* 0x2C the effect attached to it */
+    char pad30[0x08];
+    s32 unk38;                      /* 0x38 */
     u16 object_id;                  /* 0x3C */
     char pad3E[0x12];
 } ObjectSlot;
+
+/* ObjectSlot.flags as the bit-fields the game sets (see ENTITY_FLAG_BITS) */
+typedef struct {
+    u64 pad0 : 33;
+    u64 bit33 : 1;
+    u64 pad34 : 30;
+} ObjectSlotFlagBits;
+
+#define OBJECT_SLOT_FLAG_BITS(slot) ((ObjectSlotFlagBits *)&(slot)->flags)
 
 /* what D_0044712C refers to: a record with a kind id at 0x30 (func_001BDD38) */
 typedef struct {
