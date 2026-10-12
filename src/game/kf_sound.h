@@ -14,17 +14,26 @@ typedef struct {
     int unk10;                      /* 0x10 */
     char pad14[0x04];
     s16 unk18;                      /* 0x18 */
-    char pad1A;
+    char unk1A;                     /* 0x1A */
     char unk1B;                     /* 0x1B */
     int unk1C;                      /* 0x1C */
 } SoundVoice;
 
 /* SoundState.banks[4]: a bank and the voice it is bound to */
 typedef struct {
-    char pad00[0x08];
+    int iop_heap;                   /* 0x00 IOP memory, 0 when freed */
+    char pad04[0x04];
     int voice;                      /* 0x08 */
     int unk0C;                      /* 0x0C */
 } SoundBank;
+
+/* the request func_001CCF80 reads: the voice to reload and the heap to free */
+typedef struct {
+    SoundVoice *voice;              /* 0x00 */
+    char pad04[0x0C];
+    int heap_addr;                  /* 0x10 */
+    int unk14;                      /* 0x14 */
+} SoundReloadRequest;
 
 /* 0x18 bytes of effect settings, copied whole (byte-aligned) */
 typedef struct {

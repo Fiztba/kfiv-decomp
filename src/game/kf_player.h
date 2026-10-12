@@ -16,7 +16,9 @@ typedef struct {
     u8 unk3C;                       /* 0x3C row of D_0041B9B8 (0x90 bytes each) */
     char pad3D[0x05];
     u8 unk42;                       /* 0x42 */
-    char pad43[0x71];
+    char pad43[0x15];
+    s32 unk58;                      /* 0x58 */
+    char pad5C[0x58];
     s32 unkB4;                      /* 0xB4 */
     char padB8[0xF4];
     f32 unk1AC;                     /* 0x1AC */
@@ -31,7 +33,9 @@ typedef struct {
     u16 map_index;                  /* 0x252 picks the MapSlot record */
     char pad254[0x0D];
     u8 unk261;                      /* 0x261 */
-    char pad262[0x56];
+    char pad262[0x46];
+    f32 unk2A8;                     /* 0x2A8 fade amount: > 0 toward white, < 0 toward black */
+    char pad2AC[0x0C];
     u16 flag_timers[6];             /* 0x2B8 frames left, one per timed_flags entry */
 } PlayerState;
 
