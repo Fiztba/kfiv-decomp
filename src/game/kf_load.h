@@ -17,6 +17,29 @@ typedef struct {
     int file_handle;                /* 0x24 -1 when closed */
 } LoadJob;
 
+/* the job func_0019EC90 and func_0019F498 step: control words, the IOP handle it got and its arguments */
+typedef struct {
+    int *ctl;                       /* 0x00 */
+    char pad04[0x0C];
+    s32 result;                     /* 0x10 handle, negative until loaded */
+    s32 unk14;                      /* 0x14 */
+    s32 unk18;                      /* 0x18 */
+    s32 unk1C;                      /* 0x1C */
+} IopLoadJob;
+
+/* LoadRequest.target (func_0019F788) */
+typedef struct {
+    s32 unk00;                      /* 0x00 */
+    void *buffer;                   /* 0x04 where the file is read to */
+} LoadBuffer;
+
+/* a request to read a named file into a buffer (func_0019F788) */
+typedef struct {
+    LoadBuffer *target;             /* 0x00 */
+    char pad04[0x04];
+    char *name;                     /* 0x08 */
+} LoadRequest;
+
 /* a staged chunk upload (func_001D4360, func_001D44A0) */
 typedef struct {
     char pad00[0x08];

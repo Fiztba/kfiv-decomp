@@ -783,6 +783,16 @@ Entity *func_00124C08(Entity *entity);  /* free; returns the next one */
 Entity *func_00124CA0(Entity *entity);  /* free; returns the next one */
 Entity *func_00124D48(Entity *entity);  /* free; returns the next one */
 
+/* D_003F1750[0x60]: a live map-object slot, 0x50 bytes */
+typedef struct {
+    char pad00[0x20];
+    s64 flags;                      /* 0x20 */
+    Entity *owner;                  /* 0x28 */
+    char pad2C[0x10];
+    u16 object_id;                  /* 0x3C */
+    char pad3E[0x12];
+} ObjectSlot;
+
 void KF_Entity_ResetAllLists(void);
 void KF_Entity_FreeAllInGroup(int group_id);
 void KF_Entity_DespawnOutOfRange(void);

@@ -48,7 +48,8 @@ typedef struct {
     char pad240[0x200];
     SoundEffectParams effects[4];   /* 0x440 */
     SoundEffectParams effect;       /* 0x4A0 the one in use */
-    char pad4B8[0x0C];
+    void *load_addr;                /* 0x4B8 first IOP heap load's address */
+    char pad4BC[0x08];
     int dma_src;                    /* 0x4C4 */
     int unk4C8;                     /* 0x4C8 */
     int dma_dest;                   /* 0x4CC */

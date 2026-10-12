@@ -165,6 +165,14 @@ typedef struct {
     char pad04[0x2C];
 } LifetimeMotion;
 
+/* EffectMotion as func_001A6A20 uses it: the float at 0x10 and a flag byte at 0x14 */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    f32 unk10;                      /* 0x10 */
+    u8 unk14;                       /* 0x14 */
+    char pad15[0x0B];
+} ReseedMotion;
+
 typedef struct EffectActor {
     char pad00[0x10];
     EffectMotion motion;            /* 0x10 */
@@ -200,6 +208,23 @@ typedef struct {
     char pad34[0x04];
     f32 pos_z;                      /* 0x38 */
 } SpawnRequest;
+
+/* a spawn request with a float at 0x18 and the position at 0x20 (func_002145F0, func_00214580) */
+typedef struct {
+    s32 pending;                    /* 0x00 cleared once the effect is spawned */
+    char pad04[0x04];
+    u8 kind;                        /* 0x08 */
+    char pad09[0x07];
+    u8 unk10;                       /* 0x10 */
+    char pad11[0x07];
+    f32 unk18;                      /* 0x18 */
+    char pad1C[0x04];
+    f32 pos_x;                      /* 0x20 */
+    char pad24[0x04];
+    f32 pos_y;                      /* 0x28 */
+    char pad2C[0x04];
+    f32 pos_z;                      /* 0x30 */
+} SpawnRequestWide;
 
 /* a task that feeds the cosine of an angle to a command (func_00214DC0) */
 typedef struct {
