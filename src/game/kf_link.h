@@ -7,7 +7,7 @@
 typedef struct LinkNode {
     char pad00[0x0C];
     void *pool_node;                /* 0x0C */
-    char pad10[0x04];
+    struct LinkNode *child;         /* 0x10 */
     struct LinkNode *next;          /* 0x14 */
     void (*callback)(void);         /* 0x18 */
     s32 unk1C;                      /* 0x1C */
