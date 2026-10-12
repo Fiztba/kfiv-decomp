@@ -59,4 +59,17 @@ typedef union {
 
 int func_001FDB88(GsPackedWord);
 
+/* the rectangle func_001FC5E8 draws: two corners, a color and a scale */
+typedef struct {
+    GsPackedWord first;             /* 0x00 */
+    char pad08[0x08];
+    GsPackedWord second;            /* 0x10 */
+    char pad18[0x08];
+    u8 red;                         /* 0x20 */
+    u8 green;                       /* 0x21 */
+    u8 blue;                        /* 0x22 */
+    u8 alpha;                       /* 0x23 */
+    f32 scale;                      /* 0x24 */
+} RectDef;
+
 #endif

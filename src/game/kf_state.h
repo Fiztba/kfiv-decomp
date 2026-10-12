@@ -11,6 +11,30 @@ typedef struct {
     int arg;                        /* 0x08 */
 } HandlerContext;
 
+/* D_005CF3C0: the save screen func_001F71D8 runs each frame */
+typedef struct {
+    char pad00[0x08];
+    s32 unk08;                      /* 0x08 */
+    s8 unk0C;                       /* 0x0C the selected card, 0 or 1 */
+    s8 unk0D;                       /* 0x0D the yes/no cursor of a question */
+    char pad0E[0x03];
+    s8 unk11;                       /* 0x11 set when the screen is being left */
+    s8 unk12;                       /* 0x12 what the screen shows, -1: the card list */
+    s8 unk13;                       /* 0x13 */
+    s8 unk14;                       /* 0x14 set while a card operation runs */
+    char pad15[0x03];
+    s8 unk18;                       /* 0x18 set while input is ignored */
+    char pad19[0x02];
+    s8 unk1B;                       /* 0x1B */
+    char pad1C[0x01];
+    s8 unk1D;                       /* 0x1D */
+    char pad1E[0x03];
+    s8 unk21;                       /* 0x21 set when a choice was confirmed */
+    char pad22[0x0E];
+} SaveScreen;
+
+extern SaveScreen D_005CF3C0;
+
 /* D_005CF3F0, D_005CF410: a mode record and its sub-state (0x20 bytes apart; copied whole) */
 typedef struct {
     s32 slot;                       /* 0x00 index into D_00428B80 */
@@ -67,6 +91,20 @@ typedef struct {
     char pad00[0x31];
     u8 kind;                        /* 0x31 picks the function that consumes the object */
 } KindObject;
+
+/* the 0x60-byte objects D_00446BF4 points at, drawn by func_00207478 and func_00203F28 (D_00446BFC
+   is taken to point at the same kind of object: inferred from the matching offsets, not proven) */
+typedef struct {
+    char pad00[0x20];
+    u32 pad20 : 24;
+    u32 unk23 : 8;                  /* 0x23 the level its fade runs to */
+    char pad24[0x1A];
+    u8 unk3E;                       /* 0x3E the kind */
+    s8 unk3F;                       /* 0x3F */
+    char pad40[0x02];
+    u8 unk42;                       /* 0x42 passed to func_001E5210 while it is drawn */
+    char pad43[0x1D];
+} Entry60;
 
 /* a task that runs a one-time setup (func_00103858, func_001CF988) and ends when func_001CF980 reports done */
 typedef struct {
