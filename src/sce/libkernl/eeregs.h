@@ -45,48 +45,11 @@
 #define VIF0_FBRST ((volatile int *)0x10003810)
 #define VIF0_ERR ((volatile int *)0x10003820)
 #define VIF0_MARK ((volatile int *)0x10003830)
-#define VIF0_STAT ((volatile int *)0x10003800) /* derived name */
-#define VIF0_CYCLE ((volatile int *)0x10003840) /* derived name */
-#define VIF0_MODE ((volatile int *)0x10003850) /* derived name */
-#define VIF0_NUM ((volatile int *)0x10003860) /* derived name */
-#define VIF0_MASK ((volatile int *)0x10003870) /* derived name */
-#define VIF0_CODE ((volatile int *)0x10003880) /* derived name */
-#define VIF0_ITOPS ((volatile int *)0x10003890) /* derived name */
-#define VIF0_ITOP ((volatile int *)0x100038D0) /* derived name */
-#define VIF0_R0 ((volatile int *)0x10003900) /* derived name */
-#define VIF0_R1 ((volatile int *)0x10003910) /* derived name */
-#define VIF0_R2 ((volatile int *)0x10003920) /* derived name */
-#define VIF0_R3 ((volatile int *)0x10003930) /* derived name */
-#define VIF0_C0 ((volatile int *)0x10003940) /* derived name */
-#define VIF0_C1 ((volatile int *)0x10003950) /* derived name */
-#define VIF0_C2 ((volatile int *)0x10003960) /* derived name */
-#define VIF0_C3 ((volatile int *)0x10003970) /* derived name */
 #define VIF0_FIFO ((volatile void *)0x10004000)
 
 /* VIF1. */
 #define VIF1_STAT ((volatile int *)0x10003C00)
 #define VIF1_FBRST ((volatile int *)0x10003C10) /* derived name */
-#define VIF1_ERR ((volatile int *)0x10003C20) /* derived name */
-#define VIF1_MARK ((volatile int *)0x10003C30) /* derived name */
-#define VIF1_CYCLE ((volatile int *)0x10003C40) /* derived name */
-#define VIF1_MODE ((volatile int *)0x10003C50) /* derived name */
-#define VIF1_NUM ((volatile int *)0x10003C60) /* derived name */
-#define VIF1_MASK ((volatile int *)0x10003C70) /* derived name */
-#define VIF1_CODE ((volatile int *)0x10003C80) /* derived name */
-#define VIF1_ITOPS ((volatile int *)0x10003C90) /* derived name */
-#define VIF1_BASE ((volatile int *)0x10003CA0) /* derived name */
-#define VIF1_OFST ((volatile int *)0x10003CB0) /* derived name */
-#define VIF1_TOPS ((volatile int *)0x10003CC0) /* derived name */
-#define VIF1_ITOP ((volatile int *)0x10003CD0) /* derived name */
-#define VIF1_TOP ((volatile int *)0x10003CE0) /* derived name */
-#define VIF1_R0 ((volatile int *)0x10003D00) /* derived name */
-#define VIF1_R1 ((volatile int *)0x10003D10) /* derived name */
-#define VIF1_R2 ((volatile int *)0x10003D20) /* derived name */
-#define VIF1_R3 ((volatile int *)0x10003D30) /* derived name */
-#define VIF1_C0 ((volatile int *)0x10003D40) /* derived name */
-#define VIF1_C1 ((volatile int *)0x10003D50) /* derived name */
-#define VIF1_C2 ((volatile int *)0x10003D60) /* derived name */
-#define VIF1_C3 ((volatile int *)0x10003D70) /* derived name */
 #define VIF1_FIFO ((volatile void *)0x10005000)  /* derived name */
 
 /* DMA channel 0, VIF0. */ /* derived name */

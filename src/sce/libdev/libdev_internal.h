@@ -13,74 +13,15 @@
 #define LIBDEV_CTC2(src, vi) __asm__ __volatile__("ctc2.ni %0, $" #vi : : "r"(src))
 
 /* VIF and VU0 register windows (EE user's manual addresses). */
-#include <eeregs.h>
 #define LIBDEV_REG32(a) (*(volatile unsigned int *)(a))
-
-/* A 128-bit register or memory quadword. */
-typedef unsigned int DevU128 __attribute__((mode(TI)));
-
-/* One VU0 quadword seen whole, as words, as halfwords or as two doublewords. */
-typedef union {
-    DevU128 whole;
-    unsigned int words[4];
-    unsigned short halves[8];
-    struct {
-        unsigned long long unk00;
-        unsigned long long unk08;
-    } parts;
-} DevVu0Quad;
-
-/* VU0 register file as sqc2/ctc2 move it: control registers vi16-vi18 and vi20-vi22. */
-typedef struct {
-    DevU128 vector_regs[32];
-    unsigned int ctrl_regs[6];
-    unsigned short int_regs[16];
-} DevVu0Ctx;
-
-/* VU0 register file as read through VU0's memory window: seven control registers. */
-typedef struct {
-    DevU128 vector_regs[32];
-    unsigned int ctrl_regs[7];
-    unsigned short int_regs[16];
-} DevVu0MemCtx;
-
-/* VIF0 register snapshot (0x38 bytes). */
-typedef struct {
-    unsigned int row[4];
-    unsigned int col[4];
-    unsigned int mask;
-    unsigned int code;
-    unsigned int stat;
-    unsigned short itop;
-    unsigned short itops;
-    unsigned short mark;
-    unsigned short num;
-    unsigned char err;
-    unsigned char cycle_cl;
-    unsigned char cycle_wl;
-    unsigned char mode;
-} DevVif0Regs;
-
-/* VIF1 register snapshot (0x40 bytes). */
-typedef struct {
-    unsigned int row[4];
-    unsigned int col[4];
-    unsigned int mask;
-    unsigned int code;
-    unsigned int stat;
-    unsigned short itop;
-    unsigned short itops;
-    unsigned short base;
-    unsigned short ofst;
-    unsigned short top;
-    unsigned short tops;
-    unsigned short mark;
-    unsigned short num;
-    unsigned char err;
-    unsigned char cycle_cl;
-    unsigned char cycle_wl;
-    unsigned char mode;
-} DevVif1Regs;
+#define VIF0_STAT   0x10003800
+#define VIF0_FBRST  0x10003810
+#define VIF0_ERR    0x10003820
+#define VIF0_FIFO   0x10004000
+#define VIF1_STAT   0x10003C00
+#define VIF1_FBRST  0x10003C10
+#define VIF1_ERR    0x10003C20
+#define VIF1_FIFO   0x10005000
 
 int sceDevVu0IsRunning(void);
 void sceDevVu0Pause(void);
@@ -95,7 +36,7 @@ void sceDevVu0Start(unsigned int addr);
 unsigned int sceDevVu0GetTpc(void);
 int sceDevVu0ChkIdle(void);
 void sceDevVu0PutMem(unsigned int addr, void *src);
-void sceDevVu0GetMem(void *dst, unsigned int addr);
+void *sceDevVu0GetMem(void *dst, unsigned int addr);
 unsigned short sceDevVu0GetTop(void);
 void sceDevVu0PutTop(unsigned short top);
 int sceDevVu0GetCnd(void);
