@@ -195,7 +195,8 @@ typedef struct {
     f32 speed;                      /* 0x10 the target's velocity.x */
     s32 unk14;                      /* 0x14 */
     f32 unk18;                      /* 0x18 */
-    char pad1C[0x04];
+    u8 unk1C;                       /* 0x1C */
+    char pad1D[0x03];
     s8 unk20;                       /* 0x20 */
     char pad21[0x0F];
 } FollowerMotion;

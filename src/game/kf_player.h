@@ -16,7 +16,9 @@ typedef struct {
     u8 unk3C;                       /* 0x3C row of D_0041B9B8 (0x90 bytes each) */
     char pad3D[0x05];
     u8 unk42;                       /* 0x42 */
-    char pad43[0x15];
+    char pad43[0x02];
+    u8 unk45;                       /* 0x45 */
+    char pad46[0x12];
     s32 unk58;                      /* 0x58 */
     char pad5C[0x48];
     s32 unkA4;                      /* 0xA4 */
@@ -45,6 +47,9 @@ typedef struct {
     f32 unk2A8;                     /* 0x2A8 fade amount: > 0 toward white, < 0 toward black */
     char pad2AC[0x0C];
     u16 flag_timers[6];             /* 0x2B8 frames left, one per timed_flags entry */
+    char pad2C4[0x20];
+    s32 unk2E4;                     /* 0x2E4 */
+    f32 unk2E8;                     /* 0x2E8 */
 } PlayerState;
 
 /* D_003682F0[160]: what has been gained per item (0x22 bytes each) */
