@@ -107,7 +107,11 @@ typedef struct ModelInstance {
     char pad114[0x0C];
     BoneAnchor *bone_anchors;       /* 0x120 32 of them */
     Vector4 *bone_positions;        /* 0x124 32 of them, written from bone_anchors */
-    char pad128[0x1E];
+    char pad128[0x14];
+    f32 radius;                     /* 0x13C how far the model reaches around its position */
+    u8 hit_handles[4];              /* 0x140 handles of the linked points that touch it */
+    u8 hit_count;                   /* 0x144 */
+    char pad145;
     s16 unk146;                     /* 0x146 */
     char pad148[0x14];
     f32 alpha;                      /* 0x15C below 128: drawn without z writes */

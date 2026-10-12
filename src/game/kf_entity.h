@@ -773,7 +773,7 @@ typedef struct LinkedPoint {
     f32 duration;                   /* 0x28 */
     u16 handle;                     /* 0x2C index in the pool */
     u8 active;                      /* 0x2E */
-    char pad2F;
+    u8 list_index;                  /* 0x2F which D_004470C8 list it is on */
     u8 kind_a;                      /* 0x30 */
     s8 kind_b;                      /* 0x31 */
     s16 unk32;                      /* 0x32 */

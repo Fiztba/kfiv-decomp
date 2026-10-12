@@ -18,7 +18,8 @@ typedef struct {
     f32 speed;                      /* 0xD8 */
     f32 unkDC;                      /* 0xDC */
     f32 unkE0;                      /* 0xE0 */
-    char padE4[0x08];
+    f32 unkE4;                      /* 0xE4 */
+    f32 unkE8;                      /* 0xE8 */
     u16 radius_half;                /* 0xEC */
     u16 interval;                   /* 0xEE frames between collision checks */
     u16 unkF0;                      /* 0xF0 effect ids passed to func_001A2838 */
@@ -41,6 +42,16 @@ typedef struct {
     Vector4 velocity;               /* 0x00 (EffectActor+0x10) */
     char unk10[0x20];               /* 0x10 per-kind state */
 } EffectMotion;
+
+/* EffectDef.max_frames and the bytes after it read as one 64-bit flag word
+   (reached by cast, like EFFECT_FLAG_BITS) */
+typedef struct {
+    char pad00[0x108];
+    s64 flags;                      /* 0x108 */
+} EffectDefFlags;
+
+#define EFFECT_DEF_FLAGS(def) ((EffectDefFlags *)(def))
+#define EFFECT_DEF_FOLLOWS_HEADING 0x80000  /* moves along its model's heading, its scale growing */
 
 /* EffectMotion as func_001A4CE8 uses it */
 typedef struct {
@@ -196,6 +207,30 @@ typedef struct {
     char unk1C;                     /* 0x1C */
     char pad1D[0x13];
 } BurstMotion;
+
+/* EffectMotion as func_001A3F20 uses it: falls under gravity and scales its step */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    f32 fall_speed;                 /* 0x10 */
+    f32 scale;                      /* 0x14 */
+    char pad18[0x04];
+    char unk1C[0x14];               /* 0x1C passed by address */
+} ScaledMotion;
+
+/* EffectMotion as func_001AE060 and func_001AE730 set it up: an end position and two floats */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    Vector4 end_position;           /* 0x10 */
+    f32 unk20;                      /* 0x20 */
+    f32 unk24;                      /* 0x24 */
+    char pad28[0x08];
+} DriftMotion;
+
+/* EffectMotion as func_001ACD18 uses it: a flag byte at the very start */
+typedef struct {
+    u8 grounded;                    /* 0x00 set when the model is dropped onto the entity */
+    char pad01[0x2F];
+} GroundedMotion;
 
 /* EffectMotion as func_001A8FF0 (aims at a point) uses it */
 typedef struct {
