@@ -80,6 +80,13 @@ typedef struct {
     s16 unk0E;                      /* 0x0E */
 } SoundCue;
 
+/* D_0043EE78: the sound script state (0x78 bytes) */
+typedef struct {
+    u8 unk00;                       /* 0x00 */
+    s8 cue_index;                   /* 0x01 index into the cue table */
+    char pad02[0x76];
+} SoundScriptState;
+
 /* D_003EF710[128]: a sound channel (0x40 bytes); unk3A is -1 when it is free */
 typedef struct {
     char pad00[0x30];

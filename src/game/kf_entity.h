@@ -236,7 +236,7 @@ typedef struct {
     f32 unk54;                      /* 0x54 */
     f32 unk58;                      /* 0x58 */
     f32 turn_limit;                 /* 0x5C */
-    char pad60[0x20];
+    u8 unk60[0x20];                 /* 0x60 byte table */
     u16 unk80[0x22];                /* 0x80 indexed by Entity.unkD1 */
     u8 unkC4;                       /* 0xC4 */
     char padC5;

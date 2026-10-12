@@ -56,8 +56,24 @@ typedef struct {
     s64 flags;                      /* 0x108 */
 } EffectDefFlags;
 
+/* ObjectSlot+0x20, whose low word func_001A2F20 reads as a pointer to the effect
+   definition while the same 8 bytes are ObjectSlot.flags (reached by cast, not a union) */
+typedef struct {
+    char pad00[0x20];
+    EffectDefFlags *def;            /* 0x20 */
+} ObjectSlotDefView;
+
+#define OBJECT_SLOT_DEF(slot) (((ObjectSlotDefView *)(slot))->def)
 #define EFFECT_DEF_FLAGS(def) ((EffectDefFlags *)(def))
 #define EFFECT_DEF_FOLLOWS_HEADING 0x80000  /* moves along its model's heading, its scale growing */
+
+/* EffectMotion as func_001A50E8 uses it: a state byte after the velocity */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    char pad10[0x05];
+    s8 state;                       /* 0x15 0: not yet checked, 1: reached its target */
+    char pad16[0x1A];
+} SeekingMotion;
 
 /* EffectMotion as func_001A4CE8 uses it */
 typedef struct {
@@ -378,7 +394,8 @@ typedef struct EffectActor {
     void *start_position;           /* 0x64 */
     void *start_rotation;           /* 0x68 */
     int unk6C;                      /* 0x6C */
-    char pad70[0x30];
+    Vector4 vector;                 /* 0x70 */
+    char pad80[0x20];
 } EffectActor;
 
 /* EffectActor.flags read as two words: the low flag bits and, from 0x44, an index
