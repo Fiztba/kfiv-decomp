@@ -8,7 +8,7 @@ extern int D_003EF5B8[];
 extern int D_003EF5E8[];
 extern s32 D_003EF618[];
 extern SoundChannel D_003EF710[];
-extern char D_00500170[];
+extern SoundChannel D_00500170[];
 extern char D_00500158[];
 extern char D_002496BF[];
 extern int D_004468BC;
@@ -62,7 +62,7 @@ void func_0019C300(void) {
     }
     func_0019F720();
     for (i = 0; i < 0x80; i++) {
-        D_00500170[i * 0x40 + 0x38] = -1;
+        D_00500170[i].unk38 = -1;
     }
     for (i = 0; i < 0x10; i++) {
         D_00500158[i] = -1;

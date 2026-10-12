@@ -14,7 +14,13 @@ typedef struct {
     u8 curve[3];                    /* 0x9C curve shape per segment */
     char pad9F[0x07];
     u8 unkA6;                       /* 0xA6 */
-    char padA7[0x19];
+    char padA7[0x01];
+    f32 start_x;                    /* 0xA8 centre of the box a scattering effect aims into */
+    f32 start_y;                    /* 0xAC */
+    f32 start_z;                    /* 0xB0 */
+    f32 start_spread_x;             /* 0xB4 half the aim box size */
+    f32 start_spread_y;             /* 0xB8 */
+    f32 start_spread_z;             /* 0xBC */
     f32 origin_x;                   /* 0xC0 centre of the box a scattering effect starts in */
     f32 origin_y;                   /* 0xC4 */
     f32 origin_z;                   /* 0xC8 */
@@ -74,6 +80,22 @@ typedef struct {
     s8 state;                       /* 0x15 0: not yet checked, 1: reached its target */
     char pad16[0x1A];
 } SeekingMotion;
+
+/* EffectMotion as func_001A4E38 uses it: a flag byte after the velocity */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    char pad10[0x04];
+    s8 ended;                       /* 0x14 set once the end effects are spawned */
+    char pad15[0x1B];
+} EndedMotion;
+
+/* EffectMotion as func_001AABA0 fills it: the start point and aim point it picks, then the velocity
+   (so unlike the other kinds the first Vector4 is not a velocity) */
+typedef struct {
+    Vector4 start;                  /* 0x00 */
+    Vector4 aim;                    /* 0x10 */
+    Vector4 velocity;               /* 0x20 */
+} ScatterMotion;
 
 /* EffectMotion as func_001A4CE8 uses it */
 typedef struct {

@@ -231,7 +231,8 @@ typedef struct {
     u16 flags;                      /* 0x10 */
     char pad12[0x02];
     u8 unk14[4];                    /* 0x14 weights of the four actions, scaled by Entity.unkBC */
-    char pad18[0x38];
+    u16 unk18;                      /* 0x18 the farthest an attack record may reach */
+    char pad1A[0x36];
     f32 unk50;                      /* 0x50 */
     f32 unk54;                      /* 0x54 */
     f32 unk58;                      /* 0x58 */
@@ -269,9 +270,13 @@ typedef struct {
 /* EntityParams.unk3D8 is the first of several 0x1C-byte records */
 #define ENTITY_PARAMS_UNK3D8(params, index) (&((EntityParamsUnk3D8Array *)&(params)->unk3D8)[index].record)
 
+#define ENTITY_PARAMS_RECORD(params, index) (&((EntityParamsUnk3D8Array *)&(params)->unk3D8)[index])
+
 typedef struct {
     EntityParamsUnk3D8 record;      /* 0x00 */
-    char pad04[0x08];
+    u16 reach_min;                  /* 0x04 nearest distance (past the radius) the attack is used at, 0: none */
+    u16 reach_max;                  /* 0x06 farthest distance it is used at */
+    char pad08[0x04];
     u8 unk0C;                       /* 0x0C */
     char pad0D[0x03];
     u8 unk10;                       /* 0x10 */

@@ -87,11 +87,17 @@ typedef struct {
     char pad02[0x76];
 } SoundScriptState;
 
-/* D_003EF710[128]: a sound channel (0x40 bytes); unk3A is -1 when it is free */
+/* D_003EF710[128]: a sound channel (0x40 bytes); unk3A is -1 when it is free.
+   D_00500170[128] are queued requests of the same shape; there unk38 is -1 when free. */
 typedef struct {
-    char pad00[0x30];
+    f32 origin[3];                  /* 0x00 */
+    char pad0C[0x04];
+    f32 target[3];                  /* 0x10 */
+    char pad1C[0x14];
     s32 unk30;                      /* 0x30 */
-    char pad34[0x06];
+    f32 volume;                     /* 0x34 */
+    s8 unk38;                       /* 0x38 */
+    s8 unk39;                       /* 0x39 */
     s8 unk3A;                       /* 0x3A */
     s8 unk3B;                       /* 0x3B voice handed to func_001CE9A0 */
     s8 unk3C;                       /* 0x3C 0x63: restarts with the cue's volume */
