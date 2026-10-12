@@ -6,7 +6,7 @@ extern int D_00402D54[];
 
 void func_001AF928(void *, int);
 void func_001AF640(void *, int);
-int func_0019CE00(int);
+void func_0019CE00(int);
 
 /* Runs the effect setup, then calls func_0019CE00 for the definition's kind (3: only if the player/param pair is in the table). */
 void func_001AEB30(EffectActor *actor, int frame) {
