@@ -844,7 +844,8 @@ typedef struct {
 
 /* ObjectSlot.flags as the bit-fields the game sets (see ENTITY_FLAG_BITS) */
 typedef struct {
-    u64 pad0 : 33;
+    u64 pad0 : 32;
+    u64 bit32 : 1;
     u64 bit33 : 1;
     u64 pad34 : 30;
 } ObjectSlotFlagBits;

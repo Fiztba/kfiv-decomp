@@ -411,6 +411,15 @@ typedef struct {
     char pad19[0x17];
 } RippleMotion;
 
+/* EffectMotion as func_001AB9C0 fills it: the spawn index and a scale after the velocity */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    s32 spawn_index;                /* 0x10 */
+    f32 scale;                      /* 0x14 */
+    u8 flag;                        /* 0x18 */
+    char pad19[0x17];
+} SpawnedMotion;
+
 /* EffectMotion as func_001A73B0 (homes on a target) sets it up */
 typedef struct {
     Vector4 velocity;               /* 0x00 */
