@@ -26,8 +26,8 @@ s32 func_001F94C0(void) {
         return -1;
     }
     D_005CF3F0->unk1B = 0;
-    D_005CF3F0->unk14 = 0;
-    D_005CF3F0->unk15 = 0;
+    D_005CF3F0->step = 0;
+    D_005CF3F0->retries = 0;
     D_005CF3F0->state = 1;
     D_005CF3F0->unk18 = 1;
     base = func_001FBD90(0x800);

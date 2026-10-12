@@ -45,4 +45,7 @@ typedef struct {
 
 extern McIconSys *D_00447338;
 
+/* slot is the memory card slot; the header is the same for both */
+void func_001FB2A0(s32 slot);
+
 #endif

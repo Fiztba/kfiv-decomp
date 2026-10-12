@@ -17,12 +17,13 @@ typedef struct {
     char pad04[0x0C];
     s16 state;                      /* 0x10 selects the mode handler, 0: idle */
     u16 unk12;                      /* 0x12 */
-    char unk14;                     /* 0x14 */
-    char unk15;                     /* 0x15 */
+    s8 step;                        /* 0x14 */
+    s8 retries;                     /* 0x15 */
     s8 phase;                       /* 0x16 */
     s8 count;                       /* 0x17 */
     u8 unk18;                       /* 0x18 */
-    char pad19[0x02];
+    char pad19[0x01];
+    s8 file;                        /* 0x1A */
     s8 unk1B;                       /* 0x1B */
     char pad1C[0x04];
 } ModeState;
@@ -37,18 +38,27 @@ typedef struct {
     char unk05;                     /* 0x05 */
     char unk06;                     /* 0x06 */
     char unk07;                     /* 0x07 */
-    char pad08[0x04];
+    s32 *unk08;                     /* 0x08 */
     void *unk0C;                    /* 0x0C */
     void *unk10;                    /* 0x10 */
     void *unk14;                    /* 0x14 */
     s32 unk18;                      /* 0x18 */
     char pad1C[0x04];
-    char unk20;                     /* 0x20 */
-    char unk21;                     /* 0x21 */
+    u16 unk20;                      /* 0x20 read whole; written and tested a byte at a time via SLOT_RECORD_BYTES */
     char pad22[0x02];
     s16 unk24;                      /* 0x24 */
     char pad26[0x02];
 } SlotRecord;
+
+/* the two bytes of SlotRecord.unk20 */
+typedef struct {
+    char pad00[0x20];
+    char first;                     /* 0x20 */
+    char second;                    /* 0x21 */
+    char pad22[0x06];
+} SlotRecordBytes;
+
+#define SLOT_RECORD_BYTES(slot) ((SlotRecordBytes *)(slot))
 
 extern SlotRecord D_00428B80[];
 

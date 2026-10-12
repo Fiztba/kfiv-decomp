@@ -15,7 +15,7 @@ s32 func_001FAFC0(void) {
     slot = &D_00428B80[mode->slot];
     mode->state = 0x63;
     result = 0;
-    slot->unk20 = 2;
+    SLOT_RECORD_BYTES(slot)->first = 2;
     switch (mode->phase) {
     case 0:
         if (func_0021B0C0() <= 0) {

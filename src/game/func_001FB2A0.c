@@ -12,7 +12,7 @@ void *memset(void *, int, u32);
 void *memcpy(void *, const void *, u32);
 
 /* Fills the memory card icon header with the save title, icon file names and lighting. */
-void func_001FB2A0(void) {
+void func_001FB2A0(s32 slot) {
     s32 bg_color[4][4];
     f32 light_dir[3][4];
     f32 light_color[3][4];
