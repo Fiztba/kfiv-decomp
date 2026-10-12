@@ -51,10 +51,13 @@ void func_0019A608(void) {
         src = ENTITY_MODEL(entity)->parts;
         count = model->part_count;
         for (i = 0; i < count; i++) {
-            dst->unk00.rows[0] = src->unk00.rows[0];
-            dst->unk00.rows[1] = src->unk00.rows[1];
-            dst->unk00.rows[2] = src->unk00.rows[2];
-            dst->unk00.rows[3] = src->unk00.rows[3];
+            ModelMatrixQwords *dst_matrix = (ModelMatrixQwords *)dst->unk00;
+            ModelMatrixQwords *src_matrix = (ModelMatrixQwords *)src->unk00;
+
+            dst_matrix->rows[0] = src_matrix->rows[0];
+            dst_matrix->rows[1] = src_matrix->rows[1];
+            dst_matrix->rows[2] = src_matrix->rows[2];
+            dst_matrix->rows[3] = src_matrix->rows[3];
             dst++;
             src++;
         }

@@ -8,7 +8,7 @@ extern char D_00413F80[];
 
 int func_001AFD08(void *, void *, void *);
 void KF_Vector_Subtract(void *, void *, void *);
-void func_001C1430(void *, void *, f32);
+void func_001C1430(f32, void *, void *);
 void func_00216778(void *, void *);
 
 /* Starts an effect that homes on an entity picked from its target's setup. */
@@ -40,7 +40,7 @@ void func_001A73B0(EffectActor *actor, EffectSlot *spawn_slot) {
         func_001AFC88(&motion->velocity, &offset, actor->def->speed, actor->def->unkDC);
     }
     motion->flags = 0xFFFF;
-    func_001C1430(&actor->model->position, motion, 1.0f);
+    func_001C1430(1.0f, &actor->model->position, motion);
     if (*SCRATCH_MATRIX != 0) {
         func_00216778(&motion->aim, SCRATCH_VECTOR);
         motion->flags = 0;

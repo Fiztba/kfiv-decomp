@@ -6,7 +6,7 @@
 
 void KF_Vector_Subtract(void *out, void *a, void *b);
 void func_00216778(void *dst, void *src);
-void func_001C1430(void *, void *, f32);
+void func_001C1430(f32, void *, void *);
 void func_001AF5B0(void *rotation, void *direction);
 float func_001B0178(void *a, void *b);
 
@@ -21,7 +21,7 @@ void func_001ABFD0(EffectActor *effect, EffectSlot *spawn_slot) {
     func_001AF640(effect, spawn_slot);
     motion->distance_to_target = 0;
     KF_Vector_Subtract(&offset, &D_00413F80, &effect->model->position);
-    func_001C1430(&effect->model->position, &offset, 1.0f);
+    func_001C1430(1.0f, &effect->model->position, &offset);
     if (SCRATCH_MATRIX_FIRST_WORD != 0) {
         func_00216778(&motion->unk10, SCRATCH_VECTOR);
     } else {

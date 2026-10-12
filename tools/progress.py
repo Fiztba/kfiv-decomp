@@ -4,12 +4,15 @@
     tools/progress.py [report.json] [--write] [--html PATH]
 
 Prints the overall totals and one row per category: matched code bytes,
-functions, data and complete units. Percentages come from the byte and
-function counts.
+functions, named functions, data and complete units. Percentages come from
+the byte and function counts. A function is named once its symbol is no
+longer splat's func_XXXXXXXX; objdiff has no such measure, so it is counted
+here from the report's function names.
 
 --write refreshes docs/progress/, which is committed: summary.json (no
-per-function data), badge-*.json (shields.io endpoints) and index.html, a
-static page with the summary and a unit map embedded. It also replaces the
+per-function data), badge-*.json (shields.io endpoints), index.html, a
+static page with the summary and a unit map embedded, and report.json, the
+objdiff report itself (CI uploads it for decomp.dev). It also replaces the
 table between the progress markers in README.md.
 
 --html PATH writes the same page with each unit's functions expandable. The
@@ -27,6 +30,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs" / "progress"
 README = ROOT / "README.md"
 START, END = "<!-- progress:start -->", "<!-- progress:end -->"
+AUTO_NAME = re.compile(r"(func|sub|D)_[0-9A-Fa-f]{8}$")
 
 
 def measures_of(m: dict) -> dict:
@@ -47,9 +51,18 @@ def code_pct(m: dict) -> float:
     return pct(m.get("matched_code", 0), m.get("total_code", 0))
 
 
+def named_pct(m: dict) -> float:
+    return pct(m.get("named_functions", 0), m.get("total_functions", 0))
+
+
+def is_named(name: str) -> bool:
+    return not AUTO_NAME.match(name)
+
+
 def unit_entry(u: dict, detail: bool) -> dict:
     m = measures_of(u.get("measures", {}))
     meta = u.get("metadata", {})
+    named = [f for f in u.get("functions", []) if is_named(f["name"])]
     e = {
         "name": u["name"],
         "category": (meta.get("progress_categories") or ["none"])[0],
@@ -58,6 +71,8 @@ def unit_entry(u: dict, detail: bool) -> dict:
         "fuzzy": round(m.get("fuzzy_match_percent", 0.0), 2),
         "functions_total": m.get("total_functions", 0),
         "functions_matched": m.get("matched_functions", 0),
+        "functions_named": len(named),
+        "code_named": sum(int(f.get("size", 0)) for f in named),
         "data_total": m.get("total_data", 0),
         "data_matched": m.get("matched_data", 0),
         "complete": bool(meta.get("complete", False)),
@@ -69,9 +84,14 @@ def unit_entry(u: dict, detail: bool) -> dict:
     return e
 
 
+def add_named(measures: dict, units: list):
+    measures["named_functions"] = sum(u["functions_named"] for u in units)
+    measures["named_code"] = sum(u["code_named"] for u in units)
+
+
 def load(path: Path, detail: bool) -> dict:
     r = json.loads(path.read_text())
-    return {
+    data = {
         "generated": datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
         "measures": measures_of(r.get("measures", {})),
         "categories": [{"id": c["id"], "name": c.get("name", c["id"]),
@@ -79,6 +99,10 @@ def load(path: Path, detail: bool) -> dict:
                        for c in r.get("categories", [])],
         "units": [unit_entry(u, detail) for u in r.get("units", [])],
     }
+    add_named(data["measures"], data["units"])
+    for c in data["categories"]:
+        add_named(c["measures"], [u for u in data["units"] if u["category"] == c["id"]])
+    return data
 
 
 def rows(data) -> list:
@@ -90,14 +114,15 @@ def terminal(data) -> str:
     m = data["measures"]
     out = [f"KFIV progress, {data['generated']}: {m.get('total_units', 0)} units",
            f"{'':8} {'code':>7}  {'code bytes':>23}  {'functions':>11}  "
-           f"{'data':>7}  {'complete':>9}"]
+           f"{'named':>11}  {'data':>7}  {'complete':>9}"]
     for label, x in rows(data):
         mc, tc = x.get("matched_code", 0), x.get("total_code", 0)
         mf, tf = x.get("matched_functions", 0), x.get("total_functions", 0)
+        nf = x.get("named_functions", 0)
         dp = pct(x.get("matched_data", 0), x.get("total_data", 0))
         cu, tu = x.get("complete_units", 0), x.get("total_units", 0)
         out.append(f"{label:8} {code_pct(x):6.2f}%  {num(mc) + ' / ' + num(tc):>23}  "
-                   f"{f'{mf}/{tf}':>11}  {dp:6.2f}%  {f'{cu}/{tu}':>9}")
+                   f"{f'{mf}/{tf}':>11}  {f'{nf}/{tf}':>11}  {dp:6.2f}%  {f'{cu}/{tu}':>9}")
     return "\n".join(out)
 
 
@@ -117,15 +142,18 @@ def badges(data) -> dict:
                                                        m.get("total_functions", 0))),
         "badge-sce.json": badge("sce", code_pct(cats.get("sce", {}))),
         "badge-game.json": badge("game", code_pct(cats.get("game", {}))),
+        "badge-named.json": badge("game named", named_pct(cats.get("game", {}))),
     }
 
 
 def readme_table(data) -> str:
-    out = ["| | code | functions | units complete |", "| --- | ---: | ---: | ---: |"]
+    out = ["| | code | functions | named | units complete |",
+           "| --- | ---: | ---: | ---: | ---: |"]
     for label, x in rows(data):
         mf, tf = x.get("matched_functions", 0), x.get("total_functions", 0)
+        nf = x.get("named_functions", 0)
         cu, tu = x.get("complete_units", 0), x.get("total_units", 0)
-        out.append(f"| {label} | {code_pct(x):.2f}% | {mf} / {tf} | {cu} / {tu} |")
+        out.append(f"| {label} | {code_pct(x):.2f}% | {mf} / {tf} | {nf} / {tf} | {cu} / {tu} |")
     return "\n".join(out)
 
 
@@ -138,6 +166,8 @@ def cards_and_bars(data) -> tuple:
     cards = [
         ("Code matched", f"{code_pct(m):.2f}%", f"{num(mc)} of {num(tc)} bytes"),
         ("Functions matched", f"{pct(mf, tf):.2f}%", f"{mf} of {tf}"),
+        ("Functions named", f"{named_pct(m):.2f}%",
+         f"{m.get('named_functions', 0)} of {tf}"),
         ("Data matched", f"{pct(md, td):.2f}%", f"{num(md)} of {num(td)} bytes"),
         ("Units complete", f"{cu} of {tu}", f"{pct(cu, tu):.2f}% of units"),
     ]
@@ -149,6 +179,7 @@ def cards_and_bars(data) -> tuple:
         x = c["measures"]
         p = code_pct(x)
         mf, tf = x.get("matched_functions", 0), x.get("total_functions", 0)
+        nf = x.get("named_functions", 0)
         dp = pct(x.get("matched_data", 0), x.get("total_data", 0))
         cu, tu = x.get("complete_units", 0), x.get("total_units", 0)
         bars.append(
@@ -157,7 +188,8 @@ def cards_and_bars(data) -> tuple:
             f'<div class="bar" role="img" aria-label="{p:.2f} percent of code matched">'
             f'<i style="width:{min(max(p, 0.0), 100.0):.2f}%"></i></div>'
             f'<p class="muted">code {p:.2f}% ({num(x.get("matched_code", 0))} of '
-            f'{num(x.get("total_code", 0))} bytes), functions {mf}/{tf}, data {dp:.2f}%, '
+            f'{num(x.get("total_code", 0))} bytes), functions {mf}/{tf}, named {nf}/{tf}, '
+            f'data {dp:.2f}%, '
             f'units {cu}/{tu} complete</p></section>')
     return html_cards, "".join(bars)
 
@@ -250,13 +282,14 @@ in the table. The filters below apply to the map too.</p>
 <thead><tr>
 <th data-k="name">Unit</th><th data-k="category">Category</th>
 <th class="n" data-k="code_total">Size</th><th class="n" data-k="cp">Code</th><th class="n" data-k="fp">Functions</th>
+<th class="n" data-k="np">Named</th>
 <th class="n" data-k="dp">Data</th><th data-k="complete">Complete</th>
 </tr></thead>
 <tbody></tbody>
 </table>
 </div>
 <footer class="muted">Size is code bytes. Code and data are matched bytes over total
-bytes. Click a column header to sort. Units are in link order by default.</footer>
+bytes. Named counts functions no longer called func_XXXXXXXX. Click a column header to sort. Units are in link order by default.</footer>
 </main>
 <script id="data" type="application/json">@@DATA@@</script>
 <script>
@@ -283,6 +316,7 @@ bytes. Click a column header to sort. Units are in link order by default.</foote
     u.i = i;
     u.cp = pct(u.code_matched, u.code_total);
     u.fp = pct(u.functions_matched, u.functions_total);
+    u.np = pct(u.functions_named, u.functions_total);
     u.dp = pct(u.data_matched, u.data_total);
     return u;
   });
@@ -291,7 +325,7 @@ bytes. Click a column header to sort. Units are in link order by default.</foote
     var tr = document.createElement("tr");
     tr.className = "detail";
     var td = document.createElement("td");
-    td.colSpan = 7;
+    td.colSpan = 8;
     var t = document.createElement("table");
     t.className = "fns";
     var head = document.createElement("tr");
@@ -350,6 +384,8 @@ bytes. Click a column header to sort. Units are in link order by default.</foote
       tr.appendChild(cell("td", "n", txt(u.cp)));
       tr.appendChild(cell("td", "n", u.functions_total ?
         u.functions_matched + " / " + u.functions_total : "-"));
+      tr.appendChild(cell("td", "n", u.functions_total ?
+        u.functions_named + " / " + u.functions_total : "-"));
       tr.appendChild(cell("td", "n", txt(u.dp)));
       tr.appendChild(cell("td", "", u.complete ? "yes" : "no"));
       tbody.appendChild(tr);
@@ -514,14 +550,15 @@ def dumps(obj) -> str:
     return json.dumps(obj, indent=1, sort_keys=True) + "\n"
 
 
-def write_docs(data):
+def write_docs(data, report: Path):
     DOCS.mkdir(parents=True, exist_ok=True)
+    (DOCS / "report.json").write_bytes(report.read_bytes())
     # data is loaded without functions here
     (DOCS / "summary.json").write_text(dumps(data))
     for name, b in badges(data).items():
         (DOCS / name).write_text(dumps(b))
     (DOCS / "index.html").write_text(render_html(data))
-    print(f"wrote {DOCS.relative_to(ROOT)}/ (summary.json, badge-*.json, index.html)")
+    print(f"wrote {DOCS.relative_to(ROOT)}/ (summary.json, badge-*.json, index.html, report.json)")
 
 
 def update_readme(data):
@@ -551,7 +588,7 @@ def main():
     data = load(report, detail=False)
     print(terminal(data))
     if a.write:
-        write_docs(data)
+        write_docs(data, report)
         update_readme(data)
     if a.html:
         full = load(report, detail=True)

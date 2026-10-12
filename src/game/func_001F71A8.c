@@ -13,7 +13,7 @@ int func_001F71A8(void) {
         D_00446CFC = 0;
         return 0;
     }
-    child = head->child;
+    child = head->unk10;
     head->next = NULL;
     if (child != NULL) {
         child->next = NULL;
