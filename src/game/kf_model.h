@@ -93,7 +93,7 @@ typedef struct ModelInstance {
     Vector4 position;               /* 0xC0 */
     Vector4 rotation;               /* 0xD0 x, y (heading), z in radians */
     f32 unkE0;                      /* 0xE0 its sign picks the turn direction */
-    char padE4[0x04];
+    f32 unkE4;                      /* 0xE4 */
     f32 unkE8;                      /* 0xE8 */
     char padEC[0x04];
     u16 part_count;                 /* 0xF0 */

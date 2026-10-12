@@ -7,7 +7,7 @@ extern int D_004470F4;
 
 int sprintf(char *, const char *, ...);
 int FlushCache(int);
-int func_001A1360(char *, char *, int, int, int);
+int func_001A1360(char *, char *, s32 *, int, int);
 int func_001A1438();
 int func_001CD6B8(int);
 void func_001CD7E0(int);
@@ -29,7 +29,7 @@ void func_001A1160(int arg0) {
     D_003EF560[2] = 0;
     D_004470F4 = temp_a0 + 0x8000;
     while (func_001A1438() == 0);
-    D_003EF678[4] = func_001A1360(sp, sp80, D_003EF678[0], D_003EF678[6], D_003EF678[7]);
+    D_003EF678[4] = func_001A1360(sp, sp80, (s32 *)D_003EF678[0], D_003EF678[6], D_003EF678[7]);
     while (func_001A1438() == 0);
     while (func_001CD6B8(0) == 0);
     func_001CD7E0(D_003EF678[4]);

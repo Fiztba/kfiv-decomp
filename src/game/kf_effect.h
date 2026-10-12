@@ -7,7 +7,9 @@
 
 /* the effect's definition, EffectActor.def */
 typedef struct {
-    char pad00[0xD8];
+    char pad00[0xA6];
+    u8 unkA6;                       /* 0xA6 */
+    char padA7[0x31];
     f32 speed;                      /* 0xD8 */
     f32 unkDC;                      /* 0xDC */
     char padE0[0x0C];
@@ -142,6 +144,26 @@ typedef struct {
     char unk1C;                     /* 0x1C */
     char pad1D[0x13];
 } BurstMotion;
+
+/* EffectMotion as func_001A8FF0 (aims at a point) uses it */
+typedef struct {
+    char pad00[0x24];
+    s16 heading;                    /* 0x24 */
+    char pad26[0x0A];
+} HeadingMotion;
+
+/* EffectMotion as func_001A7AC8 uses it */
+typedef struct {
+    char pad00[0x22];
+    u8 unk22;                       /* 0x22 */
+    char pad23[0x0D];
+} ArmedMotion;
+
+/* EffectMotion as func_001AB870 uses it: the lifetime in frames */
+typedef struct {
+    s32 lifetime;                   /* 0x00 */
+    char pad04[0x2C];
+} LifetimeMotion;
 
 typedef struct EffectActor {
     char pad00[0x10];
