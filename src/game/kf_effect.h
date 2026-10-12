@@ -333,6 +333,22 @@ typedef struct {
     char pad19[0x17];
 } RippleMotion;
 
+/* EffectMotion as func_001A73B0 (homes on a target) sets it up */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    Vector4 aim;                    /* 0x10 */
+    s32 timer;                      /* 0x20 */
+    u16 flags;                      /* 0x24 */
+    char pad26[0x0A];
+} HomingMotion;
+
+/* EffectMotion as func_001ADF40 uses it: the heading in degrees, and as a word */
+typedef struct {
+    s32 heading_word;               /* 0x00 the heading, zero-extended */
+    u16 heading;                    /* 0x04 degrees */
+    char pad06[0x2A];
+} HeadingWordMotion;
+
 typedef struct EffectActor {
     char pad00[0x0C];
     f32 scale;                      /* 0x0C */

@@ -27,7 +27,10 @@ typedef struct {
     u16 vertical_despawn_range;     /* 0x48 0: no vertical limit */
     char pad4A[0x02];
     u16 unk4C;                      /* 0x4C */
-    char pad4E[0x06];
+    char pad4E[0x02];
+    u16 unk50;                      /* 0x50 */
+    u8 unk52;                       /* 0x52 */
+    char pad53;
     u16 unk54;                      /* 0x54 */
     char pad56[0x04];
     u16 despawn_range;              /* 0x5A */
@@ -100,7 +103,8 @@ typedef struct {
     EntityModelUnkFC *unkFC;        /* 0xFC */
     char pad100[0x02];
     u16 unk102;                     /* 0x102 */
-    char pad104[0x34];
+    char pad104[0x30];
+    s32 unk134;                     /* 0x134 */
     void *unk138;                   /* 0x138 */
     char pad13C[0x20];
     f32 unk15C;                     /* 0x15C */
