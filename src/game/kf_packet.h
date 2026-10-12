@@ -233,8 +233,13 @@ typedef struct {
     s32 unk19C;                  /* 0x19C */
 } GsFillPacket;
 
-/* hands out the next packet buffer to fill */
-GsFillPacket *func_001FBE70(void);
+/* the two packet buffers func_001FBE70 alternates between (D_00446D48) */
+typedef struct {
+    void *buffers[2];
+} BufferPair;
+
+/* hands out the next packet buffer to fill; callers use it as whichever packet they build */
+void *func_001FBE70(void);
 
 int sceGsPutDrawEnv(GsDrawPacket *);
 int sceGsSetDefDrawEnv(GsDrawEnv *, s16, s16, s16, s16, s16);
