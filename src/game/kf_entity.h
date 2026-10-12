@@ -137,7 +137,9 @@ typedef struct {
     u8 unk01;                       /* 0x01 */
     u8 unk02;                       /* 0x02 */
     u8 unk03;                       /* 0x03 */
-    char pad04[0x08];
+    u16 unk04;                      /* 0x04 reach window: the nearest distance, 0: none */
+    u16 unk06;                      /* 0x06 the farthest distance */
+    char pad08[0x04];
     u8 unk0C;                       /* 0x0C */
     char pad0D;
     s16 unk0E;                      /* 0x0E */
@@ -267,6 +269,10 @@ typedef struct {
     s16 unk43C;                     /* 0x43C */
     s16 unk43E;                     /* 0x43E */
 } EntityParams;
+
+/* record index of the 0x88-byte records at +0x240, reached by stepping the whole params pointer
+   (the match keeps the index scaling apart from the +0x240) */
+#define ENTITY_PARAMS_UNK240_RECORD(params, index) (((EntityParams *)((char *)(params) + (index) * sizeof(EntityParamsUnk240)))->unk240[0])
 
 /* EntityParams.unk3D8 is the first of several 0x1C-byte records */
 #define ENTITY_PARAMS_UNK3D8(params, index) (&((EntityParamsUnk3D8Array *)&(params)->unk3D8)[index].record)

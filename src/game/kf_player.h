@@ -25,7 +25,9 @@ typedef struct {
     s32 unkA8;                      /* 0xA8 */
     char padAC[0x08];
     s32 unkB4;                      /* 0xB4 */
-    char padB8[0xF4];
+    char padB8[0x04];
+    s32 unkBC;                      /* 0xBC */
+    char padC0[0xEC];
     f32 unk1AC;                     /* 0x1AC */
     f32 unk1B0;                     /* 0x1B0 */
     f32 unk1B4;                     /* 0x1B4 */
@@ -43,7 +45,11 @@ typedef struct {
     u16 map_index;                  /* 0x252 picks the MapSlot record */
     char pad254[0x0D];
     u8 unk261;                      /* 0x261 */
-    char pad262[0x46];
+    char pad262[0x01];
+    u8 unk263;                      /* 0x263 */
+    char pad264[0x34];
+    u8 unk298;                      /* 0x298 */
+    char pad299[0x0F];
     f32 unk2A8;                     /* 0x2A8 fade amount: > 0 toward white, < 0 toward black */
     char pad2AC[0x0C];
     u16 flag_timers[6];             /* 0x2B8 frames left, one per timed_flags entry */

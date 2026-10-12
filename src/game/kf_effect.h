@@ -41,7 +41,9 @@ typedef struct {
     u16 restart_frame;              /* 0x102 frame to resume from after the last spawn */
     f32 gravity;                    /* 0x104 */
     u16 max_frames;                 /* 0x108 0: no limit */
-    char pad10A[0x0E];
+    char pad10A[0x01];
+    u8 unk10B;                      /* 0x10B 0xFF: never ends on a hit */
+    char pad10C[0x0C];
     u16 end_effect;                 /* 0x118 spawned when the effect ends */
     char pad11A[0x02];
     f32 unk11C;                     /* 0x11C */
@@ -73,10 +75,11 @@ typedef struct {
 #define EFFECT_DEF_FLAGS(def) ((EffectDefFlags *)(def))
 #define EFFECT_DEF_FOLLOWS_HEADING 0x80000  /* moves along its model's heading, its scale growing */
 
-/* EffectMotion as func_001A50E8 uses it: a state byte after the velocity */
+/* EffectMotion as func_001A50E8 and func_001A4F78 use it: a countdown and a state byte after the velocity */
 typedef struct {
     Vector4 velocity;               /* 0x00 */
-    char pad10[0x05];
+    f32 radius_half;                /* 0x10 (func_001A4F78) */
+    u8 count;                       /* 0x14 (func_001A4F78) frames left */
     s8 state;                       /* 0x15 0: not yet checked, 1: reached its target */
     char pad16[0x1A];
 } SeekingMotion;
@@ -109,9 +112,33 @@ typedef struct {
     Vector4 velocity;               /* 0x00 */
     int mode;                       /* 0x10 3 or 5: spawn effect 0x15 on landing */
     u16 end_frame;                  /* 0x14 */
-    char pad16;
+    s8 spawned;                     /* 0x16 a follow-up effect has been spawned */
     char unk17[0x19];               /* 0x17 passed by address */
 } FallingMotion;
+
+/* EffectMotion as func_001ACFC0 uses it: a scale and a countdown byte */
+typedef struct {
+    f32 scale;                      /* 0x00 */
+    s8 countdown;                   /* 0x04 frames the model is held still */
+    char pad05[0x2B];
+} ShockMotion;
+
+/* EffectMotion as func_001AA590 uses it: spawns effect_id at end_frame or on a hit */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    char pad10[0x10];
+    u16 effect_id;                  /* 0x20 */
+    u16 end_frame;                  /* 0x22 */
+    s8 ended;                       /* 0x24 */
+    char pad25[0x0B];
+} DelayedMotion;
+
+/* EffectMotion as func_001A7148 reads it from the effect that picked the targets: an entity and a distance per slot */
+typedef struct {
+    struct Entity *entity[4];       /* 0x00 */
+    f32 distance[4];                /* 0x10 */
+    char pad20[0x10];
+} PickedMotion;
 
 /* EffectMotion as func_001A98D0 (checks for hits every interval frames) uses it */
 typedef struct {
