@@ -11,13 +11,19 @@ typedef struct {
     int arg;                        /* 0x08 */
 } HandlerContext;
 
-/* D_005CF410: the current mode and its sub-state */
+/* D_005CF3F0, D_005CF410: a mode record and its sub-state (0x20 bytes apart) */
 typedef struct {
-    char pad00[0x10];
+    s32 slot;                       /* 0x00 index into D_00428B80 */
+    char pad04[0x0C];
     s16 state;                      /* 0x10 selects the mode handler, 0: idle */
     u16 unk12;                      /* 0x12 */
     char unk14;                     /* 0x14 */
     char unk15;                     /* 0x15 */
+    s8 phase;                       /* 0x16 */
+    s8 count;                       /* 0x17 */
+    u8 unk18;                       /* 0x18 */
+    char pad19[0x02];
+    s8 unk1B;                       /* 0x1B */
 } ModeState;
 
 /* D_00428B80: the 0x28-byte entries of the slot table, indexed by the mode slot */
@@ -30,7 +36,10 @@ typedef struct {
     char unk05;                     /* 0x05 */
     char unk06;                     /* 0x06 */
     char unk07;                     /* 0x07 */
-    char pad08[0x10];
+    char pad08[0x04];
+    void *unk0C;                    /* 0x0C */
+    void *unk10;                    /* 0x10 */
+    void *unk14;                    /* 0x14 */
     s32 unk18;                      /* 0x18 */
     char pad1C[0x04];
     char unk20;                     /* 0x20 */
