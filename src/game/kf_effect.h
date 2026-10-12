@@ -201,15 +201,15 @@ typedef struct {
     u16 spawn_frames_span;          /* 0x0A copied from def->unkF2 */
 } SpawnerMotion;
 
-/* EffectMotion as func_001A4630, func_001A73B0 and others use it */
+/* EffectMotion as func_001A4630, func_001A46F0, func_001A73B0 and others use it */
 typedef struct {
     Vector4 velocity;               /* 0x00 */
-    f32 unkDC;                      /* 0x10 copied from def->unkDC */
-    int unk14;                      /* 0x14 */
-    int unk18;                      /* 0x18 */
-    int unk1C;                      /* 0x1C */
-    int unk20;                      /* 0x20 */
-    u8 unk24;                       /* 0x24 */
+    f32 unkDC;                      /* 0x10 copied from def->unkDC; func_001A46F0 grows it by def->unkE0 */
+    int unk14;                      /* 0x14 func_001A46F0: frames until it may be hit again */
+    int unk18;                      /* 0x18 func_001A46F0: 1 once hit (it wobbles) */
+    f32 unk1C;                      /* 0x1C func_001A46F0: wobble offset x */
+    f32 unk20;                      /* 0x20 func_001A46F0: wobble offset z */
+    s8 unk24;                       /* 0x24 func_001A46F0: set once the end effect is spawned */
     char pad25[0x0B];
 } HomingMotion;
 
@@ -314,8 +314,11 @@ typedef struct {
     f32 target_x;                   /* 0x10 */
     f32 unk14;                      /* 0x14 */
     f32 target_z;                   /* 0x18 */
-    char pad1C[0x09];
+    char pad1C[0x04];
+    f32 speed;                      /* 0x20 */
+    s8 state;                       /* 0x24 0: heading for the target, 1: heading for the aim point */
     u8 flag25;                      /* 0x25 */
+    s8 hit;                         /* 0x26 1: the end effect has been spawned */
 } AimMotion;
 
 /* EffectMotion as func_001A7548 uses it */
@@ -772,7 +775,8 @@ typedef struct {
 typedef struct {
     struct Entity *entity[4];       /* 0x00 */
     f32 distance[4];                /* 0x10 */
-    char pad20[0x10];
+    s8 index[4];                    /* 0x20 position of each entity in the entity list */
+    char pad24[0x0C];
 } PickedMotion;
 
 /* EffectMotion as func_001A72F0 uses it: scales the model, spawns the end effect */

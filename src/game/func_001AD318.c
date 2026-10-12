@@ -6,7 +6,7 @@
 void func_001AF298(void *, void *);
 void func_001AF5B0(void *, void *);
 float func_001B0178(void *, void *);
-void func_001C1430(float, void *, void *);
+void func_001C1430(void *, void *, f32);
 void KF_Vector_Subtract(void *, void *, void *);
 void sceVu0AddVector(void *, void *, void *);
 
@@ -37,7 +37,7 @@ void func_001AD318(EffectActor *actor) {
             motion->velocity.y += actor->def->gravity;
         }
         if (motion->unk20 == 0) {
-            func_001C1430(1.0f, &actor->model->position, motion);
+            func_001C1430(&actor->model->position, motion, 1.0f);
             if (SCRATCH_FLAG != 0) {
                 motion->unk20 = 1;
                 func_001B0178((void *)0x70000000, &actor->model->position);

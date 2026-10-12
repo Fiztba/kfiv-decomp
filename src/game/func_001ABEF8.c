@@ -6,7 +6,7 @@
 
 void func_00216778(void *dst, void *src);
 void func_00216C48(void *dst, void *a, void *b);
-void func_001C1430(float scale, void *dst, void *src);
+void func_001C1430(void *, void *, f32);
 float func_001B0178(void *a, void *b);
 
 /* Probe effect: sets its velocity from the model's rotation and measures the distance to a point. */
@@ -18,7 +18,7 @@ void func_001ABEF8(EffectActor *effect, EffectSlot *spawn_slot) {
     func_001AF640(effect, spawn_slot);
     motion->distance_to_target = 0;
     func_001AF538(1000.0f, &offset, &effect->model->rotation);
-    func_001C1430(1.0f, &effect->model->position, &offset);
+    func_001C1430(&effect->model->position, &offset, 1.0f);
     if (SCRATCH_MATRIX_FIRST_WORD != 0) {
         func_00216778(&motion->unk10, SCRATCH_VECTOR);
     } else {

@@ -4,6 +4,7 @@
 #define KF_SOUND_H
 
 #include "common.h"
+#include "kf_model.h"
 
 /* one of the 16 voices, SoundState.voices[n] */
 typedef struct {
@@ -152,10 +153,9 @@ typedef struct {
 /* D_003EF710[128]: a sound channel (0x40 bytes); unk3A is -1 when it is free.
    D_00500170[128] are queued requests of the same shape; there unk38 is -1 when free. */
 typedef struct {
-    f32 origin[3];                  /* 0x00 */
-    char pad0C[0x04];
-    f32 target[3];                  /* 0x10 */
-    char pad1C[0x14];
+    Vector4Arg origin;              /* 0x00 */
+    Vector4Arg target;              /* 0x10 */
+    char pad20[0x10];
     s32 unk30;                      /* 0x30 */
     f32 volume;                     /* 0x34 */
     s8 unk38;                       /* 0x38 */

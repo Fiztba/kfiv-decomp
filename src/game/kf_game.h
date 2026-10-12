@@ -35,7 +35,9 @@ typedef struct {
     int unk2C;                      /* 0x2C */
     int unk30;                      /* 0x30 */
     int unk34;                      /* 0x34 set with bit5 by func_001226E0 */
-    char pad38[0x10];
+    char pad38[0x08];
+    struct Entity *unk40;           /* 0x40 the only owner whose effects run while unk30 has 0x400 set */
+    char pad44[0x04];
 } GameStatus;
 
 /* D_00446A28: the play time as func_001D22B8 splits it (byte 1 seconds, 2 minutes, 3 and 5 hours), passed by value */

@@ -135,12 +135,20 @@ typedef struct {
     EntityParamsUnk240PartUnk00 unk00; /* 0x00 */
     EntityParamsUnk240PartUnk12 unk12; /* 0x12 */
     u8 unk1E;                       /* 0x1E */
-    char pad1F;
+    u8 unk1F;                       /* 0x1F */
     u16 unk20;                      /* 0x20 */
     u16 unk22;                      /* 0x22 an angle in degrees */
     u16 unk24;                      /* 0x24 first animation frame it is active on, 0: unused */
     u16 unk26;                      /* 0x26 last animation frame it is active on */
 } EntityParamsUnk240Part;
+
+/* EntityParamsUnk240Part.unk1E as func_00195BD8 reads it: bit 1 of the halfword at 0x1E
+   says unk1F is copied (reached by cast: a union changes gcc's scheduling) */
+typedef struct {
+    u16 flags;                      /* 0x1E bit 1: unk1F is copied */
+} EntityParamsUnk240PartFlags;
+
+#define ENTITY_PART_FLAGS(part) ((EntityParamsUnk240PartFlags *)&(part)->unk1E)
 
 /* one of the 0x88-byte records at EntityParams+0x240 (EntityParams.unk350 is the third) */
 typedef struct {
@@ -176,7 +184,9 @@ typedef struct {
     char pad4F;
     EntityParamsUnk240PartUnk00 unk50; /* 0x50 */
     EntityParamsUnk240PartUnk12 unk62; /* 0x62 */
-    char pad6E[0x12];
+    char pad6E[0x03];
+    u8 unk71;                       /* 0x71 */
+    char pad72[0x0E];
 } Unk1B1470Request;
 
 typedef struct {
