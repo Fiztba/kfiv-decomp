@@ -261,6 +261,13 @@ typedef struct {
     char pad15[0x0B];
 } ReseedMotion;
 
+/* EffectMotion as func_001A88A8 uses it: a u16 it tests, and sets on other effects */
+typedef struct {
+    char pad00[0x26];
+    u16 unk26;                      /* 0x26 (EffectActor+0x36) */
+    char pad28[0x08];
+} MarkedMotion;
+
 /* EffectMotion as func_001AD558 uses it: spawns the end effect at end_frame */
 typedef struct {
     Vector4 velocity;               /* 0x00 */

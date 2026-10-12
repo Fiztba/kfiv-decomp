@@ -71,6 +71,13 @@ typedef struct {
     char pad70[0x10];
 } EntityModelPart80;
 
+/* EntityModelPart80 with the byte at 0x6C, which lies inside unk68 (reached by cast) */
+typedef struct {
+    char pad00[0x6C];
+    s8 unk6C;                       /* 0x6C */
+    char pad6D[0x13];
+} EntityModelPart80Byte;
+
 /* EntityModelPart80.unk68 as the bit-fields the game sets (see ENTITY_FLAG_BITS) */
 typedef struct {
     u64 pad0 : 40;
