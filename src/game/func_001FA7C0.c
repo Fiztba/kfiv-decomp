@@ -4,7 +4,7 @@
 extern ModeState D_005CF410[];
 
 s32 func_0021B0C0(void);
-s32 func_0021ACB8(s32, s32);
+int func_0021ACB8(u32, u32);
 int func_0021AF70(u32, u32);
 s32 func_0021B468(void);
 s32 func_001FAFC0(void);

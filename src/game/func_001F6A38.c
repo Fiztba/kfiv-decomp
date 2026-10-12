@@ -18,8 +18,8 @@ void func_0019DC00(void);
 void func_001A15B8(void);
 void func_001B5460(void);
 int func_001D72F0(int);
-u8 func_002179F8(int, int);
-void func_00206C40(void);
+int func_002179F8(int, int);
+s16 func_00206C40(void);
 void func_001FBDC8(void);
 
 /* Runs the current mode handler every frame until it reports done, then tears the mode down. */

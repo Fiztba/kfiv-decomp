@@ -10,7 +10,7 @@ extern s32 D_0044733C;
 extern char *D_00447334;
 
 s32 func_0021B0C0(void);
-s32 func_001FBD90(s32);
+void *func_001FBD90(int);
 int func_00102258(char *, int, int);
 void func_001F9610(SlotRecord *);
 void func_001FBAC8(void);
@@ -30,7 +30,7 @@ s32 func_001F94C0(void) {
     D_005CF3F0->retries = 0;
     D_005CF3F0->state = 1;
     D_005CF3F0->unk18 = 1;
-    base = func_001FBD90(0x800);
+    base = (s32)func_001FBD90(0x800);
     addr = (base & 0x3F) == 0 ? base : base + (base & 0x3F);
     D_0044733C = addr;
     addr += 0x480;

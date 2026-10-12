@@ -15,12 +15,12 @@ double sqrt(double);
 float atan2f(float, float);
 int rand(void);
 int func_001CE8B0(u32);
-void func_001CE9A0(int, int, int);
+int func_001CE9A0(int kind, u32 slot, int value);
 int func_0019E110(s32, Vector4 *);
 float func_0019C640(float *, float *, float *);
 void func_0019C598(float, float *, float *);
 s8 func_0019C700(void);
-int func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(u32, int, char, char, char, char, s16, char);
 
 /* Each frame, updates the voice of every live sound channel: stops it out of range, else sets its volume and pan. */
 void func_0019DC00(void) {

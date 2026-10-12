@@ -23,7 +23,7 @@ s32 func_0021B458(void);
 s32 func_0021B438(s32, s32);
 s32 func_0021B3C0(s32, s32);
 s32 func_0021B3A0(s32, s32);
-s32 func_0021ACB8(s32, s32);
+int func_0021ACB8(u32, u32);
 int func_0021AD08(u32, u32, int, int, int, int);
 int func_001FB710(char *, int);
 s32 func_001FAFC0(void);

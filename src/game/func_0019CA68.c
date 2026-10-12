@@ -8,7 +8,7 @@ double sqrt(double);
 float func_0019C640(float *, float *, float *);
 void func_0019C598(float, float *, float *);
 int func_0019C688(int);
-int func_001CE690(int, int, int, char, int, char, s16, int);
+int func_001CE690(u32, int, char, char, char, char, s16, char);
 
 /* Starts a positional sound in a free D_00502170 slot, panned and scaled by its distance from the player. */
 int func_0019CA68(int sound, int unused, float *position) {

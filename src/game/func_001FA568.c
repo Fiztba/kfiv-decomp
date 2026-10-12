@@ -12,7 +12,7 @@ extern char D_00446D28[];
 
 int sprintf(char *, const char *, ...);
 s32 func_0021B0C0(void);
-s32 func_0021ACB8(s32, s32);
+int func_0021ACB8(u32, u32);
 s32 func_0021B468(void);
 int func_0021ADD0(u32, u32, int, int, int);
 s32 func_001FAFC0(void);

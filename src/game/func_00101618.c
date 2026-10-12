@@ -5,7 +5,7 @@ extern SoundLoadQueue D_0038A130;
 
 int func_0019F6B0(void);
 void func_0019EA98(int);
-int func_001A1048(MapSlot *, int);
+int func_001A1048(int, int);
 int func_001A0C18(int, int, int);
 int func_0019F628(int, int);
 
@@ -33,7 +33,7 @@ void func_00101618(void) {
     }
     switch (D_0038A130.step) {
     case 1:
-        D_0038A130.unk0C = func_001A1048(D_0038A130.unk10, D_0038A130.unk0C);
+        D_0038A130.unk0C = func_001A1048((int)D_0038A130.unk10, D_0038A130.unk0C);
         if (D_0038A130.unk0C == 0) {
             D_0038A130.unk10 = NULL;
             D_0038A130.step = 0;
