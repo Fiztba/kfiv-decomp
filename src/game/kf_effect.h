@@ -293,6 +293,46 @@ typedef struct {
     char pad25[0x0B];
 } ScalingEndMotion;
 
+/* EffectMotion as func_001ADCA8 uses it: the frame the effect lands at */
+typedef struct {
+    char pad00[0x14];
+    u16 landing_frame;              /* 0x14 */
+    u8 unk16;                       /* 0x16 */
+    char pad17[0x19];
+} LandingFrameMotion;
+
+/* EffectMotion as func_001AC8E8 uses it: the frames its two phases end at */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    char pad10[0x10];
+    u16 move_end_frame;             /* 0x20 */
+    u16 turn_end_frame;             /* 0x22 */
+    char pad24[0x0C];
+} PhasedMotion;
+
+/* EffectMotion as func_001A7880 sets it up: the velocity, two random offsets and a scale */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    f32 offset_x;                   /* 0x10 */
+    f32 offset_y;                   /* 0x14 */
+    char pad18[0x04];
+    f32 scale;                      /* 0x1C */
+    s16 unk20;                      /* 0x20 */
+    char pad22;
+    u8 unk23;                       /* 0x23 */
+    u8 unk24;                       /* 0x24 */
+    char pad25[0x0B];
+} SprayMotion;
+
+/* EffectMotion as func_001A9790 uses it: the spawn count and phase of a ripple */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    s32 spawn_index;                /* 0x10 */
+    s32 phase;                      /* 0x14 */
+    u8 flag;                        /* 0x18 */
+    char pad19[0x17];
+} RippleMotion;
+
 typedef struct EffectActor {
     char pad00[0x0C];
     f32 scale;                      /* 0x0C */
