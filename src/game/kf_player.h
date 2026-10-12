@@ -34,7 +34,10 @@ typedef struct {
     char pad1E0[0x20];
     s32 unk200;                     /* 0x200 */
     s32 unk204;                     /* 0x204 */
-    char pad208[0x4A];
+    char pad208[0x18];
+    Vector4 aim;                    /* 0x220 direction the player aims along, flattened to x/z */
+    f32 aim_speed;                  /* 0x230 */
+    char pad234[0x1E];
     u16 map_index;                  /* 0x252 picks the MapSlot record */
     char pad254[0x0D];
     u8 unk261;                      /* 0x261 */
@@ -52,11 +55,18 @@ typedef struct {
     char pad14[0x0E];
 } LevelRecord;
 
-/* D_00417EF8[]: the fixed definition per item (0x40 bytes each) */
+/* D_004147F8[0x17C]: the fixed definitions, 0x40 bytes each. D_00417EF8 is the run of
+   them from index 220 on (the items func_001B4DF8 reads). */
 typedef struct {
-    char pad00[0x37];
+    char pad00[0x30];
+    u32 unk30_0 : 18;               /* 0x30 */
+    u32 state : 2;                  /* 0x32 bits 2-3: 0 is set to 1 when the table is reset */
+    u32 unk30_20 : 12;
+    char pad34[0x03];
     u8 exp_per_level;               /* 0x37 */
-    char pad38[0x08];
+    char pad38[0x04];
+    u8 unk3C;                       /* 0x3C */
+    char pad3D[0x03];
 } LevelDef;
 
 #endif

@@ -43,6 +43,18 @@ typedef struct {
     u32 flags;                      /* 0x10 */
 } GameEvent;
 
+/* an 8-byte wall-clock time passed by value (func_001D2390, func_001D23F0, func_001D24A8) */
+typedef struct {
+    char unk0;                      /* 0x00 */
+    u8 sec;                         /* 0x01 */
+    u8 min;                         /* 0x02 */
+    u8 hour;                        /* 0x03 */
+    char unk4;                      /* 0x04 */
+    u8 mday;                        /* 0x05 */
+    u8 mon;                         /* 0x06 */
+    u8 year;                        /* 0x07 years since 2000 */
+} ClockTime;
+
 /* D_00431CE8: func_0020CD00 advances its counter once a frame */
 typedef struct {
     char pad00[0x08];

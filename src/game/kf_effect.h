@@ -23,7 +23,8 @@ typedef struct {
     u16 interval;                   /* 0xEE frames between collision checks */
     u16 unkF0;                      /* 0xF0 effect ids passed to func_001A2838 */
     u16 unkF2;                      /* 0xF2 */
-    char padF4[0x0E];
+    char padF4[0x0C];
+    u16 unk100;                     /* 0x100 */
     u16 restart_frame;              /* 0x102 frame to resume from after the last spawn */
     f32 gravity;                    /* 0x104 */
     u16 max_frames;                 /* 0x108 0: no limit */
@@ -64,6 +65,15 @@ typedef struct {
     int countdown;                  /* 0x14 frames to the next check */
     char unk18[0x18];               /* 0x18 passed by address */
 } EmitterMotion;
+
+/* EffectMotion as func_001A9F98 uses it */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    char pad10[0x15];
+    s8 unk25;                       /* 0x25 set to 1 after a step */
+    s8 unk26;                       /* 0x26 the frame counter wrapped into the def range */
+    char pad27[0x09];
+} StepMotion;
 
 /* EffectMotion as func_001AC1F8 (scales its model) uses it */
 typedef struct {
@@ -221,6 +231,7 @@ typedef struct EffectActor {
     void *start_position;           /* 0x64 */
     void *start_rotation;           /* 0x68 */
     int unk6C;                      /* 0x6C */
+    char pad70[0x30];
 } EffectActor;
 
 /* EffectActor.flags read as two words: the low flag bits and, from 0x44, an index

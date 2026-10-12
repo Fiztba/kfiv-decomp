@@ -161,10 +161,16 @@ typedef struct {
 } MapProp;
 
 /* what D_004469D8 points at */
-typedef struct {
-    char pad00[0x18];
+typedef struct ModelNode {
+    s32 unk00;                      /* 0x00 */
+    s32 unk04;                      /* 0x04 cleared when the node is unlinked */
+    s32 unk08;                      /* 0x08 cleared when the node is unlinked */
+    char pad0C[0x0C];
     ModelInstance *model;           /* 0x18 non-null while the node is in use */
-    char pad1C[0x20];
+    char pad1C[0x04];
+    struct ModelNode *prev;         /* 0x20 */
+    struct ModelNode *next;         /* 0x24 */
+    char pad28[0x14];
 } ModelNode;
 
 /* a motion that turns a model by a fixed step each frame (func_00212778) */

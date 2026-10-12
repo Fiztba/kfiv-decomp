@@ -516,7 +516,9 @@ typedef struct Entity {
     f32 unk34;                      /* 0x34 */
     f32 radius;                     /* 0x38 */
     f32 height;                     /* 0x3C */
-    char pad40[0x1C];
+    char pad40[0x14];
+    void (*handler)(struct Entity *entity);      /* 0x54 current handler */
+    void (*prev_handler)(struct Entity *entity); /* 0x58 handler before the last switch */
     void *target;                   /* 0x5C */
     f32 unk60;                      /* 0x60 */
     f32 distance_to_player;         /* 0x64 */

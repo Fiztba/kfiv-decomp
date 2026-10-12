@@ -51,6 +51,14 @@ typedef struct {
     ScriptArg motion;               /* 0x14 value at 0x18 */
 } ScriptMotionCommand;
 
+/* calls a map object routine with two integer arguments (func_00212CB8, func_00213320) */
+typedef struct {
+    int active;                     /* 0x00 */
+    ScriptArg target_id;            /* 0x04 value at 0x08 */
+    ScriptArg first;                /* 0x0C value at 0x10 */
+    ScriptArg second;               /* 0x14 value at 0x18 */
+} ScriptCallCommand;
+
 /* blends two floats toward target_a and target_b over `frames` (func_002134F8) */
 typedef struct {
     int active;                     /* 0x00 */
