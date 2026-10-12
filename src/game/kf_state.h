@@ -15,10 +15,32 @@ typedef struct {
 typedef struct {
     char pad00[0x10];
     s16 state;                      /* 0x10 selects the mode handler, 0: idle */
-    char pad12[0x02];
+    u16 unk12;                      /* 0x12 */
     char unk14;                     /* 0x14 */
     char unk15;                     /* 0x15 */
 } ModeState;
+
+/* D_00428B80: the 0x28-byte entries of the slot table, indexed by the mode slot */
+typedef struct {
+    char unk00;                     /* 0x00 */
+    char unk01;                     /* 0x01 */
+    char unk02;                     /* 0x02 */
+    char unk03;                     /* 0x03 */
+    char unk04;                     /* 0x04 */
+    char unk05;                     /* 0x05 */
+    char unk06;                     /* 0x06 */
+    char unk07;                     /* 0x07 */
+    char pad08[0x10];
+    s32 unk18;                      /* 0x18 */
+    char pad1C[0x04];
+    char unk20;                     /* 0x20 */
+    char unk21;                     /* 0x21 */
+    char pad22[0x02];
+    s16 unk24;                      /* 0x24 */
+    char pad26[0x02];
+} SlotRecord;
+
+extern SlotRecord D_00428B80[];
 
 /* what the D_00440B70 handlers build; func_00207478 dispatches it by kind */
 typedef struct {
