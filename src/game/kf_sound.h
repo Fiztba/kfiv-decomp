@@ -80,6 +80,17 @@ typedef struct {
     s16 unk0E;                      /* 0x0E */
 } SoundCue;
 
+/* D_003EF710[128]: a sound channel (0x40 bytes); unk3A is -1 when it is free */
+typedef struct {
+    char pad00[0x30];
+    s32 unk30;                      /* 0x30 */
+    char pad34[0x06];
+    s8 unk3A;                       /* 0x3A */
+    s8 unk3B;                       /* 0x3B voice handed to func_001CE9A0 */
+    s8 unk3C;                       /* 0x3C 0x63: restarts with the cue's volume */
+    char pad3D[0x03];
+} SoundChannel;
+
 /* the voice record func_0021C350 sets up for a stream upload */
 typedef struct {
     s32 unk00;                      /* 0x00 */

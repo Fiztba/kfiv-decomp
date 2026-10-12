@@ -12,12 +12,18 @@ typedef struct {
     u8 values[0x10];                /* 0x30 ...and the flag set for each */
 } MapFlagBlock;
 
+/* what MapSlot.header points at: the loaded map's header, as func_0019F3A0 reads it */
+typedef struct {
+    char pad00[0x70];
+    s8 unk70;                       /* 0x70 passed to sprintf as the file-name index */
+} MapHeader;
+
 /* one 0x60-byte entry of D_0038CD20, indexed by the current map/slot D_00446770 */
 typedef struct {
     u8 unk00;                       /* 0x00 */
     u8 tag;                         /* 0x01 matched against MapFlagBlock.tags */
     char pad02[0x06];
-    void *unk08;                    /* 0x08 */
+    MapHeader *header;              /* 0x08 */
     char pad0C[0x04];
     void *unk10;                    /* 0x10 */
     char *records;                  /* 0x14 0x80-byte records, by PlayerState.map_index */

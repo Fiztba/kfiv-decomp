@@ -59,6 +59,24 @@ typedef struct {
     ScriptArg frames;               /* 0x14 value at 0x18 */
 } ScriptBlendCommand;
 
+/* eases three floats toward the shared target over `frames` (func_00213BA8) */
+typedef struct {
+    int active;                     /* 0x00 */
+    ScriptFloatArg x;               /* 0x04 value at 0x08 */
+    ScriptFloatArg y;               /* 0x0C value at 0x10 */
+    ScriptFloatArg z;               /* 0x14 value at 0x18 */
+    ScriptArg frames;               /* 0x1C value at 0x20 */
+} ScriptTripleCommand;
+
+/* sets a flag bit on the current map's entities (func_00215A18) */
+typedef struct {
+    s32 active;                     /* 0x00 cleared when handled */
+    char pad04[0x04];
+    s32 kind;                       /* 0x08 1: only unflagged, 2: only flagged */
+    char pad0C[0x04];
+    u32 value;                      /* 0x10 bit 0 is copied */
+} ScriptFlagCommand;
+
 /* a command with an id and up to two points (func_00213868, func_00213A60,
    func_00214130, func_00214EE8) */
 typedef struct {

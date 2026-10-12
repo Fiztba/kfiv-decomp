@@ -556,6 +556,7 @@ typedef struct Entity {
     u8 unkD7;                       /* 0xD7 */
     u64 flags;                      /* 0xD8 */
     EntityUnkE0 unkE0;              /* 0xE0 */
+    char pad170[0x10];              /* 0x170 the record is 0x180 bytes */
 } Entity;
 
 /* Entity with the work area at 0xE0 as plain bytes: the init functions clear it

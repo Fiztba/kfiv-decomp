@@ -190,6 +190,22 @@ typedef struct {
     char pad25[0x0B];
 } EndingMotion;
 
+/* EffectMotion as func_001AA2D0 uses it: the frames [start_frame, end_frame) it acts in */
+typedef struct {
+    u16 start_frame;                /* 0x00 */
+    u16 end_frame;                  /* 0x02 */
+    char pad04[0x2C];
+} FrameWindowMotion;
+
+/* EffectMotion as func_001A72F0 uses it: scales the model, spawns the end effect */
+typedef struct {
+    Vector4 velocity;               /* 0x00 */
+    Vector4 end_position;           /* 0x10 where the end effect appears */
+    f32 scale_per_mille;            /* 0x20 */
+    s8 ended;                       /* 0x24 */
+    char pad25[0x0B];
+} ScalingEndMotion;
+
 typedef struct EffectActor {
     char pad00[0x10];
     EffectMotion motion;            /* 0x10 */
@@ -206,6 +222,16 @@ typedef struct EffectActor {
     void *start_rotation;           /* 0x68 */
     int unk6C;                      /* 0x6C */
 } EffectActor;
+
+/* EffectActor.flags read as two words: the low flag bits and, from 0x44, an index
+   func_001AD7A0 hands to func_0019B1E8 (reached by cast, like ENTITY_FLAG_BITS) */
+typedef struct {
+    u32 low;                        /* 0x40 */
+    s16 unk44;                      /* 0x44 */
+    u16 unk46;                      /* 0x46 */
+} EffectFlagWords;
+
+#define EFFECT_FLAG_WORDS(actor) ((EffectFlagWords *)&(actor)->flags)
 
 /* a request to spawn an effect at a position (func_00214660) */
 typedef struct {
