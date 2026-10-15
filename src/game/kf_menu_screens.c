@@ -263,14 +263,14 @@ struct sceCdCLOCK;
 int sceCdReadClock(struct sceCdCLOCK *);
 int sceGsSyncV(int);
 int mktime(int *);
-void func_0019BDA0(int, int);
-void func_0019CCB0(void);
-void func_0019CD10(void);
-void func_0019DC00(void);
-void func_0019E8B0(void);
-void func_0019E920(void);
-void func_001A15B8(void);
-void func_001A15C0(void);
+void Vram_Clear(int, int);
+void Sound_MuteTracked(void);
+void Sound_UnmuteTracked(void);
+void Sound_UpdateTagged(void);
+void Sound_MuteTagged(void);
+void Sound_UnmuteTagged(void);
+void Sound_UnmutePositional(void);
+void Sound_MutePositional(void);
 void func_001B5460(void);
 int func_001CEBE0(void);
 s16 MenuPad_Update(void);
@@ -335,7 +335,7 @@ void func_00109E88(void);
 void func_0010B238(TextureTableHeader *);
 void MenuTexture_Upload(TextureHeader *, LoadedBlockRef *);
 extern s8 D_004472CD;
-void func_001A1260(int);
+void Sound_LoadMgBank(int);
 void *memset(void *, int, u32);
 extern f32 D_00425510[0x100];
 extern f32 D_00425910[0x100];
@@ -343,7 +343,7 @@ extern char D_004472CE;
 extern s8 D_004472DA;
 extern s8 D_004472C4;               /* 0: fading in, 1: open, 2: fading out to the chosen screen, 3: fading out to leave */
 extern s8 D_004472D8;
-s32 func_0019CDC0(s32);
+s32 Sound_PlayMenu(s32);
 int func_001F92D0(void);
 int func_001F93A8(void);
 void MenuSprite_Draw(int, int, int, int);
@@ -518,7 +518,7 @@ extern u16 D_00446940;
 extern s16 D_00446942;
 extern s16 D_00446944;
 // match: both are called as void functions, so the result register is free at once
-#define PLAY_MENU_SOUND(sound) ((void (*)(s32))func_0019CDC0)(sound)
+#define PLAY_MENU_SOUND(sound) ((void (*)(s32))Sound_PlayMenu)(sound)
 #define SET_PART_MODE(mode) ((void (*)(u8))func_001E5210)(mode)
 s32 SaveCard_Open(void);
 s32 SaveCard_StartCheck(s8);
@@ -595,8 +595,8 @@ s8 SaveCard_GetLoadFailed(s32);
 extern s32 D_00446BE0;              /* option 0 as it was before it was first toggled */
 extern s8 D_00446BE4;               /* 0: option 0 untouched, 1: toggled and not applied yet, 2 to 4: applied */
 extern s8 D_00446BE5;               /* counts the two steps of leaving when the screen is a start-up step */
-void func_0019C7F0(s32);
-void func_0019C8C0(void);
+void Sound_SetBgmVolume(s32);
+void Sound_SyncBgmLevel(void);
 void func_001CBED8(void);
 void func_001CC018(void);
 extern s8 D_004210B0[12];
@@ -2167,11 +2167,11 @@ int Menu_Run(s8 mode) { // match: callers declare the parameter int; retail sign
 
     sceGsSyncPath(0, 0);
     sceGsSyncV(0);
-    func_0019BDA0(0x3D00, 0x3F00);
-    func_001A15C0();
-    func_0019DC00();
-    func_0019CCB0();
-    func_0019E8B0();
+    Vram_Clear(0x3D00, 0x3F00);
+    Sound_MutePositional();
+    Sound_UpdateTagged();
+    Sound_MuteTracked();
+    Sound_MuteTagged();
     sceCdReadClock((struct sceCdCLOCK *)&clock);
     weekday_names = weekday_names_table; // match: never read
     // match: the clock bytes are BCD and are used as they are, the day is lowered by one, and the result is not used
@@ -2255,9 +2255,9 @@ int Menu_Run(s8 mode) { // match: callers declare the parameter int; retail sign
         D_00446F7C = D_00446F78 = 1;
     }
     D_00446AC4 = 0;
-    func_0019E920();
-    func_001A15B8();
-    func_0019CD10();
+    Sound_UnmuteTagged();
+    Sound_UnmutePositional();
+    Sound_UnmuteTracked();
     status = D_00446C94;
     if (status == 0) {
         sceGsSyncPath(0, 0);
@@ -2922,7 +2922,7 @@ static s32 Menu_CutModelChain(void) {
             D_005CE7D0.item = D_005CE710.item;
             D_005CE7E0.item = D_005CE720.item;
             D_005CE7F0.item = D_005CE730.item;
-            func_001A1260(D_005CE740.item->unk0C);
+            Sound_LoadMgBank(D_005CE740.item->unk0C);
             func_001024B0(D_00446AD0);
             D_00446AC8 = 0;
             D_004472CD = 0;
@@ -2965,15 +2965,15 @@ static void Menu_UpdateMain(HandlerContext *context) {
     line_count = 7;
     if ((D_00446DE8 & 0x10) && D_004472DA != 0) {
         D_004472CD--;
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
     } else if ((D_00446DE8 & 0x40) && D_004472DA != 0) {
         D_004472CD++;
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
     } else if ((D_00446DE8 & 0x4000) && D_004472DA != 0) {
         if ((func_001F92D0() == 0 && D_004472CD == 5) || (func_001F93A8() == 0 && D_004472CD == 1)) {
-            func_0019CDC0(3);
+            Sound_PlayMenu(3);
         } else {
-            func_0019CDC0(0);
+            Sound_PlayMenu(0);
             D_004472C4 = 2;
             D_004472DA = 0;
             for (i = 0; i < D_00446A30; i++) {
@@ -2985,7 +2985,7 @@ static void Menu_UpdateMain(HandlerContext *context) {
     } else if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
         D_004472DA = 0;
         D_004472C4 = 3;
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         for (i = 0; i < D_00446A30; i++) {
             if (D_0044722C[i].unk3E == 1 && D_004472CD == D_0044722C[i].slot) {
                 D_00425510[i] = D_00446C04;
@@ -3221,7 +3221,7 @@ static void Menu_UpdateUseItem(HandlerContext *context) {
     }
     if ((D_00446DE8 & 0x4000) && D_004472DA != 0 && D_00426110[0] != NULL) {
         if (D_00426110[0]->unk0C < ITEM_ARROW || D_00426110[0]->unk0C > ITEM_WIDDAS_ARROW) {
-            func_0019CDC0(0);
+            Sound_PlayMenu(0);
             D_0038CC50.bit6 = TRUE;
             D_0038CC50.unk20 = D_00426110[0]->unk0C;
             D_004472C5 = 2;
@@ -3230,17 +3230,17 @@ static void Menu_UpdateUseItem(HandlerContext *context) {
                 D_00446C90->next = NULL;
             }
         } else {
-            func_0019CDC0(2);
+            Sound_PlayMenu(2);
         }
     } else if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472C5 = 3;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
             D_00446C90->next = NULL;
         }
     } else if ((D_00446DE8 & 0x8000) && D_004472DA != 0) {
-        func_0019CDC0(0);
+        Sound_PlayMenu(0);
         D_004472C5 = 4;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
@@ -3428,7 +3428,7 @@ static void Menu_UpdateCastSpell(s32 context) {
     DRAW_NODE_MODEL(&D_00426470, local, D_00446C78);
     if ((D_00446DE8 & 0x4000) && D_004472DA != 0) {
         if (D_00413F80.mp_now >= ((FxTableEntry *)D_005CE880[0]->unk00)->unkFC && D_00413F80.unkC0 >= 5000) {
-            func_0019CDC0(0);
+            Sound_PlayMenu(0);
             D_0038CC50.unk28 = D_005CE880[0]->unk0C;
             D_004472C8 = 2;
             D_004472DA = 0;
@@ -3436,10 +3436,10 @@ static void Menu_UpdateCastSpell(s32 context) {
                 D_00446C90->next = NULL;
             }
         } else {
-            func_0019CDC0(3);
+            Sound_PlayMenu(3);
         }
     } else if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472C8 = 2;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
@@ -3579,12 +3579,12 @@ static void Menu_UpdateEquip(void) {
         EQUIP_LIST = EQUIP_LIST->next;
         ((void (*)(s32))Menu_ShiftEquipModelsNextList)(0); // match: called with the number alone
         D_004472E0--;
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
     } else if ((D_00446DE8 & 0x40) && D_004472CE != 0 && D_004472DA != 0 && D_004472F0 == 0) {
         EQUIP_LIST = EQUIP_LIST->prev;
         ((void (*)(s32))Menu_ShiftEquipModelsPrevList)(0); // match: called with the number alone
         D_004472E0++;
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
     } else if (D_004472C6 < 2 && D_004472F0 == 0) {
         ((void (*)(s32))Menu_MoveEquipCursor)(0); // match: the callee takes nothing
     }
@@ -3615,14 +3615,14 @@ static void Menu_UpdateEquip(void) {
             D_00446B50 = 1;
             D_00446AD4 = 1;
         } else if (D_004472C7 != 2) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_004472C7 = 2;
         } else {
             D_004472C7 = 0;
         }
     }
     if ((D_00446DE8 & 0x8000) && D_00446AD4 == 0 && D_004472DA != 0) {
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
         if (D_00446AD5 == 0) {
             D_00446AD5 = 1;
         } else if (D_004472C7 != 2) {
@@ -3762,7 +3762,7 @@ static void Menu_UpdateEquip(void) {
             }
             if (index != 0) {
                 if (D_00446B50 != 0) {
-                    func_0019CDC0(1);
+                    Sound_PlayMenu(1);
                 }
                 D_00446B50 = 0;
                 DRAW_PARTS(D_0044723C, D_00446A40, 0);
@@ -3790,7 +3790,7 @@ static void Menu_UpdateEquip(void) {
                 }
                 if (index != 0) {
                     if (D_00446B50 != 0) {
-                        func_0019CDC0(1);
+                        Sound_PlayMenu(1);
                     }
                     D_00446B50 = 0;
                     DRAW_PARTS(D_00447244, D_00446A48, (index - 1) / 15);
@@ -3806,7 +3806,7 @@ static void Menu_UpdateEquip(void) {
                 }
                 if (index != 0) {
                     if (D_00446B50 != 0) {
-                        func_0019CDC0(1);
+                        Sound_PlayMenu(1);
                     }
                     D_00446B50 = 0;
                     DRAW_PARTS(D_00446C6C, D_00446AC0, (index + 1) / 15);
@@ -3823,7 +3823,7 @@ static void Menu_UpdateEquip(void) {
             }
             if (index != 0) {
                 if (D_00446B50 != 0) {
-                    func_0019CDC0(1);
+                    Sound_PlayMenu(1);
                 }
                 D_00446B50 = 0;
                 for (i = 0; i < D_00446A80; i++) {
@@ -3857,7 +3857,7 @@ static void Menu_UpdateEquip(void) {
             D_00446E24 = 100;
             if (index != 0 && index != 30 && index != 55 && index != 80 && index != 105) {
                 if (D_00446B50 != 0) {
-                    func_0019CDC0(1);
+                    Sound_PlayMenu(1);
                 }
                 D_00446B50 = 0;
                 if (D_004472C7 == 1) {
@@ -3886,7 +3886,7 @@ static void Menu_UpdateEquip(void) {
             D_00446E1C = D_00413FBC[EQUIP_LIST->group];
             if (index != 130 && index != 140 && index != 150) {
                 if (D_00446B50 != 0) {
-                    func_0019CDC0(1);
+                    Sound_PlayMenu(1);
                 }
                 D_00446B50 = 0;
                 if (D_004472C7 == 1) {
@@ -4030,7 +4030,7 @@ static void Menu_UpdateEquip(void) {
         f32 unused_pair[32];
 
         if (*D_00420D60[EQUIP_LIST->group] != *D_00420D90[EQUIP_LIST->group]) {
-            func_0019CDC0(0);
+            Sound_PlayMenu(0);
             if (weapon_defs[D_00413F80.weapon].unk63 == 2 && EQUIP_LIST->group == 0
                 && weapon_defs[index].unk63 != 2) {
 *D_00420D60[2] = D_00423650;
@@ -4092,7 +4092,7 @@ D_0042A8F0[15].part = NULL;
             }
         }
     } else if ((D_00446DE8 & 0x2000) && D_004472CE != 0 && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472C6 = 2;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
@@ -4168,7 +4168,7 @@ static void Menu_UpdateStatus(void) {
     }
 
     if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472DA = 0;
         D_004472C9 = 3;
     }
@@ -4321,10 +4321,10 @@ static void Menu_UpdateKeyItems(void) {
     view[10] = view[5] = view[0] = 1.0f;
     view[15] = 1.0f;
     if ((D_00446DE8 & 0x10) && D_004472DA != 0) {
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
         D_00446BB8--;
     } else if ((D_00446DE8 & 0x40) && D_004472DA != 0) {
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
         D_00446BB8++;
     }
     D_00446BB8 += 3;
@@ -4370,14 +4370,14 @@ static void Menu_UpdateKeyItems(void) {
     }
 
     if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472C9 = 3;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
             D_00446C90->next = NULL;
         }
     } else if ((D_00446DE8 & 0x8000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472C9 = 2;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
@@ -4476,7 +4476,7 @@ static void Menu_UpdateRecollection(HandlerContext *context) {
             D_004472D8 = 0;
         }
         if (D_00446BC4 != D_00446BC0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         D_00446BC4 = D_00446BC0;
     } else if ((D_00446DE8 & 0x80) && D_004472DA != 0) {
@@ -4493,7 +4493,7 @@ static void Menu_UpdateRecollection(HandlerContext *context) {
             D_004472D8 = 0;
         }
         if (D_00446BC4 != D_00446BC0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         D_00446BC4 = D_00446BC0;
     }
@@ -4515,7 +4515,7 @@ static void Menu_UpdateRecollection(HandlerContext *context) {
 
     if ((D_00446DE8 & 0x10) && D_004472DA != 0) {
         if (row_count >= 2) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         if (D_004472D8 == D_004472D9 && row_count >= 8) {
             D_004472D9--;
@@ -4529,7 +4529,7 @@ static void Menu_UpdateRecollection(HandlerContext *context) {
         }
     } else if ((D_00446DE8 & 0x40) && D_004472DA != 0) {
         if (row_count >= 2) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         if (((D_004472D9 < D_004472D8 && D_004472D8 - D_004472D9 >= 6) ||
              (D_004472D8 < D_004472D9 && D_004472D8 + row_count - D_004472D9 >= 6)) &&
@@ -4646,12 +4646,12 @@ static void Menu_UpdateRecollection(HandlerContext *context) {
     }
 
     if ((D_00446DE8 & 0x4000) && D_004472CA == 1 && D_004472DA != 0) {
-        func_0019CDC0(0);
+        Sound_PlayMenu(0);
         D_00446B20 = (void *)Menu_UpdateRecollectionPage;
         context->unk04 = D_00446BC0 * LIST_PAGES + rows[D_004472D8] + MSG_RECOLLECTION_FIRST;
         D_004472DA = 0;
     } else if ((D_00446DE8 & 0x2000) && D_004472CA == 1 && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472DA = 0;
         D_004472CA = 2;
     }
@@ -4803,7 +4803,7 @@ static void Menu_UpdateRecollectionPage(HandlerContext *context) {
         }
     }
     if (D_00446DE8 & 0x2000) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         context->unk04 = 0;
         D_00446B20 = (void *)Menu_UpdateRecollection;
         D_004472DA = 1;
@@ -4861,7 +4861,7 @@ static void Menu_UpdateVisibleItem(HandlerContext *context) {
             item_name_defs[selected->unk0C].state =
                 (item_name_defs[selected->unk0C].state & 1) ? item_name_defs[selected->unk0C].state & ~1 : state | 1;
         }
-        func_0019CDC0(0);
+        Sound_PlayMenu(0);
         number = selected->unk0C;
         if (number == D_00413F80.weapon + ITEM_WEAPON_FIRST) {
             D_00413F80.weapon = 0;
@@ -5001,7 +5001,7 @@ static void Menu_UpdateVisibleItem(HandlerContext *context) {
     Menu_DrawItemModel(local);
 
     if ((D_00446DE8 & 0x1000) && D_004472DA != 0 && func_001E4FE0(record, D_005CE850[0]->group)) {
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
         if (D_00446AD4 == 0) {
             D_00446AD4 = 1;
         } else if (D_004472CC != 2) {
@@ -5121,7 +5121,7 @@ static void Menu_UpdateVisibleItem(HandlerContext *context) {
     }
 
     if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472CB = 2;
         D_004472DA = 0;
         if (D_00446C90 != NULL) {
@@ -5416,7 +5416,7 @@ s32 Menu_MoveItemListCursor(HandlerContext *context, s32 locked) {
                     D_00426130[0] = D_00426130[0]->next;
                 }
                 D_00426110[0] = next;
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
             }
             Menu_ShiftListModelsNext(0);
         } else if ((D_00446DE8 & 0x40) && !locked) {
@@ -5425,7 +5425,7 @@ s32 Menu_MoveItemListCursor(HandlerContext *context, s32 locked) {
                     D_00426130[0] = D_00426130[0]->prev;
                     D_00426120[0] = D_00426120[0]->prev;
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 D_00426110[0] = cursor->prev;
             }
             Menu_ShiftListModelsPrev(0);
@@ -5439,7 +5439,7 @@ s32 Menu_MoveItemListCursor(HandlerContext *context, s32 locked) {
                         }
                     }
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
             }
             Menu_ShiftListModelsPageUp(0);
         } else if ((D_00446DE8 & 0x80) && D_00446C48 >= 8 && !locked) {
@@ -5452,7 +5452,7 @@ s32 Menu_MoveItemListCursor(HandlerContext *context, s32 locked) {
                         }
                     }
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
             }
             Menu_ShiftListModelsPageDown(0);
         } else {
@@ -5478,7 +5478,7 @@ static int Menu_MoveSpellCursor(void) {
                     D_005CE890[0] = n;
                     D_005CE8A0[0] = D_005CE8A0[0]->next;
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 D_005CE880[0] = cur->next;
             }
             Menu_ShiftSpellModelsNext(0);
@@ -5488,7 +5488,7 @@ static int Menu_MoveSpellCursor(void) {
                     D_005CE8A0[0] = cur;
                     D_005CE890[0] = D_005CE890[0]->prev;
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 D_005CE880[0] = cur->prev;
             }
             Menu_ShiftSpellModelsPrev(0);
@@ -5515,7 +5515,7 @@ static int Menu_MoveEquipCursor(void) {
             if (next != NULL) {
                 D_005CE840[0]->item = next;
                 Menu_ShiftEquipModelsNextItem(0, item);
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 return 1;
             }
         }
@@ -5524,7 +5524,7 @@ static int Menu_MoveEquipCursor(void) {
             if (prev != NULL) {
                 D_005CE840[0]->item = prev;
                 Menu_ShiftEquipModelsPrevItem(0, item);
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 return 1;
             }
         }
@@ -5547,7 +5547,7 @@ static s32 Menu_MoveAllItemsCursor(void) {
                     D_005CE860[0] = next;
                     D_005CE870[0] = D_005CE870[0]->next;
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 D_005CE850[0] = cursor->next;
             }
             Menu_ShiftListModelsNext(0);
@@ -5557,7 +5557,7 @@ static s32 Menu_MoveAllItemsCursor(void) {
                     D_005CE870[0] = cursor;
                     D_005CE860[0] = D_005CE860[0]->prev;
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
                 D_005CE850[0] = cursor->prev;
             }
             Menu_ShiftListModelsPrev(0);
@@ -5571,7 +5571,7 @@ static s32 Menu_MoveAllItemsCursor(void) {
                         }
                     }
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
             }
             Menu_ShiftListModelsPageUp(0);
         } else if ((D_00446DE8 & 0x80) && D_00446C38 >= 8) {
@@ -5584,7 +5584,7 @@ static s32 Menu_MoveAllItemsCursor(void) {
                         }
                     }
                 }
-                func_0019CDC0(1);
+                Sound_PlayMenu(1);
             }
             Menu_ShiftListModelsPageDown(0);
         } else {
@@ -5730,34 +5730,34 @@ static void Menu_UpdateCardSlot(void) {
         SaveCard_StartCheck(1);
     } else if (D_005CF2F0.unk14 == 0 && D_005CF2F0.unk18 == 0) {
         if ((D_00446DE8 & 0xA0) && D_004472D0 != 0xFF && D_005CF2F0.unk12 == -1) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_005CF2F0.unk0C = (D_005CF2F0.unk0C + 1) & 1;
         } else {
             report = Pad_GetReport(0, 0);
             if ((report->pressed & 0x4000) && D_004472D0 != 0xFF) {
                 if (D_005CF2F0.unk12 != -1) {
-                    func_0019CDC0(0);
+                    Sound_PlayMenu(0);
                     D_005CF2F0.unk12 = -1;
                 } else if (SaveCard_IsPresent(D_005CF2F0.unk0C) != 0) {
                     if (SaveCard_CheckSavesIntact() > 0) {
                         if (SaveCard_StartReadList(D_005CF2F0.unk0C, 1) == 0) {
-                            func_0019CDC0(0);
+                            Sound_PlayMenu(0);
                             D_005CF2F0.unk14 = 1;
                         }
                     } else {
                         D_005CF2F0.unk12 = 9;
                     }
                 } else if (D_005CF2F0.unk0C == 0) {
-                    func_0019CDC0(0);
+                    Sound_PlayMenu(0);
                     D_005CF2F0.unk12 = 4;
                 } else if (D_005CF2F0.unk0C == 1) {
-                    func_0019CDC0(0);
+                    Sound_PlayMenu(0);
                     D_005CF2F0.unk12 = 5;
                 }
             } else {
                 report = Pad_GetReport(0, 0);
                 if (((report->pressed & 0x2000) && D_004472D0 != 0xFF) || D_0038CC50.bit9) {
-                    func_0019CDC0(2);
+                    Sound_PlayMenu(2);
                     if (D_005CF2F0.unk12 != -1) {
                         D_005CF2F0.unk12 = -1;
                     } else {
@@ -6108,27 +6108,27 @@ static void Menu_UpdateSaveList(void) {
             D_005CF2F0.unk1D = 0;
             switch (D_005CF2F0.unk13) {
             case -1:
-                func_0019CDC0(0);
+                Sound_PlayMenu(0);
                 D_005CF2F0.unk13 = 8;
                 break;
             case 8:
                 if (D_005CF2F0.unk0E == 0) {
-                    func_0019CDC0(0);
+                    Sound_PlayMenu(0);
                     D_005CF2F0.unk13 = 1;
                     memset(D_0036A130, 0, 0x20000);
                     SaveCard_StartLoad(D_005CF2F0.unk0C, D_005CF2F0.unk0D, (s32 *)D_0036A130, 0x20000);
                 } else {
-                    func_0019CDC0(2);
+                    Sound_PlayMenu(2);
                     D_005CF2F0.unk13 = -1;
                     D_005CF2F0.unk0E = 1;
                 }
                 break;
             case 3:
-                func_0019CDC0(0);
+                Sound_PlayMenu(0);
                 D_005CF2F0.unk13 = -1;
                 break;
             case 10:
-                func_0019CDC0(0);
+                Sound_PlayMenu(0);
                 D_005CF2F0.unk18 = 1;
                 if (!D_0038CC50.bit9) {
                     D_00446C70 = 3;
@@ -6140,7 +6140,7 @@ static void Menu_UpdateSaveList(void) {
                 }
                 break;
             case 23:
-                func_0019CDC0(0);
+                Sound_PlayMenu(0);
                 D_005CF2F0.unk13 = -1;
                 D_005CF2F0.unk0E = 1;
                 break;
@@ -6148,7 +6148,7 @@ static void Menu_UpdateSaveList(void) {
         } else {
             report = Pad_GetReport(0, 0);
             if ((report->pressed & 0x2000) && D_004472D0 != 0xFF && D_005CF2F0.unk1D == 0) {
-                func_0019CDC0(2);
+                Sound_PlayMenu(2);
                 switch (D_005CF2F0.unk13) {
                 case 10:
                     D_005CF2F0.unk18 = 1;
@@ -6184,12 +6184,12 @@ static void Menu_UpdateSaveList(void) {
                         }
                     }
                     if (i != 2) {
-                        func_0019CDC0(1);
+                        Sound_PlayMenu(1);
                     }
                     D_005CF2F0.unk0D = (D_005CF2F0.unk0D + i) % 3;
                     break;
                 case 8:
-                    func_0019CDC0(1);
+                    Sound_PlayMenu(1);
                     D_005CF2F0.unk0E = (D_005CF2F0.unk0E + 1) & 1;
                     break;
                 }
@@ -6203,12 +6203,12 @@ static void Menu_UpdateSaveList(void) {
                         }
                     }
                     if (i != 2) {
-                        func_0019CDC0(1);
+                        Sound_PlayMenu(1);
                     }
                     D_005CF2F0.unk0D = (D_005CF2F0.unk0D - i + 3) % 3;
                     break;
                 case 8:
-                    func_0019CDC0(1);
+                    Sound_PlayMenu(1);
                     D_005CF2F0.unk0E = (D_005CF2F0.unk0E + 1) & 1;
                     break;
                 }
@@ -6281,10 +6281,10 @@ static void Menu_UpdateOptions(MenuScreenContext *context) {
 
     if ((D_00446DE8 & 0x10) && D_004472DA != 0) {
         context->unk04--;
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
     } else if ((D_00446DE8 & 0x40) && D_004472DA != 0) {
         context->unk04++;
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
     }
     context->unk04 += 7;
     context->unk04 %= 7;
@@ -6292,7 +6292,7 @@ static void Menu_UpdateOptions(MenuScreenContext *context) {
     switch (context->unk04) {
     case 0:
         if ((D_00446DE8 & 0xA0) && D_004472DA != 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             if (D_00446BE4 != 1) {
                 D_00446BE0 = D_00349680[0];
             }
@@ -6320,50 +6320,50 @@ static void Menu_UpdateOptions(MenuScreenContext *context) {
     case 1:
         if ((D_00446DE8 & 0x20) && D_00349680[1] < 0x7F && D_004472DA != 0) {
             D_00349680[1] += 4;
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         } else if ((D_00446DE8 & 0x80) && D_00349680[1] != 0 && D_004472DA != 0) {
             D_00349680[1] -= 4;
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
-        func_0019C7F0(D_00349680[1]);
-        func_0019C8C0();
+        Sound_SetBgmVolume(D_00349680[1]);
+        Sound_SyncBgmLevel();
         break;
     case 2:
         if ((D_00446DE8 & 0x20) && D_00349680[2] < 0x7F && D_004472DA != 0) {
             D_00349680[2] += 4;
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         } else if ((D_00446DE8 & 0x80) && D_00349680[2] != 0 && D_004472DA != 0) {
             D_00349680[2] -= 4;
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         break;
     case 3:
         if ((D_00446DE8 & 0xA0) && D_004472DA != 0) {
             D_00349680[5]++;
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         D_00349680[5] = (s8)D_00349680[5] % 2;
         break;
     case 4:
         if ((D_00446DE8 & 0xA0) && D_004472DA != 0) {
             D_00349680[6]++;
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
         }
         D_00349680[6] = (s8)D_00349680[6] % 2;
         break;
     case 5:
         if ((D_00446DE8 & 0xA0) && D_004472DA != 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_00349680[9]++;
         }
         D_00349680[9] = (s8)D_00349680[9] % 2;
         break;
     case 6:
         if ((D_00446DE8 & 0x20) && D_004472DA != 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_00349680[8]++;
         } else if ((D_00446DE8 & 0x80) && D_004472DA != 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_00349680[8]--;
         }
         D_00349680[8] = (s8)(D_00349680[8] + 3) % 3;
@@ -6378,7 +6378,7 @@ static void Menu_UpdateOptions(MenuScreenContext *context) {
     }
 
     if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_004472DA = 0;
         D_00446C70 = 2;
     }
@@ -6531,7 +6531,7 @@ static void Menu_UpdateButtonConfig(void) {
 
     if ((D_00446DE8 & 0x10) && D_004472DA != 0) {
         if (D_00446BF0 == 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             // match: only this loop, in the function's first run of code, is loop-optimised in retail; the others keep their entry tests until late
             for (i = 0; i < choice_count; i++) {
                 FOR_PAD_BIT(*button_settings[i], SET_CHOICE)
@@ -6542,7 +6542,7 @@ static void Menu_UpdateButtonConfig(void) {
         }
     } else if ((D_00446DE8 & 0x40) && D_004472DA != 0) {
         if (D_00446BF0 == 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             for (i = 0; i < choice_count; i++) {
                 FOR_PAD_BIT(*button_settings[i], SET_CHOICE)
             }
@@ -6566,10 +6566,10 @@ static void Menu_UpdateButtonConfig(void) {
 
     if (D_00446BE8 != choice_count && D_00446BF0 == 0) {
         if ((D_00446DE8 & 0x20) && D_004472DA != 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_004210B0[D_00446BE8] = (s8)(D_004210B0[D_00446BE8] + 1) % wrap;
         } else if ((D_00446DE8 & 0x80) && D_004472DA != 0) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_004210B0[D_00446BE8] = (s8)(D_004210B0[D_00446BE8] + 11) % wrap;
         }
     }
@@ -6676,7 +6676,7 @@ static void Menu_UpdateButtonConfig(void) {
     }
 
     if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         if (D_00446BF0 != 0) {
             D_00446BF0 = 0;
             D_00446BEC = 0;
@@ -6689,7 +6689,7 @@ static void Menu_UpdateButtonConfig(void) {
             D_00446BF0 = 1;
         }
     } else if ((D_00446DE8 & 0x4000) && D_004472DA != 0) {
-        func_0019CDC0(0);
+        Sound_PlayMenu(0);
         if (D_00446BF0 == 0) {
             if (D_00446BE8 != choice_count) {
                 *button_settings[D_00446BE8] = pad_bits.bits[D_004210B0[D_00446BE8]];
@@ -6945,7 +6945,7 @@ static void Menu_UpdateCardCheck(void) {
     } else {
         report = Pad_GetReport(0, 0);
         if ((report->pressed & 0x4000) && D_004472D0 != 0xFF) {
-            func_0019CDC0(0);
+            Sound_PlayMenu(0);
             D_005CF2F0.unk11 = 1;
             SaveCard_StartCheck(1);
             SaveCard_Close();
@@ -6955,7 +6955,7 @@ static void Menu_UpdateCardCheck(void) {
                 D_00446C70 = 3;
             }
         } else if ((D_00446DE8 & 0x50) && D_004472D0 != 0xFF) {
-            func_0019CDC0(1);
+            Sound_PlayMenu(1);
             D_005CF2F0.unk0C = (D_005CF2F0.unk0C + 1) & 1;
         }
     }
@@ -7017,25 +7017,25 @@ static void Menu_UpdateBrightness(void) {
     u32 full_alpha;
 
     if ((D_00446DE8 & 0x20) && D_004472DA != 0) {
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
         if (D_00349680[10] < 0xFC) {
             D_00349680[10] += 4;
         } else {
             D_00349680[10] = 0x20;
         }
     } else if ((D_00446DE8 & 0x80) && D_004472DA != 0) {
-        func_0019CDC0(1);
+        Sound_PlayMenu(1);
         if (D_00349680[10] > 0x20) {
             D_00349680[10] -= 4;
         } else {
             D_00349680[10] = 0xFC;
         }
     } else if ((D_00446DE8 & 0x4000) && D_004472DA != 0) {
-        func_0019CDC0(0);
+        Sound_PlayMenu(0);
         D_004472DA = 0;
         D_00446C70 = 2;
     } else if ((D_00446DE8 & 0x2000) && D_004472DA != 0) {
-        func_0019CDC0(2);
+        Sound_PlayMenu(2);
         D_00349680[10] = D_004472CF;
         D_00446C70 = 3;
         D_004472DA = 0;
@@ -7089,7 +7089,7 @@ static void Menu_WaitForCancel(void) {
     if (Pad_GetReport(0, 0)->pressed & 0x2000) {
         if (D_004472D0 != 0xFF) {
             D_00446B20 = (void *)Menu_OpenMain;
-            func_0019CDC0(2);
+            Sound_PlayMenu(2);
         }
     }
 }

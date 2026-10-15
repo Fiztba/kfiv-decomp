@@ -25,7 +25,7 @@ int func_001CA5B0(int, int);
 void Vector_Copy(void *, void *);
 void func_001CA500(ListNode *);
 int func_001C0E40(f32, void *);
-float func_0019B838(float);
+float Angle_Wrap(float);
 int func_001CA5E0(int);
 int func_001CA630(int);
 int func_001CA788(int);
@@ -51,7 +51,7 @@ float cosf(float);
 float atan2f(float, float);
 double sqrt(double);
 void Vector_Subtract(void *, void *, void *);
-int func_0019B9F0(float, float *, int);
+int Angle_EaseToward(float, float *, int);
 int Player_CannotCarryItem(int);
 void Player_AddItem(int);
 void *memset(void *, int, u32);
@@ -356,7 +356,7 @@ s32 func_001C8CB0(Entity *entity) {
     position[1] = entity->model->position[1] - entity->height * 0.5f;
     position[2] = entity->model->position[2];
     rotation[1] = (s32)(rand() * 361.0f * 4.656613e-10f);
-    rotation[1] = func_0019B838(rotation[1] * 0.017453292f);
+    rotation[1] = Angle_Wrap(rotation[1] * 0.017453292f);
     if (!func_001C0E40(2000.0f, position)) {
         return FALSE;
     }
@@ -725,7 +725,7 @@ void func_001C9C40(void) {
     func_001B9478();
     Vector_Copy(D_005B60C0, &D_004469D8->model->position);
     Vector_Copy(D_005B60D0, &D_004469D8->model->rotation);
-    D_005B60D0[1] = func_0019B838(D_005B60D0[1]);
+    D_005B60D0[1] = Angle_Wrap(D_005B60D0[1]);
     D_005B60E0[0] = D_00420D00.unk00[0] + sinf(D_00413F80.rotation.y) * 150.0f;
     D_005B60E0[2] = D_00420D00.unk00[2] + cosf(D_00413F80.rotation.y) * 150.0f;
     D_005B60E0[1] = D_004469D8->model->position.y - 100.0f;
@@ -754,10 +754,10 @@ void func_001C9EB0(void) {
     D_004471B0--;
     if (D_004471B0 > 0) {
         Vector_Add(&D_004469D8->model->position, &D_004469D8->model->position, D_005B60F0);
-        func_0019B9F0(0.0f, &D_004469D8->model->rotation.x, D_004471B0);
-        func_0019B9F0(0.0f, &D_004469D8->model->rotation.y, D_004471B0);
-        func_0019B9F0(0.0f, &D_004469D8->model->rotation.z, D_004471B0);
-        func_0019B9F0(D_004471A8, D_00413F90, D_004471B0);
+        Angle_EaseToward(0.0f, &D_004469D8->model->rotation.x, D_004471B0);
+        Angle_EaseToward(0.0f, &D_004469D8->model->rotation.y, D_004471B0);
+        Angle_EaseToward(0.0f, &D_004469D8->model->rotation.z, D_004471B0);
+        Angle_EaseToward(D_004471A8, D_00413F90, D_004471B0);
         D_0044719C = (float)D_004471B0 / (float)D_004471AC;
         return;
     }
@@ -772,7 +772,7 @@ void func_001C9FB0(void) {
     f32 delta[4];
 
     D_0044719C = 0.0f;
-    D_004469D8->model->rotation.y = func_0019B838(D_004469D8->model->rotation.y + 0.08377580f);
+    D_004469D8->model->rotation.y = Angle_Wrap(D_004469D8->model->rotation.y + 0.08377580f);
     if (D_00413DAA[0] & 0x4000) {
         if (!Player_CannotCarryItem((s16)D_004469D8->item)) {
             Vector_Copy(D_005B60E0, &D_00413F80);
@@ -823,9 +823,9 @@ void func_001CA1E8(void) {
     D_004471B0--;
     if (D_004471B0 > 0) {
         Vector_Add(&D_004469D8->model->position, &D_004469D8->model->position, D_005B60F0);
-        func_0019B9F0(D_005B60D0[0], &D_004469D8->model->rotation.x, D_004471B0);
-        func_0019B9F0(D_005B60D0[1], &D_004469D8->model->rotation.y, D_004471B0);
-        func_0019B9F0(D_005B60D0[2], &D_004469D8->model->rotation.z, D_004471B0);
+        Angle_EaseToward(D_005B60D0[0], &D_004469D8->model->rotation.x, D_004471B0);
+        Angle_EaseToward(D_005B60D0[1], &D_004469D8->model->rotation.y, D_004471B0);
+        Angle_EaseToward(D_005B60D0[2], &D_004469D8->model->rotation.z, D_004471B0);
         D_0044719C = 1.0f - (f32)D_004471B0 / (f32)D_004471AC;
         return;
     }

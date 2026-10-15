@@ -22,8 +22,8 @@ void func_00109A50(void);
 void func_00109A80(int, s64);
 void func_00109AD0(void);
 void func_0010A4E8(int, int, int, int, int);
-int func_0019CE00(int); // match: an int return (the definition is void) keeps $2 busy in func_001BBFC8
-int func_0019D0F0(int);
+int Sound_PlaySw(int); // match: an int return (the definition is void) keeps $2 busy in func_001BBFC8
+int Sound_PlayCommon(int);
 
 extern PlayerState D_00413F80;
 extern int D_00413FD8[];            /* D_00413F80.hp_max */
@@ -256,12 +256,12 @@ void func_001BB4D0(int damage) {
     }
 }
 
-int func_0019CDA0(int); // match: an int return (the definition is void) keeps -1 in $3
+int Sound_StopVoice(int); // match: an int return (the definition is void) keeps -1 in $3
 
 /* Stops the sound slot D_00446958 holds, if any. */
 void func_001BB590(void) {
     if (D_00446958 >= 0) {
-        func_0019CDA0(D_00446958);
+        Sound_StopVoice(D_00446958);
         D_00446958 = -1;
     }
 }
@@ -504,8 +504,8 @@ void Player_CountWeaponUse(int weapon) {
 
 void func_001BBFC8(void) {
     if (D_00413F80.unk261 == 0 && weapon_defs[D_00413F80.weapon].unk63 != 2) {
-        func_0019CDA0(2);
-        func_0019CE00(1);
+        Sound_StopVoice(2);
+        Sound_PlaySw(1);
         D_00413F80.unk261 = 1;
         func_00109098((ModelInstance *)D_00446978, 0, D_00446978->settings->unk82);
     }
@@ -516,7 +516,7 @@ void func_001BC058(void) {
     DisplayContext *display;
 
     if (D_00413F80.unk261 == 0 && weapon_defs[D_00413F80.weapon].unk63 != 2) {
-        func_0019CDA0(2);
+        Sound_StopVoice(2);
         display = D_00446978;
         D_00413F80.unk261 = 1;
         func_00109098((ModelInstance *)display, 0, display->settings->unk82);
@@ -528,7 +528,7 @@ void func_001BC0E0(int with_sound) {
 
     if (player->unk262 == 0) {
         if (with_sound) {
-            func_0019D0F0(0x23);
+            Sound_PlayCommon(0x23);
         }
         player->unk262 = 1;
     }

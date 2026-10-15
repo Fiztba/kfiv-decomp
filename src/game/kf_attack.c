@@ -64,7 +64,7 @@ void Player_CountMagicUse(int);
 void Player_CountWeaponUse(int);
 void func_001BBFC8(void);
 void func_001BC058(void);
-s32 func_0019D0F0(s32);
+s32 Sound_PlayCommon(s32);
 void func_001BC0E0(int with_sound);
 void func_001B4DF8(int idx, int amount);
 int func_00102238(char *, int, int);
@@ -1068,11 +1068,11 @@ void func_001B2F70(Unk1B1470Request *request, Unk1B1470Extra *extra, Entity *ent
 
     if (by_weapon && extra->unk04 == 0) {
         if (attack.unk00[0] >= attack.unk00[1] && attack.unk00[0] >= attack.unk00[2]) {
-            func_0019D0F0(0x32);
+            Sound_PlayCommon(0x32);
         } else if (attack.unk00[1] >= attack.unk00[2]) {
-            func_0019D0F0(0x33);
+            Sound_PlayCommon(0x33);
         } else {
-            func_0019D0F0(0x34);
+            Sound_PlayCommon(0x34);
         }
     }
 }

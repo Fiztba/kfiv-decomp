@@ -81,7 +81,7 @@ void func_001C5278(void);
 void func_001C47A0(MapObject *, f32 *, f32, f32);
 float sinf(float);
 float cosf(float);
-float func_0019B838(float);
+float Angle_Wrap(float);
 void func_001C5538(MapObject *, Vector4 *, f32, f32, f32, f32, f32, f32);
 void func_001C58F0(MapObject *, Vector4 *, f32, f32, f32, f32, f32, f32);
 void func_001C6360(MapObject *, Vector4 *, f32, f32, f32, f32, f32, f32);
@@ -99,7 +99,7 @@ void Vu0_LoadMatrix(void *);
 int puts(char *);
 void Collision_CylinderCylinder(void *, f32, f32, void *, f32, f32);
 void sceVu0Normalize(float *, float *);
-void func_0019B688(float *, float *, float *, float *);
+void Vector_TriangleNormal(float *, float *, float *, float *);
 void Vector_Normalize(void *, void *);
 void func_001C0C50(void *, void *, void *, void *, f32);
 
@@ -832,8 +832,8 @@ void func_001C24C0(MapObject *object, Vector4 *origin, f32 radius, f32 push, f32
     f32 distance;
 
     COLLISION_RESULT->hit = 0;
-    first_angle = func_0019B838(-heading + spread);
-    second_angle = func_0019B838(-heading - spread);
+    first_angle = Angle_Wrap(-heading + spread);
+    second_angle = Angle_Wrap(-heading - spread);
     first_x = -sinf(first_angle);
     first_z = cosf(first_angle);
     second_x = -sinf(second_angle);
@@ -2646,7 +2646,7 @@ void func_001C7960(CollisionOwner *owner, f32 *position, f32 radius, f32 push) {
         point0 = (f32 *)owner->model->get_point(owner->model, 0);
         point1 = (f32 *)owner->model->get_point(owner->model, 1);
         point3 = (f32 *)owner->model->get_point(owner->model, 3);
-        func_0019B688(normal, point0, point1, point3);
+        Vector_TriangleNormal(normal, point0, point1, point3);
         Vector_Normalize(normal, normal);
         if (normal[1] < -0.93969f) {
             return;
@@ -2731,7 +2731,7 @@ s32 func_001C7C60(CollisionOwner *owner, f32 *position, f32 radius) {
         point1 = (f32 *)owner->model->get_point(owner->model, 1);
         point2 = (f32 *)owner->model->get_point(owner->model, 2);
         point3 = (f32 *)owner->model->get_point(owner->model, 3);
-        func_0019B688(normal, point0, point1, point3);
+        Vector_TriangleNormal(normal, point0, point1, point3);
         Vector_Normalize(normal, normal);
         if (normal[1] >= -0.93969f && normal[1] <= 0.93969f) {
             return FALSE;
