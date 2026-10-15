@@ -8,6 +8,7 @@
 #include "kf_map.h"
 #include "kf_player.h"
 #include "kf_scroll_texture.h"
+#include "kf_model.h"
 
 void *memset(void *, int, u32);
 float sinf(float);
@@ -44,6 +45,7 @@ float func_0019B838(float);
 int func_0019D1C0(float, int, void *);
 int func_0019D490(u8, u8, float *, float);
 s32 func_0019D980(s8, u8, u8, f32, Vector4Arg *);
+int func_0019E9E0(char);
 void ModelMatrix_BuildPartLocal(ModelInstance *, ModelPart *, ModelPart *);
 void ModelMatrix_Build(ModelInstance *, Vector4 *, Vector4 *, f32 *);
 int Script_Start(int, int);
@@ -842,4 +844,54 @@ void MapObject_ClearMap(int map) {
     jointed_draw_list[map] = NULL;
     memset(D_003A1A30[map], 0, sizeof(D_003A1A30[map]));
     memset(objects_by_id[map], 0, sizeof(objects_by_id[map]));
+}
+
+void func_0011E8E8(int *arg0) {
+    func_0010AEB8(arg0);
+}
+
+/* Sets the GS Z-buffer, alpha and test registers for model, then hands it on. */
+void func_0011E8F0(ModelInstance *model) {
+    func_00109A50();
+    if (model->alpha < 128.0f) {
+        func_00109A80(GS_REG_ZBUF_1, 0x10A000118L);
+        func_00109A80(GS_REG_ZBUF_2, 0x10A000118L);
+    } else {
+        func_00109A80(GS_REG_ZBUF_1, 0xA000118L);
+        func_00109A80(GS_REG_ZBUF_2, 0xA000118L);
+    }
+    func_00109A80(GS_REG_ALPHA_1, 0x44);
+    func_00109A80(GS_REG_ALPHA_2, 9);
+    func_00109A80(GS_REG_TEST_1, 0x5000D);
+    func_00109A80(GS_REG_TEST_2, 0x5000D);
+    func_00109AD0();
+    func_0010AEB8(model);
+}
+
+/* Sets the GS registers for drawing a map object's model, then draws it. */
+void func_0011E9D0(void *model) {
+    func_00109A50();
+    func_00109A80(0x4E, 0x10A000118);
+    func_00109A80(0x4F, 0x10A000118);
+    func_00109A80(0x42, 0x44);
+    func_00109A80(0x43, 9);
+    func_00109A80(0x47, 0x5000D);
+    func_00109A80(0x48, 0x5000D);
+    func_00109AD0();
+    func_0010AEB8(model);
+}
+
+void func_0011EA70(void) {
+}
+
+char *func_0011EA78(char *arg0) {
+    return arg0 + 0xC0;
+}
+
+/* Stops the sound a map object is playing, if any. */
+void func_0011EA80(MapObject *object) {
+    if (object->sound != 0) {
+        func_0019E9E0(object->sound);
+        object->sound = 0;
+    }
 }
