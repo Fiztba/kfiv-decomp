@@ -17,12 +17,12 @@ void func_001BB2E8(int);
 int func_001BB308(int);
 void func_001BB360(void);
 MapRecordInfo *func_00115CD0(CameraState *, f32, int);
-void func_00109098(DisplayContext *, u8, u16);
+int func_00109098(ModelInstance *model, u8 index, u16 speed);
 void func_00109A50(void);
 void func_00109A80(int, s64);
 void func_00109AD0(void);
 void func_0010A4E8(int, int, int, int, int);
-int func_0019CE00(int);
+int func_0019CE00(int); // match: an int return (the definition is void) keeps $2 busy in func_001BBFC8
 int func_0019D0F0(int);
 
 extern PlayerState D_00413F80;
@@ -166,16 +166,16 @@ void func_001BB020(int index) {
     }
 }
 
-void func_001BB260(int arg0)
+void func_001BB260(int damage)
 {
-    int v;
+    int tint;
 
-    if (func_001BB308(arg0) != 0) {
+    if (func_001BB308(damage) != 0) {
         func_001BB360();
-        v = ((arg0 << 7) / (D_00413FD8[0] / 2)) + 0x7F;
-        if (v >= 0x100)
-            v = 0xFF;
-        func_001B57A0(v, 4, 0);
+        tint = ((damage << 7) / (D_00413FD8[0] / 2)) + 0x7F;
+        if (tint >= 0x100)
+            tint = 0xFF;
+        func_001B57A0(tint, 4, 0);
         D_0044695C = 6;
     }
 }
@@ -204,23 +204,23 @@ void func_001BB360(void) {
     }
 }
 
-void func_001BB390(void *arg0, int arg1) {
-    PlayerState *s;
-    float temp_f0;
+void func_001BB390(void *source, int damage) {
+    PlayerState *player;
+    float speed;
 
     if (D_0038CC50.unk00 != 0) {
         if (!(D_0038CC50.unk30 & 1)) {
-            s = &D_00413F80;
-            if (s->unk1A8 == 0) {
-                if (s->hp_max > 0) {
-                    s->aim.x = s->position.x - ((float *)arg0)[0];
-                    s->aim.y = 0;
-                    s->aim.z = s->position.z - ((float *)arg0)[2];
-                    Vector_Normalize(&s->aim, &s->aim);
-                    temp_f0 = ((float)(arg1 * arg1) / (float)s->hp_max) * 99.0f;
-                    s->aim_speed = temp_f0;
-                    if (temp_f0 > 99.0f) {
-                        s->aim_speed = 99.0f;
+            player = &D_00413F80;
+            if (player->unk1A8 == 0) {
+                if (player->hp_max > 0) {
+                    player->aim.x = player->position.x - ((float *)source)[0];
+                    player->aim.y = 0;
+                    player->aim.z = player->position.z - ((float *)source)[2];
+                    Vector_Normalize(&player->aim, &player->aim);
+                    speed = ((float)(damage * damage) / (float)player->hp_max) * 99.0f;
+                    player->aim_speed = speed;
+                    if (speed > 99.0f) {
+                        player->aim_speed = 99.0f;
                     }
                 }
             }
@@ -237,19 +237,19 @@ void func_001BB468(Vector4 *target, f32 speed) {
     D_00413F80.aim_speed = speed;
 }
 
-void func_001BB4D0(int arg0) {
-    PlayerState *s;
-    int t;
+void func_001BB4D0(int damage) {
+    PlayerState *player;
+    int frames;
 
     if (D_0038CC50.unk00 != 0 && !(D_0038CC50.unk30 & 1)) {
-        s = &D_00413F80;
-        if (!((float)arg0 * 100.0f / (float)s->hp_max < 10.0f)) {
-            t = (arg0 * 500 / (s->hp_max + 50)) / s->power;
-            if (s->unk234 < t) {
-                float f = s->unk238;
+        player = &D_00413F80;
+        if (!((float)damage * 100.0f / (float)player->hp_max < 10.0f)) {
+            frames = (damage * 500 / (player->hp_max + 50)) / player->power;
+            if (player->unk234 < frames) {
+                float angle = player->unk238;
 
-                if (0.2617994f > f) {
-                    s->unk234 = t;
+                if (0.2617994f > angle) {
+                    player->unk234 = frames;
                 }
             }
         }
@@ -347,39 +347,39 @@ void func_001BB908(void) {
 }
 
 void func_001BB978(void) {
-    PlayerState *s;
-    MapSlot *row;
-    char c;
-    int n;
-    float f;
-    float g;
+    PlayerState *player;
+    MapSlot *slot;
+    char area;
+    int step;
+    float fade;
+    float next;
 
-    row = &D_0038CD20[D_00446770];
-    s = &D_00413F80;
-    c = *(char *)((s->map_index << 7) + (int)row->records + 0x4C); // match: summed as integers, index first
-    *(s32 *)s->pad2A4 = c;
-    if (c - D_00414524[0] < 0) {
-        *(s32 *)s->pad2AC = -0x30;
+    slot = &D_0038CD20[D_00446770];
+    player = &D_00413F80;
+    area = *(char *)((player->map_index << 7) + (int)slot->records + 0x4C); // match: summed as integers, index first
+    *(s32 *)player->pad2A4 = area;
+    if (area - D_00414524[0] < 0) {
+        *(s32 *)player->pad2AC = -0x30;
     }
-    n = *(s32 *)s->pad2AC;
-    if (n != 0) {
-        g = s->unk2A8 + (float)n;
-        *(s32 *)s->pad2AC = n / 2;
-        s->unk2A8 = g;
+    step = *(s32 *)player->pad2AC;
+    if (step != 0) {
+        next = player->unk2A8 + (float)step;
+        *(s32 *)player->pad2AC = step / 2;
+        player->unk2A8 = next;
         return;
     }
-    f = s->unk2A8;
-    if (f < 0.0f) {
-        g = f + 0.5f;
-        s->unk2A8 = g;
-        if (g >= 0.0f) {
-            s->unk2A8 = 0.0f;
+    fade = player->unk2A8;
+    if (fade < 0.0f) {
+        next = fade + 0.5f;
+        player->unk2A8 = next;
+        if (next >= 0.0f) {
+            player->unk2A8 = 0.0f;
         }
-    } else if (f > 0.0f) {
-        g = f - 4.0f;
-        s->unk2A8 = g;
-        if (g <= 0.0f) {
-            s->unk2A8 = 0.0f;
+    } else if (fade > 0.0f) {
+        next = fade - 4.0f;
+        player->unk2A8 = next;
+        if (next <= 0.0f) {
+            player->unk2A8 = 0.0f;
         }
     }
 }
@@ -475,28 +475,28 @@ void Player_CountMagicUse(int effect_id) {
    Every 100th call also raises PlayerState.power_base ("Physical UP"). */
 void Player_CountWeaponUse(int weapon) {
     LevelRecord *record = &D_003679A0[weapon];
-    u16 v;
-    int n;
-    int t;
-    PlayerState *p;
+    u16 uses;
+    int new_uses;
+    int count;
+    PlayerState *player;
 
-    v = *(u16 *)&record->unk16; // match: read as unsigned
-    if (v < 0x1E0) {
-        n = v + 1;
-        record->unk16 = n;
-        if ((u16)n == 0xB4 || (u16)n == 0x1E0) {
+    uses = *(u16 *)&record->unk16; // match: read as unsigned
+    if (uses < 0x1E0) {
+        new_uses = uses + 1;
+        record->unk16 = new_uses;
+        if ((u16)new_uses == 0xB4 || (u16)new_uses == 0x1E0) {
             if (record->unk14 < 2) {
                 record->unk14++;
                 Message_ShowNotice(0, 0, 0, 0, 0x2D, MSG_WEAPON_LEVEL_UP);
             }
         }
     }
-    p = &D_00413F80;
-    t = (p->weapon_use_count + 1) % 100;
-    p->weapon_use_count = t;
-    if (t == 0) {
-        if (p->power_base < 0x3E7) {
-            p->power_base++;
+    player = &D_00413F80;
+    count = (player->weapon_use_count + 1) % 100;
+    player->weapon_use_count = count;
+    if (count == 0) {
+        if (player->power_base < 0x3E7) {
+            player->power_base++;
             Message_ShowNotice(0, 0, 0, 0, 0x2D, MSG_PHYSICAL_UP);
         }
     }
@@ -507,7 +507,7 @@ void func_001BBFC8(void) {
         func_0019CDA0(2);
         func_0019CE00(1);
         D_00413F80.unk261 = 1;
-        func_00109098(D_00446978, 0, D_00446978->settings->unk82);
+        func_00109098((ModelInstance *)D_00446978, 0, D_00446978->settings->unk82);
     }
 }
 
@@ -519,7 +519,7 @@ void func_001BC058(void) {
         func_0019CDA0(2);
         display = D_00446978;
         D_00413F80.unk261 = 1;
-        func_00109098(display, 0, display->settings->unk82);
+        func_00109098((ModelInstance *)display, 0, display->settings->unk82);
     }
 }
 

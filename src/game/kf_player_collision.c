@@ -5,8 +5,6 @@
 #include "kf_effect.h"
 #include "kf_vu0.h"
 
-/* the player's position, copied to the scratchpad for the tests */
-#define SCRATCH_POINT ((void *)0x70000080)
 /* moves the player out of the body just hit: to `push` from it, but by no more than 50 a frame */
 #define PUSH_PLAYER_OUT()                                                                          \
     Vector_Scale(offset, COLLISION_RESULT->normal, push);                                       \
@@ -343,7 +341,7 @@ void func_001BEA50(void) {
     s32 points_left;
 
     lowest = D_0044696C[0];
-    Vector_Copy(SCRATCH_POINT, &D_00413F80.position);
+    Vector_Copy(&COLLISION_SCRATCH->point, &D_00413F80.position);
     for (map = 0; map < 2; map++) {
         slot = D_00446770 == map ? &D_0038CD20[0] : &D_0038CD20[1];
         if (slot->unk00 != 0) {
@@ -371,7 +369,7 @@ void func_001BEA50(void) {
                     points_left = strip->point_count - 2;
                     do {
                         func_001C0C50(strip_point[0].position, strip_point[1].position, strip_point[2].position,
-                                      SCRATCH_POINT, 10.0f);
+                                      &COLLISION_SCRATCH->point, 10.0f);
                         if (COLLISION_RESULT->hit != 0 && COLLISION_RESULT->point[1] < lowest) {
                             lowest = COLLISION_RESULT->point[1];
                             D_00413F80.unk210 = func_001124E0(strip_point->unk04, strip_point->unk08, strip_point->unk0C);
@@ -644,14 +642,14 @@ int func_001BF6E8(void) {
     int i;
     int j;
     int k;
-    FxTableEntry *p;
+    FxTableEntry *effect;
 
     for (i = 0; i < 6; i++) {
         for (j = 0; j < 5; j++) {
             if (spell_levels[i][j] != 0) {
                 k = 15 * i + 3 * j + 1;
-                p = &D_00402DA8[k];
-                if (p->unk102 == 1) {
+                effect = &D_00402DA8[k];
+                if (effect->unk102 == 1) {
                     return 1;
                 }
             }

@@ -1600,34 +1600,34 @@ void func_001B9478(void) {
 }
 
 void func_001B94C0(void) {
-    PlayerState *p;
-    u64 temp_d;
-    int temp_v0;
-    u64 temp_v1;
-    int temp_v1_2;
-    int var_a0;
+    PlayerState *player;
+    u64 was_set;
+    int start_full;
+    u64 is_set;
+    int full;
+    int filled;
 
-    p = &D_00413F80;
-    temp_d = (D_00414448[0] >> 39) & 1;
-    temp_v1 = (p->unk1C8 >> 39) & 1;
-    if (temp_v1 != temp_d) {
-        if (temp_v1 != 0) {
-            temp_v0 = (p->power * 9) + 0x78;
-            p->unkCC = p->unkD0 = temp_v0;
+    player = &D_00413F80;
+    was_set = (D_00414448[0] >> 39) & 1;
+    is_set = (player->unk1C8 >> 39) & 1;
+    if (is_set != was_set) {
+        if (is_set != 0) {
+            start_full = (player->power * 9) + 0x78;
+            player->unkCC = player->unkD0 = start_full;
         } else {
-            p->unkD0 = p->unkCC = 0;
+            player->unkD0 = player->unkCC = 0;
         }
-    } else if (temp_v1 != 0) {
-        var_a0 = p->unkCC;
-        temp_v1_2 = (p->power * 9) + 0x78;
-        p->unkD0 = temp_v1_2;
-        if (temp_v1_2 < var_a0) {
-            p->unkCC = temp_v1_2;
-            var_a0 = temp_v1_2;
+    } else if (is_set != 0) {
+        filled = player->unkCC;
+        full = (player->power * 9) + 0x78;
+        player->unkD0 = full;
+        if (full < filled) {
+            player->unkCC = full;
+            filled = full;
         }
-        if (var_a0 > 0) {
-            if ((p->equipment[EQUIP_AMULET] != 0x9A) || ((D_00446ED4 & 1) != 0)) {
-                p->unkCC = var_a0 - 1;
+        if (filled > 0) {
+            if ((player->equipment[EQUIP_AMULET] != 0x9A) || ((D_00446ED4 & 1) != 0)) {
+                player->unkCC = filled - 1;
             }
         } else {
             func_001BB308(1);
@@ -1667,21 +1667,21 @@ void func_001B9588(void) {
 
 void func_001B9610(void)
 {
-    PlayerState *s = &D_00413F80;
+    PlayerState *player = &D_00413F80;
 
-    if (s->unk1A8 == 0) {
-        if (s->unk1A4 > 0) {
+    if (player->unk1A8 == 0) {
+        if (player->unk1A4 > 0) {
             return;
         }
-        if (s->hp_now > 0) {
+        if (player->hp_now > 0) {
             return;
         }
-        s->unk1A8 = 1;
+        player->unk1A8 = 1;
         func_0019D0F0(0x28);
     }
-    if (s->unk1A8 < 0x3C) {
-        s->rotation.x += (1.012291f - s->rotation.x) / (0x3D - s->unk1A8);
-        s->unk1A8++;
+    if (player->unk1A8 < 0x3C) {
+        player->rotation.x += (1.012291f - player->rotation.x) / (0x3D - player->unk1A8);
+        player->unk1A8++;
     } else {
         D_0038CC50.bit9 = 1;
     }
