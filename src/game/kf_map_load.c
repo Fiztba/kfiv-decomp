@@ -51,7 +51,7 @@ extern int D_00446770;
 extern MapSlotMemory D_004321F0[2];
 extern char D_0043E710[];
 extern u32 D_00446F1C;
-extern u32 D_00446F20;
+extern int D_00446F20;
 extern char *D_00446F50;
 extern char *D_00446F54;
 

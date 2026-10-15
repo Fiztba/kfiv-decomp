@@ -99,7 +99,7 @@ void func_0010A100(void *);
 void func_0010B238(TextureTableHeader *);
 void func_0010D308(ModelInstance *);
 void func_00109F80(s64, s64, s64);
-void func_0010A4E8(u8, u8, u8, u8, int);
+void func_0010A4E8(int, int, int, int, int);
 u32 *func_00109990(int);
 void func_00109650(u32 *, u32 *);
 void Vu0_LoadMatrix(void *);
@@ -1134,17 +1134,18 @@ void func_00116AD8(int slot, int index) {
     func_00109650(packet_start, packet);
 }
 
-void func_00116B60(int *arg0) {
-    u32 *p0;
-    u32 *p;
+/* Queues a packet for sending. */
+void func_00116B60(int *packet) {
+    u32 *packet_start;
+    u32 *cursor;
 
-    if (arg0 != 0) {
-        p0 = p = func_00109990(2);
-        *p++ = *arg0 | 0x30000000;
-        *p++ = (u32)arg0 + 0x10;
-        *p++ = 0;
-        *p++ = 0;
-        func_00109650(p0, p);
+    if (packet != 0) {
+        packet_start = cursor = func_00109990(2);
+        *cursor++ = *packet | 0x30000000;
+        *cursor++ = (u32)packet + 0x10;
+        *cursor++ = 0;
+        *cursor++ = 0;
+        func_00109650(packet_start, cursor);
     }
 }
 
