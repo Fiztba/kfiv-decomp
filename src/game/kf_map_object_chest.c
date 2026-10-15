@@ -10,7 +10,7 @@ void func_0011FC18(MapObject *);
 void func_0011EFC8(MapObject *);
 void *memset(void *, int, u32);
 void MapObject_ShowKeyUsed(int);
-int func_0019D490(u8, u8, float *, float);
+int Sound_PlayMapAtRange(u8, u8, float *, float);
 void MapObject_UpdateOpenChest(MapObject *);
 ModelNode *func_001C9580(int);
 void MapObject_UpdateClosedChest(void *, int);
@@ -140,7 +140,7 @@ void MapObject_UpdateClosedChest(void *arg, int unused) {
             if (object->unk04->unk70 > 0.0f) {
                 range = object->unk04->unk70;
             }
-            func_0019D490(0x2D, 0, &object->model->position.x, range);
+            Sound_PlayMapAtRange(0x2D, 0, &object->model->position.x, range);
             source = object->unk08;
         }
         MAP_OBJECT_BYTES(object)->step = 2;

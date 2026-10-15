@@ -39,7 +39,7 @@ int func_00102230(void);
 void func_00117CC8(void);
 int func_00123108(void);
 void func_00123288(void);
-void func_0019C540(void);
+void Sound_Update(void);
 void func_00115878(int);
 void func_00117C60(void);
 void func_001A15F8(void);
@@ -58,7 +58,7 @@ void func_00114AA8(int);
 void func_001155F8(int);
 void func_00119360(int);
 void func_00123158(int);
-void func_0019EA98(int);
+void Sound_StopAll(int);
 void func_001A15F0(void);
 void func_001C82C0(int);
 void func_001C87D8(int);
@@ -256,7 +256,7 @@ void func_00118D78(void) {
 void func_00118D80(void) {
     func_00117CC8();
     func_00123288();
-    func_0019C540();
+    Sound_Update();
     if (D_0038D610.step == 0 || D_0038D610.step == 5) {
         if (func_00123108() == 0 && D_0038A130.unk0C == 0 && D_0038A130.unk04 == 0 && D_0038A130.unk18 == 0 &&
             func_00102230() == 0) {
@@ -390,7 +390,7 @@ void func_001190C8(void) {
     Script_Start(0x7FFF, 0);
     D_0038A130.unk00 = ((MapSlotUnk08 *)D_0038CD20[0].header)->unk70;
     D_0038A130.unk04 = 1;
-    func_0019EA98(1);
+    Sound_StopAll(1);
     D_0038A130.unk14 = &D_0038CD20[0];
     func_00106178(0, 0, 0, 30);
     D_0038D680.step = 0;

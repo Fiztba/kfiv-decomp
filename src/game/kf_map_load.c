@@ -20,7 +20,7 @@ void func_00109800(void);
 void func_0010B000(void);
 void func_00117F98(void);
 void func_00123288(void);
-void func_0019C540(void);
+void Sound_Update(void);
 void func_001B5778(void);
 void Display_SwapBuffers(int);
 void func_001152B8(int);
@@ -130,7 +130,7 @@ void func_00117CC8(void) {
                     D_0038D5E0[D_0038D610.step]();
                     func_00123288();
                     func_00101618();
-                    func_0019C540();
+                    Sound_Update();
                 }
                 D_0038D610.step = 6;
             }

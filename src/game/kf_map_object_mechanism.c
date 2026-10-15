@@ -8,7 +8,7 @@
 
 void Vector_Subtract(void *, void *, void *);
 float atan2f(float, float);
-float func_0019B838(float);
+float Angle_Wrap(float);
 float sqrtf(float);
 int func_001B4F30(u16, void *, void *, void *, void *);
 extern void *D_00414188[];
@@ -107,7 +107,7 @@ void func_001217C0(MapObject *object) {
         if ((f32)MAP_OBJECT_WORD_ARRAY(object)[i * 3] * (f32)MAP_OBJECT_WORD_ARRAY(object)[i * 3] < delta.x * delta.x + delta.z * delta.z) {
             continue;
         }
-        turn = func_0019B838(atan2f(delta.x, delta.z) - object->model->rotation.y);
+        turn = Angle_Wrap(atan2f(delta.x, delta.z) - object->model->rotation.y);
         half_angle = MAP_OBJECT_WORD_ARRAY(object)[i * 3 + 1];
         half_angle = half_angle * 0.017453292f * 0.5f;
         if (turn < -half_angle) {
@@ -149,8 +149,8 @@ void func_00121968(MapObject *object) {
         return;
     }
     point = (void *)object->model->get_point(object->model, MAP_OBJECT_WORDS(object)->unk48);
-    aim.x = func_0019B838(object->model->rotation.x + MAP_OBJECT_WORDS(object)->unk4A * 0.017453292f);
-    aim.y = func_0019B838(object->model->rotation.y + MAP_OBJECT_WORDS(object)->unk4C * 0.017453292f + 3.1415927f);
+    aim.x = Angle_Wrap(object->model->rotation.x + MAP_OBJECT_WORDS(object)->unk4A * 0.017453292f);
+    aim.y = Angle_Wrap(object->model->rotation.y + MAP_OBJECT_WORDS(object)->unk4C * 0.017453292f + 3.1415927f);
     aim.z = object->model->rotation.z;
     aim.w = 0.0f;
     shot = Shot_Alloc();

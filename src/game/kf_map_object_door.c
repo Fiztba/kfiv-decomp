@@ -5,7 +5,7 @@
 void Vector_Copy(void *, void *);
 void func_0011F498(MapObject *);
 void MapObject_ShowKeyUsed(int);
-int func_0019D490(u8, u8, float *, float);
+int Sound_PlayMapAtRange(u8, u8, float *, float);
 void Vector_Subtract(void *, void *, void *);
 float sinf(float);
 float cosf(float);
@@ -74,7 +74,7 @@ void MapObject_UpdateClosedDoor(MapObject *object) {
                 if (object->unk04->unk70 > 0.0f) {
                     range = object->unk04->unk70;
                 }
-                func_0019D490(0x2E, 0, &object->model->position.x, range);
+                Sound_PlayMapAtRange(0x2E, 0, &object->model->position.x, range);
                 object->unk10 |= 0x40000;
             } else {
                 if (work->timer > 0) {

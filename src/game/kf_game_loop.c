@@ -35,7 +35,7 @@ void func_001B4EE0(void);
 int func_001060C0(void);
 void func_00104EC8(void);
 void func_001B5A10(void);
-void func_001A1260(int);
+void Sound_LoadMgBank(int);
 void func_0019C520(void);
 void func_00112948(int);
 int func_001D20A0(void);
@@ -58,7 +58,7 @@ void func_00123288(void);
 void func_001C95B0(void);
 void Player_UseItem(void);
 void func_00101618(void);
-void func_0019C540(void);
+void Sound_Update(void);
 void func_001061E8(void);
 void func_00100FC8(void);
 void func_001012D8(int, int);
@@ -71,8 +71,8 @@ void func_001017A8(void);
 void func_00118958(void);
 void func_00101F90(void);
 void func_001B5778(void);
-void func_0019C7F0(int);
-void func_0019C820(int);
+void Sound_SetBgmVolume(int);
+void Sound_SetBankVolumes(int);
 int sceGsSyncV(int);
 int func_0019F6B0(void);
 void func_00102558(void);
@@ -88,7 +88,7 @@ void func_00109EB8(void);
 void func_001C97E8(int);
 void func_00116AA0(void);
 void func_0010A698(void);
-void func_0019A608(void);
+void Entity_DrawPoolModels(void);
 void func_00116970(void);
 void func_0010A5D8(void);
 void func_00109E88(void);
@@ -108,7 +108,7 @@ void func_00107CD8(int);
 void func_001095D8(void);
 MapRecordInfo *func_00115CD0(CameraState *, f32, int);
 int rand(void);
-float func_0019B838(float);
+float Angle_Wrap(float);
 void sceVu0CopyMatrix(void *, void *);
 void sceVu0RotMatrixZ(float *, float *, float);
 void sceVu0RotMatrixX(float *, float *, float);
@@ -118,17 +118,17 @@ void Vector_Copy(void *, void *);
 void Vector_Scale(float *, float *, float);
 void Vector_Subtract(void *, void *, void *);
 void Vector_Add(void *, void *, void *);
-int func_0019B908(float *, float, float);
+int Angle_Approach(float *, float, float);
 float atan2f(float, float);
 float sqrtf(float);
 void sceVu0ViewScreenMatrix(void *, float, float, float, float, float, float, float, float, float);
 void sceVu0TransMatrix(float *, float *, float *);
 void sceVu0InversMatrix(void *, void *);
 void sceVu0MulMatrix(void *, void *, void *);
-void func_0019EA98(int);
-int func_001A1048(int, int);
+void Sound_StopAll(int);
+int Sound_LoadMapBankStep(int, int);
 int func_001A0C18(int, int, int);
-int func_0019F628(int, int);
+int Sound_LoadBgm(int, int);
 void func_00118788(void);
 int func_001187D8(void);
 int func_00102230(void);
@@ -214,7 +214,7 @@ void func_001000C8(int arg) {
     }
     func_001B5A10();
     Player_LoadArmModels();
-    func_001A1260(D_00413F80.equipped_magic);
+    Sound_LoadMgBank(D_00413F80.equipped_magic);
     func_0019C520();
 }
 
@@ -283,7 +283,7 @@ void func_001001C0(int arg) {
         Hud_Update();
         if (!(D_0038CC50.bit12 && D_0038CC50.bit13)) {
             func_00101618();
-            func_0019C540();
+            Sound_Update();
         }
         func_001061E8();
         Splash_Update();
@@ -311,8 +311,8 @@ void func_001001C0(int arg) {
     Message_ClearNotices();
     saved = D_00349680[1];
     D_00349680[1] = 0;
-    func_0019C7F0(0);
-    func_0019C820(0);
+    Sound_SetBgmVolume(0);
+    Sound_SetBankVolumes(0);
     while (D_0038A130.unk0C != 0 ||
            ((D_0038A130.unk04 != 0 || D_0038A130.unk18 != 0) &&
             (D_0038A130.unk18 != 0 || D_0038A130.unk04 == 0 || func_0019F6B0() == 0))) {
@@ -320,7 +320,7 @@ void func_001001C0(int arg) {
         }
         Timer_Restart();
         func_00101618();
-        func_0019C540();
+        Sound_Update();
     }
     D_00349680[1] = saved;
     D_0038CC50.bit9 = FALSE;
@@ -348,7 +348,7 @@ int func_001005E8(int arg) {
         func_0010AE58();
         func_00114198(0);
         MapObject_DrawAll(0, 0, 0);
-        func_0019A608();
+        Entity_DrawPoolModels();
         Entity_DrawAll(0);
         func_001C9650(0);
         ItemEffect_Draw();
@@ -390,7 +390,7 @@ int func_001005E8(int arg) {
         func_0010AE58();
         func_00114198(0);
         MapObject_DrawAll(0, 0, 0);
-        func_0019A608();
+        Entity_DrawPoolModels();
         Entity_DrawAll(0);
         func_001C9650(0);
         ItemEffect_Draw();
@@ -436,7 +436,7 @@ int func_001005E8(int arg) {
         func_0010AE58();
         func_00114198(0);
         MapObject_DrawAll(0, 0, 0);
-        func_0019A608();
+        Entity_DrawPoolModels();
         Entity_DrawAll(0);
         func_001C9650(0);
         Gold_Draw(0);
@@ -554,7 +554,7 @@ void func_00100D10(void) {
     }
     if (D_004325A0.unk74 != 0 && D_004325A0.unk70 > 0.0f) {
         angle = (f32)(int)((f32)rand() * 360.0f / 2147483648.0f) * 0.017453292f;
-        angle = func_0019B838(angle + D_004325A0.unk18);
+        angle = Angle_Wrap(angle + D_004325A0.unk18);
         D_004325A0.unk50[0] = D_004325A0.unk70;
         D_004325A0.unk50[1] = 0.0f;
         D_004325A0.unk50[2] = 0.0f;
@@ -572,7 +572,7 @@ void func_00100D10(void) {
     }
     if (D_004325A0.unk7C != 0 && D_004325A0.unk78 > 0.0f) {
         angle = (f32)(int)((f32)rand() * 360.0f / 2147483648.0f) * 0.017453292f;
-        angle = func_0019B838(angle + D_004325A0.unk18);
+        angle = Angle_Wrap(angle + D_004325A0.unk18);
         D_004325A0.unk60[0] = D_004325A0.unk78;
         D_004325A0.unk60[1] = 0.0f;
         D_004325A0.unk60[2] = 0.0f;
@@ -640,8 +640,8 @@ void func_00100FC8(void) {
             D_004325A0.unk14 = yaw;
             break;
         case 2:
-            func_0019B908(&D_004325A0.unk10, pitch, D_004325A0.unk40);
-            func_0019B908(&D_004325A0.unk14, yaw, D_004325A0.unk40);
+            Angle_Approach(&D_004325A0.unk10, pitch, D_004325A0.unk40);
+            Angle_Approach(&D_004325A0.unk14, yaw, D_004325A0.unk40);
             break;
         }
     }
@@ -672,8 +672,8 @@ void func_001012D8(int projection, int mode) {
     sceVu0TransMatrix(D_00432320, D_00431AF0, translation);
     sceVu0RotMatrixY(D_00432320, D_00432320, -D_004325A0.unk14);
     sceVu0RotMatrixX(D_00432320, D_00432320, -D_004325A0.unk10);
-    sceVu0RotMatrixY(D_00432360, D_00431AF0, func_0019B838(3.1415927f - D_004325A0.unk14));
-    sceVu0RotMatrixX(D_00432360, D_00432360, func_0019B838(-D_004325A0.unk10));
+    sceVu0RotMatrixY(D_00432360, D_00431AF0, Angle_Wrap(3.1415927f - D_004325A0.unk14));
+    sceVu0RotMatrixX(D_00432360, D_00432360, Angle_Wrap(-D_004325A0.unk10));
     sceVu0RotMatrixZ(D_00432360, D_00432360, D_004325A0.unk18);
     sceVu0InversMatrix(D_00432360, D_00432360);
     switch (mode) {
@@ -719,7 +719,7 @@ void func_00101618(void) {
     if (D_0038A130.step == 0) {
         if (D_0038A130.unk0C != 0) {
             D_0038A130.step = 1;
-            func_0019EA98(0);
+            Sound_StopAll(0);
         } else if (D_0038A130.unk18 != 0) {
             D_0038A130.step = 2;
         } else if (D_0038A130.unk04 != 0) {
@@ -728,7 +728,7 @@ void func_00101618(void) {
     }
     switch (D_0038A130.step) {
     case 1:
-        D_0038A130.unk0C = func_001A1048((int)D_0038A130.unk10, D_0038A130.unk0C);
+        D_0038A130.unk0C = Sound_LoadMapBankStep((int)D_0038A130.unk10, D_0038A130.unk0C);
         if (D_0038A130.unk0C == 0) {
             D_0038A130.unk10 = NULL;
             D_0038A130.step = 0;
@@ -744,7 +744,7 @@ void func_00101618(void) {
         break;
     case 3:
         if (D_0038A130.unk04 != 0) {
-            D_0038A130.unk04 = func_0019F628(D_0038A130.unk00, D_0038A130.unk04);
+            D_0038A130.unk04 = Sound_LoadBgm(D_0038A130.unk00, D_0038A130.unk04);
             if (D_0038A130.unk04 == 0) {
                 D_0038A130.step = 0;
             }

@@ -68,7 +68,7 @@ void func_001C8990(int, f32 *);
 void Script_Init(int);
 int Script_Start(int, int);
 void func_001BB590(void);
-void func_0019EA98(int);
+void Sound_StopAll(int);
 void Vector_Add(void *, void *, void *);
 void Matrix_Multiply(void *, void *, void *);
 void ModelMatrix_BuildPartLocal(ModelInstance *, ModelPart *, ModelPart *);
@@ -90,7 +90,7 @@ void func_00109800(void);
 void func_0010A7E0(void *);
 void func_0010B000(void);
 void func_00116610(void);
-float func_0019B838(float);
+float Angle_Wrap(float);
 void func_001B5460(void);
 void Display_SwapBuffers(int);
 void Vector_Normalize(void *, void *);
@@ -616,7 +616,7 @@ void func_001152B8(int map) {
         loading = queue->unk10;
         if (loading != slot && queue->unk14 != slot) {
             func_001BB590();
-            func_0019EA98(1);
+            Sound_StopAll(1);
             queue->unk14 = slot;
         } else if (loading == slot && D_0038A130.unk14 != slot) {
             D_0038A130.unk14 = NULL;
@@ -902,16 +902,16 @@ void func_001161A8(void) {
             move.x = move.y = move.z = move.w = 0.0f;
             if (D_00413DA8[0] & 0x2000) {
                 if (D_00413DA8[0] & 0x40) {
-                    rotation.x = func_0019B838(rotation.x + 0.08726646f);
+                    rotation.x = Angle_Wrap(rotation.x + 0.08726646f);
                 }
                 if (D_00413DA8[0] & 0x10) {
-                    rotation.x = func_0019B838(rotation.x - 0.08726646f);
+                    rotation.x = Angle_Wrap(rotation.x - 0.08726646f);
                 }
                 if (D_00413DA8[0] & 0x80) {
-                    rotation.y = func_0019B838(rotation.y + 0.08726646f);
+                    rotation.y = Angle_Wrap(rotation.y + 0.08726646f);
                 }
                 if (D_00413DA8[0] & 0x20) {
-                    rotation.y = func_0019B838(rotation.y - 0.08726646f);
+                    rotation.y = Angle_Wrap(rotation.y - 0.08726646f);
                 }
             } else {
                 if (D_00413DA8[0] & 0x80) {
