@@ -1,22 +1,13 @@
 #include "kf_game.h"
+#include "kf_player.h"
 #include "kf_map.h"
 #include "kf_entity.h"
 #include "kf_map_object.h"
-#include "kf_player.h"
 #include "kf_collision.h"
+#include "kf_vu0.h"
 
-extern GameStatus D_0038CC50;
-extern MapSlot D_0038CD20[2];
-extern MapObject D_003A1A30[][0x200];
-extern PlayerState D_00413F80;
-extern EventRunner D_00420D00;
-extern CameraState D_004325A0;
-extern s32 D_004467B8[2];
-extern int D_00446770;
-extern ItemNode *D_004469D4;
-extern ItemNode *D_004469D8;
-extern f32 D_00446A08[];
-
+void sceVu0RotMatrixX(float *, float *, float);
+void sceVu0RotMatrixY(float *, float *, float);
 int Timer_GetTicks(void);
 void func_001D0800(void);
 void func_001C1858(f32, void *, void *, s32);
@@ -32,6 +23,54 @@ int func_001090E0(char *); // match: its u16 is halved as an int
 int Script_Start(int, int);
 int Script_IsRunning(int);
 int func_001C9AB0(ModelNode *);
+extern GameStatus D_0038CC50;
+extern PlayerState D_00413F80;
+extern EventRunner D_00420D00;
+extern CameraState D_004325A0;
+extern f32 D_00431AF0[16];
+extern MapSlot D_0038CD20[2];
+extern MapObject D_003A1A30[][0x200];
+extern s32 D_004467B8[2];
+extern int D_00446770;
+extern ItemNode *D_004469D4;
+extern ItemNode *D_004469D8;
+extern f32 D_00446A08[];
+extern float D_00446A0C[];
+
+/* Keep last frame's view ray, then rebuild it: from the player's eyes (or the camera, in a cutscene) along the
+   direction looked in. */
+void func_001D0800(void) {
+    f32 rotation[16];
+    f32 pitch;
+    f32 heading;
+
+    Vector_Copy(D_00420D00.unk20, D_00420D00.unk00);
+    Vector_Copy(D_00420D00.unk30, D_00420D00.unk10);
+    D_00420D00.unk44 = D_00420D00.unk40;
+    if (D_0038CC50.unk03 == 0) {
+        Vector_Copy(D_00420D00.unk00, &D_00413F80);
+        D_00420D00.unk00[1] = D_00420D00.unk00[1] - 220.0f + D_00413F80.unk1F0 + D_004325A0.unk4C;
+        pitch = D_00413F80.rotation.x - D_00413F80.unk238;
+        if (pitch > 1.012291f) {
+            pitch = 1.012291f;
+        } else if (pitch < -1.012291f) {
+            pitch = -1.012291f;
+        }
+        heading = D_00413F80.rotation.y;
+    } else {
+        Vector_Copy(D_00420D00.unk00, &D_004325A0);
+        pitch = D_004325A0.unk10;
+        heading = D_004325A0.unk14;
+    }
+    D_00420D00.unk10[2] = 1.0f;
+    D_00420D00.unk10[0] = 0.0f;
+    D_00420D00.unk10[1] = 0.0f;
+    D_00420D00.unk10[3] = 0.0f;
+    sceVu0RotMatrixX(rotation, D_00431AF0, pitch);
+    Vector_ApplyMatrix(D_00420D00.unk10, rotation, D_00420D00.unk10);
+    sceVu0RotMatrixY(rotation, D_00431AF0, heading);
+    Vector_ApplyMatrix(D_00420D00.unk10, rotation, D_00420D00.unk10);
+}
 
 /* Finds what is in front of the player: how far the view reaches before a wall or a map object (unk40), and the
    entity, map object or item near enough to act on. Then, when an event may start (GameStatus.bit1), starts the
@@ -250,4 +289,29 @@ void func_001D0970(void) {
         }
     }
     D_00420D00.unk48 = nearest;
+}
+
+/* Moves the event runner's position and its copy from the frame before by offset (the other map slot became
+   the current one). */
+void func_001D1210(f32 *offset) {
+    Vector_Add(D_00420D00.unk00, D_00420D00.unk00, offset);
+    Vector_Add(D_00420D00.unk20, D_00420D00.unk20, offset);
+}
+
+/* Distance from pos to target if within radius on every axis and overall, else D_00446A0C. */
+float func_001D1260(float radius, float *pos, float *target) {
+    float diff[4];
+    float dist;
+
+    if (pos[0] < target[0] - radius || target[0] + radius < pos[0]
+        || pos[1] < target[1] - radius || target[1] + radius < pos[1]
+        || pos[2] < target[2] - radius || target[2] + radius < pos[2]) {
+        return D_00446A0C[0];
+    }
+    Vector_Subtract(diff, pos, target);
+    dist = sqrtf(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2]);
+    if (dist <= radius) {
+        return dist;
+    }
+    return D_00446A0C[0];
 }
