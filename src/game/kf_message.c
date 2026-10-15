@@ -665,16 +665,17 @@ static s16 *Message_LayoutPage(s16 *text, s32 font) {
     return text;
 }
 
-int func_001D0758(int arg0, u8 *arg1) {
+/* The decimal digits of `value` into `digits`, least significant first; gives how many. */
+int func_001D0758(int value, u8 *digits) {
     int n;
     int i;
 
-    *arg1 = arg0 % 10;
-    n = arg0 / 10;
+    *digits = value % 10;
+    n = value / 10;
     i = 1;
     while (n != 0) {
-        arg1[i] = n % 10;
-        n = n / 10;
+        digits[i] = n % 10;
+        n /= 10;
         i++;
     }
     return i;
