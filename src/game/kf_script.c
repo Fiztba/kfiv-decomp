@@ -1052,7 +1052,7 @@ void ScriptCmd_Stall19(void) {
 void ScriptCmd_Stall20(void) {
 }
 
-/* Command 29: stores the float argument in the camera's word at 0x48 (D_004325E8, CameraState.pad48),
+/* Command 29: stores the float argument in the camera's word at 0x48 (D_004325E8, CameraState.unk48),
    then finishes. */
 void func_00211FF0(ScriptFloatValueCommand *command) {
     D_004325E8[0] = command->value.value;
