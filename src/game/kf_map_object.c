@@ -84,6 +84,12 @@ static MapObject *objects_by_id[2][0x100];      /* 0x472240 per map, by MapObjec
 static MapSlotUnk10Vectors glow_lights_shared;  /* 0x472A40 D_0038A1B0.unkC0 blended for the glow */
 static MapSlotUnk10Vectors glow_lights[2][0x20]; /* 0x472AC0 D_0038A1B0.unkA90 blended for the glow */
 
+/* Empties the map objects of both maps. */
+void func_0011C6E8(void) {
+    MapObject_ClearMap(0);
+    MapObject_ClearMap(1);
+}
+
 /* Sets up the objects of a map once it is loaded: puts each model where its
    source says, works out how far the object reaches, picks the functions that
    draw it, runs the every-frame handler of its kind once, and threads the
