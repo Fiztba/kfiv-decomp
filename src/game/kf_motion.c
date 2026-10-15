@@ -125,10 +125,10 @@ int func_00108AA0(ModelInstance *model, int frame) {
 /* Plays one frame of the model's current motion: every part is posed between the two keys around the frame. */
 void func_00108AC8(void *model_arg) {
     ModelInstance *model = model_arg;
-    Vector4 *point0 = (Vector4 *)0x70000000;
-    Vector4 *point1 = (Vector4 *)0x70000010;
-    Vector4 *tangent0 = (Vector4 *)0x70000020;
-    Vector4 *tangent1 = (Vector4 *)0x70000030;
+    Vector4 *point0 = &MOTION_SCRATCH_POINTS[0];
+    Vector4 *point1 = &MOTION_SCRATCH_POINTS[1];
+    Vector4 *tangent0 = &MOTION_SCRATCH_POINTS[2];
+    Vector4 *tangent1 = &MOTION_SCRATCH_POINTS[3];
     ModelChannel *channel;
     MotionData *motion;
     ModelPartLevels *record;
@@ -223,13 +223,12 @@ int func_00109098(ModelInstance *model, u8 index, u16 speed) {
     return 0;
 }
 
-u16 func_001090E0(char *arg0) {
-    char *p;
-    char **slot;
+/* The last frame of the model's current motion. */
+u16 func_001090E0(char *model_arg) {
+    ModelInstance *model = (ModelInstance *)model_arg;
+    ModelChannel *channel = MODEL_CHANNEL(model);
 
-    p = *(char **)(arg0 + 0xFC);
-    slot = (char **)(p + (u8)p[0x81] * 4);
-    return *(u16 *)(*slot - 4);
+    return ((ModelTableHeader *)channel->tables[channel->index] - 1)->unk00;
 }
 
 /* Hermite interpolation: hands the four basis weights for the ratio to Vector_WeightedSum4. */

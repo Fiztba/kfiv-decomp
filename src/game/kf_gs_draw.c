@@ -117,8 +117,8 @@ void func_0010A008(void) {
     func_00109F80((frame_base >> 5) | 0xA0000, 0x1BF0000027F0000L, 0x720000006C00L);
 }
 
-void func_0010A040(int arg0) {
-    func_00109C30((D_00446F78 != 0) ? 0 : 0x1180, 0, 0xA, 0, 0, 0x280, 0x1C0, arg0, 0, 0xA, 0, 0, 2);
+void func_0010A040(int dest_base) {
+    func_00109C30((D_00446F78 != 0) ? 0 : 0x1180, 0, 0xA, 0, 0, 0x280, 0x1C0, dest_base, 0, 0xA, 0, 0, 2);
 }
 
 void func_0010A0A0(int value) {
@@ -266,24 +266,24 @@ void func_0010A4E8(int red, int green, int blue, int alpha, int blend) {
 }
 
 void func_0010A5D8(void) {
-    ScreenSprite s;
+    ScreenSprite sprite;
 
     func_00109A50();
     func_00109A80(0x47, 0x30000);
     func_00109A80(0x4E, 0x10A000118UL);
     func_00109AD0();
-    s.prim = 6;
-    s.vertex[0].x = 0x6C00;
-    s.vertex[0].y = 0x7200;
-    s.vertex[1].x = 0x9400;
-    s.vertex[1].y = 0x8E00;
-    s.rgba[0] = 0;
-    s.rgba[1] = 0;
-    s.rgba[2] = 0;
-    s.rgba[3] = 0;
-    s.vertex[0].z = 0;
-    s.vertex[1].z = 0;
-    func_0010A338(&s);
+    sprite.prim = 6;
+    sprite.vertex[0].x = 0x6C00;
+    sprite.vertex[0].y = 0x7200;
+    sprite.vertex[1].x = 0x9400;
+    sprite.vertex[1].y = 0x8E00;
+    sprite.rgba[0] = 0;
+    sprite.rgba[1] = 0;
+    sprite.rgba[2] = 0;
+    sprite.rgba[3] = 0;
+    sprite.vertex[0].z = 0;
+    sprite.vertex[1].z = 0;
+    func_0010A338(&sprite);
     func_00109A50();
     func_00109A80(0x47, 0x70000);
     func_00109A80(0x4E, 0x0A000118);
@@ -291,51 +291,51 @@ void func_0010A5D8(void) {
 }
 
 void func_0010A698(void) {
-    ScreenSprite s;
+    ScreenSprite sprite;
 
     func_00109A50();
     func_00109A80(GS_REG_TEST_1, 0x32001);
     func_00109AD0();
-    s.prim = 6;
-    s.rgba[0] = 0;
-    s.rgba[1] = 0;
-    s.rgba[2] = 0;
-    s.rgba[3] = 0;
-    s.vertex[0].x = 0x6C00;
-    s.vertex[0].y = 0x7200;
-    s.vertex[0].z = 0;
-    s.vertex[1].x = 0x9400;
-    s.vertex[1].y = 0x8E00;
-    s.vertex[1].z = 0;
-    func_0010A338(&s);
+    sprite.prim = 6;
+    sprite.rgba[0] = 0;
+    sprite.rgba[1] = 0;
+    sprite.rgba[2] = 0;
+    sprite.rgba[3] = 0;
+    sprite.vertex[0].x = 0x6C00;
+    sprite.vertex[0].y = 0x7200;
+    sprite.vertex[0].z = 0;
+    sprite.vertex[1].x = 0x9400;
+    sprite.vertex[1].y = 0x8E00;
+    sprite.vertex[1].z = 0;
+    func_0010A338(&sprite);
 }
 
-void func_0010A718(int arg0) {
-    ScreenSprite s;
-    int var_s1;
+void func_0010A718(int alpha) {
+    ScreenSprite sprite;
+    int strips_left;
 
-    var_s1 = 9;
+    strips_left = 9;
     func_00109A50();
-    func_00109A80(GS_REG_ALPHA_1, ((s64)arg0 << 0x20) | 0x68);
+    func_00109A80(GS_REG_ALPHA_1, ((s64)alpha << 0x20) | 0x68);
     func_00109A80(GS_REG_TEST_1, 0x31001);
     func_00109AD0();
-    s.prim = 0x46;
-    s.rgba[3] = arg0;
-    s.rgba[0] = 0;
-    s.rgba[1] = 0;
-    s.rgba[2] = 0;
-    s.vertex[0].x = 0x6C00;
-    s.vertex[0].y = 0x7200;
-    s.vertex[0].z = 0;
-    s.vertex[1].x = 0x7000;
-    s.vertex[1].y = 0x8E00;
-    s.vertex[1].z = 0;
+    sprite.prim = 0x46;
+    sprite.rgba[3] = alpha;
+    sprite.rgba[0] = 0;
+    sprite.rgba[1] = 0;
+    sprite.rgba[2] = 0;
+    sprite.vertex[0].x = 0x6C00;
+    sprite.vertex[0].y = 0x7200;
+    sprite.vertex[0].z = 0;
+    sprite.vertex[1].x = 0x7000;
+    sprite.vertex[1].y = 0x8E00;
+    sprite.vertex[1].z = 0;
     do {
-        var_s1 -= 1;
-        func_0010A338(&s);
-        s.vertex[0].x += 0x400;
-        s.vertex[1].x += 0x400;
-    } while (var_s1 >= 0);
+        strips_left--;
+        func_0010A338(&sprite);
+        sprite.vertex[0].x += 0x400;
+        sprite.vertex[1].x += 0x400;
+    } while (strips_left >= 0);
 }
 
 /* Queue a packet carrying one 4x4 matrix. */

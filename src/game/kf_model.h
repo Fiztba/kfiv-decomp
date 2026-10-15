@@ -472,6 +472,9 @@ typedef struct {
 /* the scratchpad as a matrix, where the builders of kf_model_matrix.c work */
 #define MODEL_MATRIX_SCRATCH ((f32 *)0x70000000)
 
+/* the scratchpad as func_00108AC8 uses it: the two keys and their two tangents of a Hermite step */
+#define MOTION_SCRATCH_POINTS ((Vector4 *)0x70000000)
+
 /* what MapObject.unk08 points at */
 typedef struct {
     Vector4 position;               /* 0x00 where the object rests */

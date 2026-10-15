@@ -183,7 +183,7 @@ extern ItemCommonDef D_0041A6F8[];
 extern PlayerItemDef weapon_defs[];
 extern int D_00446F78;
 extern int D_00446F7C;
-extern u16 D_00446946;
+extern u16 D_00446946; // match: read as u16 (lhu) here; the save code declares it s16
 extern PlayTime D_00446A28;
 
 /* Resets every game system for a new session; a loaded save is then applied on top. */
@@ -918,15 +918,15 @@ void func_00101C88(void) {
 }
 
 void func_00101CE0(void) {
-    int temp_s1;
+    int saved_unk68;
 
     func_001095E0();
     func_001095E0();
     func_0010B000();
-    temp_s1 = D_0038A1B0.unk68;
+    saved_unk68 = D_0038A1B0.unk68;
     D_0038A1B0.unk68 = 0;
     func_001005E8(0);
-    D_0038A1B0.unk68 = temp_s1;
+    D_0038A1B0.unk68 = saved_unk68;
     func_00109800();
     Display_SwapBuffers(0);
     func_001096E8();
