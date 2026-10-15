@@ -664,3 +664,25 @@ static s16 *Message_LayoutPage(s16 *text, s32 font) {
     }
     return text;
 }
+
+int func_001D0758(int arg0, u8 *arg1) {
+    int n;
+    int i;
+
+    *arg1 = arg0 % 10;
+    n = arg0 / 10;
+    i = 1;
+    while (n != 0) {
+        arg1[i] = n % 10;
+        n = n / 10;
+        i++;
+    }
+    return i;
+}
+
+/* Address of message message_id: the offset table entry after the table's first word, then the text it points to. */
+int Message_GetText(int message_id) {
+    s32 *offset = (s32 *)Message_GetFontText(D_00446F38 + (message_id + 1) * 4);
+
+    return Message_GetFontText(D_00446F38 + *offset);
+}
