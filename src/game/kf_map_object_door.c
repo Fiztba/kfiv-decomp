@@ -2,34 +2,10 @@
 #include "kf_model.h"
 #include "kf_message.h"
 
-typedef struct {
-    char pad[0xC0];
-    float x;
-    char pad2[4];
-    float y;
-} Pos;
-typedef struct {
-    char pad[0x46];
-    s16 s46;
-} Dev;
-typedef struct {
-    char pad[0x1C];
-    int count;
-} Sub;
-typedef struct {
-    Pos *p00;
-    char pad04[4];
-    Dev *d08;
-    char pad0C[4];
-    int flags10;
-    float f14;
-    char pad18[0x28];
-    Sub sub40;
-} Actor;
 void Vector_Copy(void *, void *);
 void func_0011F498(MapObject *);
 void MapObject_ShowKeyUsed(int);
-void func_0019D490(s32, s32, f32 *, f32);
+int func_0019D490(u8, u8, float *, float);
 void Vector_Subtract(void *, void *, void *);
 float sinf(float);
 float cosf(float);
@@ -98,8 +74,7 @@ void MapObject_UpdateClosedDoor(MapObject *object) {
                 if (object->unk04->unk70 > 0.0f) {
                     range = object->unk04->unk70;
                 }
-                // match: it returns a value
-                ((int (*)(s32, s32, f32 *, f32))func_0019D490)(0x2E, 0, &object->model->position.x, range);
+                func_0019D490(0x2E, 0, &object->model->position.x, range);
                 object->unk10 |= 0x40000;
             } else {
                 if (work->timer > 0) {
@@ -178,27 +153,29 @@ void func_0011F498(MapObject *object) {
     }
 }
 
-void func_0011F708(Actor *a) {
-    Pos *p;
-    Sub *s;
-    float *g;
-    float dx;
-    float dy;
-    float dist;
+/* Update handler of an open door that shuts by itself (unless its second word is
+   set) once the player is further than its reach plus 100. */
+void func_0011F708(MapObject *object) {
+    ModelInstance *model;
+    MapObjectWork *work;
+    float *player;
+    float delta_x;
+    float delta_z;
+    float distance;
 
-    s = &a->sub40;
-    if (s->count > 0) {
-        s->count = s->count - 1;
+    work = MAP_OBJECT_WORK(object);
+    if (work->timer > 0) {
+        work->timer--;
     }
-    if (a->d08->s46 == 0) {
-        p = a->p00;
-        g = D_00413F80;
-        dx = p->x - g[0];
-        dy = p->y - g[2];
-        dist = sqrtf(dx * dx + dy * dy);
-        if (!(dist < a->f14 + 100.0f)) {
-            a->flags10 &= 0xFFFDFFFF;
-            ((char *)a)[0x11] = 4;
+    if (MAP_OBJECT_WORDS(object)->unk46 == 0) {
+        model = object->model;
+        player = D_00413F80;
+        delta_x = model->position.x - player[0];
+        delta_z = model->position.z - player[2];
+        distance = sqrtf(delta_x * delta_x + delta_z * delta_z);
+        if (!(distance < object->unk14 + 100.0f)) {
+            object->unk10 &= ~0x20000;
+            MAP_OBJECT_BYTES(object)->step = 4;
         }
     }
 }
@@ -276,6 +253,7 @@ void func_0011F980(MapObject *object) {
     object->model->unk1B4(object->model);
 }
 
-void func_0011FAA0(char *arg0) {
-    arg0[0x11] = 1;
+/* Start handler: step 1. */
+void func_0011FAA0(MapObject *object) {
+    MAP_OBJECT_BYTES(object)->step = 1;
 }

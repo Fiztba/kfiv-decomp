@@ -10,7 +10,7 @@ void func_0011FC18(MapObject *);
 void func_0011EFC8(MapObject *);
 void *memset(void *, int, u32);
 void MapObject_ShowKeyUsed(int);
-void func_0019D490(s32, s32, f32 *, f32);
+int func_0019D490(u8, u8, float *, float);
 void MapObject_UpdateOpenChest(MapObject *);
 ModelNode *func_001C9580(int);
 void MapObject_UpdateClosedChest(void *, int);
@@ -223,6 +223,6 @@ void func_00120130(GameEvent *event, int mode) {
     }
 }
 
-void func_001201D8(void *arg0) {
-    func_0011FC10(arg0);
+void func_001201D8(MapObject *object) {
+    func_0011FC10(object);
 }

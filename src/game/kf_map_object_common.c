@@ -3,7 +3,7 @@
 #include "kf_map.h"
 
 void Vector_Add(void *, void *, void *);
-void func_0019D980(char, u8, u8, f32, Vector4Arg);
+s32 func_0019D980(s8, u8, u8, f32, Vector4Arg *);
 u16 func_001090E0(char *);
 int func_0019E9E0(char);
 void ModelMatrix_Build(ModelInstance *, Vector4 *, Vector4 *, f32 *);
@@ -44,8 +44,7 @@ void func_0011EE78(MapObject *object) {
                     object->work[0] = 0;
                 }
             } else if ((MAP_OBJECT_BYTES(object)->unk00 & 1) == D_00446770 && D_0038A130[4] == 0 && D_0038A130[5] == 0) {
-                // match: the vector goes by address
-                ((int (*)(char, u8, u8, f32, Vector4 *))func_0019D980)(source->unk44, source->unk48, source->unk46, source->unk4A, &object->model->position);
+                func_0019D980(source->unk44, source->unk48, source->unk46, source->unk4A, (Vector4Arg *)&object->model->position);
                 object->work[0] = 1;
             }
         }

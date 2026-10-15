@@ -1,21 +1,13 @@
 #include "kf_map_object.h"
 #include "kf_model.h"
+#include "kf_game.h"
 
-typedef struct {
-    char pad[0x24];
-    u32 b0 : 1;
-    u32 b1 : 1;
-} A;
-typedef struct {
-    char pad[0x50];
-    void *cur;
-} B;
 void func_001207D0(void *);
 void func_00120868(void *);
 extern u32 D_0038CC74[];
 extern void *D_00420D50[];
-extern A D_0038CC50;
-extern B D_00420D00;
+extern GameStatus D_0038CC50;
+extern EventRunner D_00420D00;
 
 /* Start handler: animation 4, step 1. */
 void func_00120668(MapObject *object) {
@@ -23,11 +15,12 @@ void func_00120668(MapObject *object) {
     MAP_OBJECT_BYTES(object)->step = 1;
 }
 
-void func_00120698(char *arg0) {
+/* Update handler, step 1: used by the player, it flips bit 17 and runs to step 2. */
+void func_00120698(MapObject *object) {
     if ((D_0038CC74[0] >> 1) & 1) {
-        if (D_00420D50[0] == arg0) {
-            arg0[0x11] = 2;
-            *(int *)(arg0 + 0x10) = (*(int *)(arg0 + 0x10) & 0xFFFDFFFF) | ((((*(int *)(arg0 + 0x10)) >> 17) ^ 1) & 1) << 17;
+        if (D_00420D50[0] == object) {
+            MAP_OBJECT_BYTES(object)->step = 2;
+            object->unk10 = (object->unk10 & ~0x20000) | ((((s32)object->unk10 >> 17) ^ 1) & 1) << 17;
         }
     }
 }
@@ -104,25 +97,27 @@ void func_001208B0(MapObject *object) {
     }
 }
 
-void func_00120908(char *arg0, int arg1) {
+/* Turns a switch on (step 1) or off (step 3) from outside, by running its update
+   handler as if the player had used it. */
+void func_00120908(MapObject *object, int turn_on) {
     void *saved;
     int bit;
 
-    if ((*(u32 *)(arg0 + 0x10) & 0x2FF00) == 0x100 && arg1 != 0) {
-        saved = D_00420D00.cur;
-        bit = D_0038CC50.b1;
-        D_0038CC50.b1 = 1;
-        D_00420D00.cur = arg0;
-        func_001207D0(arg0);
-        D_00420D00.cur = saved;
-        D_0038CC50.b1 = bit;
-    } else if ((*(u32 *)(arg0 + 0x10) & 0x2FF00) == 0x20300 && arg1 == 0) {
-        saved = D_00420D00.cur;
-        bit = D_0038CC50.b1;
-        D_0038CC50.b1 = 1;
-        D_00420D00.cur = arg0;
-        func_00120868(arg0);
-        D_00420D00.cur = saved;
-        D_0038CC50.b1 = bit;
+    if ((object->unk10 & 0x2FF00) == 0x100 && turn_on != 0) {
+        saved = D_00420D00.current;
+        bit = D_0038CC50.bit1;
+        D_0038CC50.bit1 = 1;
+        D_00420D00.current = object;
+        func_001207D0(object);
+        D_00420D00.current = saved;
+        D_0038CC50.bit1 = bit;
+    } else if ((object->unk10 & 0x2FF00) == 0x20300 && turn_on == 0) {
+        saved = D_00420D00.current;
+        bit = D_0038CC50.bit1;
+        D_0038CC50.bit1 = 1;
+        D_00420D00.current = object;
+        func_00120868(object);
+        D_00420D00.current = saved;
+        D_0038CC50.bit1 = bit;
     }
 }

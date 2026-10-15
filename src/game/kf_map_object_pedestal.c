@@ -29,22 +29,23 @@ extern EventRunner D_00420D00;
 extern f32 D_00431AF0[16];
 extern ItemCommonDef D_0041A6F8[];
 
-/* Start handler: an object that starts on stays on only while func_00103AE0
-   still counts something for it. */
+/* Start handler: a pedestal that starts with an item on it stays so only while
+   the map's trigger records still hold an item for it (func_00103AE0); its model
+   shows that item. */
 void func_00121DA8(MapObject *object) {
     MapObjectWorkKind121DA8 *work = (MapObjectWorkKind121DA8 *)object->work;
-    int count;
+    int item;
 
     work->part = 2;
     work->fired = 0;
-    count = 0;
+    item = 0;
     if (object->unk10 & 0x20000) {
-        count = func_00103AE0(D_0038CD20[MAP_OBJECT_BYTES(object)->unk00 & 1].tag, object->unk08->unk38.bytes[2]);
-        if (count <= 0) {
+        item = func_00103AE0(D_0038CD20[MAP_OBJECT_BYTES(object)->unk00 & 1].tag, object->unk08->unk38.bytes[2]);
+        if (item <= 0) {
             object->unk10 &= ~0x20000;
         }
     }
-    func_00122600(object, count);
+    func_00122600(object, item);
     if (!(object->unk10 & 0x20000)) {
         MapObject_StartAnim(object, 4);
         MAP_OBJECT_BYTES(object)->step = 1;
@@ -129,13 +130,14 @@ void func_00122138(MapObject *object) {
     }
 }
 
-/* Event handler: while an event runs on this object, moves it to step 5, takes its
-   count from the map's flags, runs the animation and clears bit 17. */
+/* Event handler: while an event runs on this object, moves it to step 5, takes
+   back the item recorded for it in the map's trigger records and gives it to the
+   player, runs the animation and clears bit 17. */
 void func_001221C0(MapObject *object) {
     MapObjectWorkKind121DA8 *work = (MapObjectWorkKind121DA8 *)object->work;
     u8 timer = work->timer;
     u8 tag = D_0038CD20[MAP_OBJECT_BYTES(object)->unk00 & 1].tag;
-    int count;
+    int item;
 
     if (work->timer > 0) {
         work->timer = timer - 1;
@@ -143,11 +145,11 @@ void func_001221C0(MapObject *object) {
     if (D_0038CC50.bit1 && D_00420D00.current == object) {
         MAP_OBJECT_BYTES(object)->step = 5;
         // match: two leftover arguments are passed
-        count = ((int (*)(int, int, void *, int))func_00103AE0)(tag, object->unk08->unk38.bytes[2], work, timer);
+        item = ((int (*)(int, int, void *, int))func_00103AE0)(tag, object->unk08->unk38.bytes[2], work, timer);
         func_00103B38(tag, object->unk08->unk38.bytes[2]);
         MapObject_StepAnim(object);
         func_0011F148((char *)object);
-        Player_AddItem(count);
+        Player_AddItem(item);
         object->unk10 &= ~0x20000;
         D_0038CC50.unk30 |= 1;
     }
@@ -188,7 +190,7 @@ void func_001222C0(MapObject *object) {
     Vector_Scale(&work->step.x, &work->step.x, 1.0f / frames);
 }
 
-/* The same for the kind of func_00121DA8, which also resets its count through func_00122600. */
+/* The same for the kind of func_00121DA8, which also hides the item on its model (func_00122600). */
 void func_00122480(MapObject *object) {
     MapObjectWorkKind121DA8 *work = (MapObjectWorkKind121DA8 *)object->work;
     ModelPart *part = &object->model->parts[work->part];
@@ -205,8 +207,8 @@ void func_00122480(MapObject *object) {
     }
 }
 
-void func_00122530(char *arg0) {
-    func_0011F148(arg0);
+void func_00122530(char *object) {
+    func_0011F148(object);
 }
 
 /* Fires the trigger's one-shot when its type matches; returns whether it fired. */

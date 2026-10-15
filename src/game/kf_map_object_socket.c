@@ -192,8 +192,8 @@ void func_00121578(MapObject *object) {
     }
 }
 
-void func_00121618(char *arg0) {
-    func_0011F148(arg0);
+void func_00121618(char *object) {
+    func_0011F148(object);
 }
 
 /* Fires a resting object of this kind (step 1, not fired yet) when the item is

@@ -846,8 +846,9 @@ void MapObject_ClearMap(int map) {
     memset(objects_by_id[map], 0, sizeof(objects_by_id[map]));
 }
 
-void func_0011E8E8(int *arg0) {
-    func_0010AEB8(arg0);
+/* Draws the model with the GS state as it is. */
+void func_0011E8E8(int *model) {
+    func_0010AEB8(model);
 }
 
 /* Sets the GS Z-buffer, alpha and test registers for model, then hands it on. */
@@ -884,8 +885,9 @@ void func_0011E9D0(void *model) {
 void func_0011EA70(void) {
 }
 
-char *func_0011EA78(char *arg0) {
-    return arg0 + 0xC0;
+/* get_point of a model without points: its position, whatever the index. */
+char *func_0011EA78(char *model) {
+    return (char *)&((ModelInstance *)model)->position;
 }
 
 /* Stops the sound a map object is playing, if any. */

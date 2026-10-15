@@ -88,8 +88,9 @@ void func_00120D38(MapObject *object) {
     }
 }
 
-void func_00120D78(char *p) {
-    p[0x11] = 1;
+/* Start handler: step 1. */
+void func_00120D78(MapObject *object) {
+    MAP_OBJECT_BYTES(object)->step = 1;
 }
 
 void func_00120D88(void) {

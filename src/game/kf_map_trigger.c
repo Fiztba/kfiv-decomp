@@ -5,17 +5,8 @@
 #include "kf_map.h"
 #include "kf_item.h"
 
-typedef struct {
-    int phase;
-    int period;
-} Wave;
-typedef struct {
-    void *ptr;
-    char pad[0x3C];
-    Wave w;
-} Obj;
-void func_0011FBE8(void);
-void func_0011FC10(void);
+void func_0011FBE8(MapObject *);
+void func_0011FC10(MapObject *);
 void ModelMatrix_Build(ModelInstance *, Vector4 *, Vector4 *, f32 *);
 void ModelMatrix_BuildPartLocal(ModelInstance *, ModelPart *, ModelPart *);
 void func_0010B5D0(ModelPart *);
@@ -37,8 +28,9 @@ extern void *D_00420D50[];
 extern u32 D_0038CC74[];
 extern f32 D_00431AF0[16];
 
-void func_001226D0(char *arg0) {
-    arg0[0x11] = 1;
+/* Start handler of the save point: step 1. */
+void func_001226D0(MapObject *object) {
+    MAP_OBJECT_BYTES(object)->step = 1;
 }
 
 /* Update handler of the save point (kind 20): used by the player, it asks for the save screen (GameStatus.bit5)
@@ -52,9 +44,10 @@ void MapObject_UpdateSavePoint(MapObject *object) {
     }
 }
 
-void func_00122720(char *arg0) {
-    (*(int *)((char *)arg0 + 0x40)) = 0;
-    (*(u8 *)((char *)arg0 + 0x11)) = 1;
+/* Start handler of the notice kind: no wait, step 1. */
+void func_00122720(MapObject *object) {
+    object->work[0] = 0;
+    MAP_OBJECT_BYTES(object)->step = 1;
 }
 
 /* Update handler: used by the player, it shows the message of its definition,
@@ -78,12 +71,12 @@ void func_00122730(MapObject *object) {
     }
 }
 
-void func_001227C0(void) {
-    func_0011FBE8();
+void func_001227C0(MapObject *object) {
+    func_0011FBE8(object);
 }
 
-void func_001227C8(void) {
-    func_0011FC10();
+void func_001227C8(MapObject *object) {
+    func_0011FC10(object);
 }
 
 /* Start handler: closed (animation 4, step 1) or, with bit 17 set, open (animation 5, step 3). */
@@ -222,45 +215,49 @@ void func_00122BE8(MapTrigger *trigger) {
 void func_00122CA8(void) {
 }
 
-/* Advances the float at +0x50 toward 100000, then calls func_0010EA08; on a zero result sets state 3 and clears the float. */
-void func_00122CB0(char *state_block) {
-    int buf_a[4];
-    int buf_b[4];
-    float *timer; // timer[4] is the float at +0x50
+/* Update handler, type 2: grows the radius (up to 100000) and steps the model's
+   alpha toward 0x80 within it (func_0010EA08); once that is done the trigger is on
+   (type 3) and the radius starts over. */
+void func_00122CB0(MapTrigger *trigger) {
+    int targets[4];
+    int steps[4];
+    MapTriggerShotKind122BE8 *shot;
 
-    timer = (float *)(state_block + 0x40);
-    memset(buf_a, 0, 0x10);
-    buf_a[3] = 0x80;
-    memset(buf_b, 0, 0x10);
-    buf_b[3] = 8;
-    if (timer[4] < 100000.0f) {
-        timer[4] += 6.6666f;
+    shot = (MapTriggerShotKind122BE8 *)&trigger->shot;
+    memset(targets, 0, 0x10);
+    targets[3] = 0x80;
+    memset(steps, 0, 0x10);
+    steps[3] = 8;
+    if (shot->unk10 < 100000.0f) {
+        shot->unk10 += 6.6666f;
     }
-    if (func_0010EA08(*(int *)state_block, timer, buf_b, buf_a, timer[4]) == 0) {
-        state_block[0x11] = 3;
-        timer[4] = 0.0f;
+    if (func_0010EA08((int)trigger->model, shot, steps, targets, shot->unk10) == 0) {
+        trigger->type = 3;
+        shot->unk10 = 0.0f;
     }
 }
 
 void func_00122D60(void) {
 }
 
-/* Advances the float at +0x50 toward 2000, then calls func_0010EA08; on a zero result sets state 1 and clears the float. */
-void func_00122D68(char *actor) {
-    int buf_a[4];
-    int buf_b[4];
-    float *timer;
+/* Update handler, type 4: grows the radius (up to 2000) and steps the model's
+   alpha toward 0 within it; once that is done the trigger is off (type 1) and the
+   radius starts over. */
+void func_00122D68(MapTrigger *trigger) {
+    int targets[4];
+    int steps[4];
+    MapTriggerShotKind122BE8 *shot;
 
-    timer = (float *)(actor + 0x40);
-    memset(buf_a, 0, 0x10);
-    memset(buf_b, 0, 0x10);
-    buf_b[3] = -8;
-    if (timer[4] < 2000.0f) {
-        timer[4] += 4.0f;
+    shot = (MapTriggerShotKind122BE8 *)&trigger->shot;
+    memset(targets, 0, 0x10);
+    memset(steps, 0, 0x10);
+    steps[3] = -8;
+    if (shot->unk10 < 2000.0f) {
+        shot->unk10 += 4.0f;
     }
-    if (func_0010EA08(*(int *)actor, timer, buf_b, buf_a, timer[4]) == 0) {
-        actor[0x11] = 1;
-        timer[4] = 0.0f;
+    if (func_0010EA08((int)trigger->model, shot, steps, targets, shot->unk10) == 0) {
+        trigger->type = 1;
+        shot->unk10 = 0.0f;
     }
 }
 
@@ -289,25 +286,27 @@ void func_00122E88(MapTrigger *trigger) {
     trigger->type = 1;
 }
 
-int func_00122F48(Obj *arg0) {
-    Wave *w;
+/* Update handler of the pulsing kind: steps the phase through the period and sets
+   the model's unk146 on a triangle wave that peaks at 32 half-way through. */
+int func_00122F48(MapTrigger *trigger) {
+    MapTriggerShotKind122E88 *shot;
     int phase;
     int period;
-    float f;
-    int v;
+    float level;
+    int value;
 
-    w = &arg0->w;
-    phase = (w->phase + 1) % w->period;
-    arg0->w.phase = phase;
-    period = w->period;
+    shot = (MapTriggerShotKind122E88 *)&trigger->shot;
+    phase = (shot->phase + 1) % shot->period;
+    shot->phase = phase;
+    period = shot->period;
     if (phase < period / 2) {
-        f = (float)phase / (float)period * 0.5f;
+        level = (float)phase / (float)period * 0.5f;
     } else {
-        f = (float)(period - phase) / (float)period * 0.5f;
+        level = (float)(period - phase) / (float)period * 0.5f;
     }
-    v = (int)(f * 128.0f);
-    *(s16 *)((char *)arg0->ptr + 0x146) = v;
-    return v;
+    value = (int)(level * 128.0f);
+    trigger->model->unk146 = value;
+    return value;
 }
 
 /* Shows "... Key used" when the item a door or chest needed is one of the keys. */
