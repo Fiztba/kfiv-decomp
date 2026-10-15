@@ -1,8 +1,8 @@
+#include "kf_map_object.h"
 #include "kf_model.h"
 
-extern float D_004325A0[];
-extern f32 D_00431B30[4][4];
-
+void Vector_Subtract(void *, void *, void *);
+float sqrtf(float);
 void *memset(void *, int, u32);
 void ModelMatrix_Build(ModelInstance *, Vector4 *, Vector4 *, f32 *);
 void ModelMatrix_BuildPartLocal(ModelInstance *, ModelPart *, ModelPart *);
@@ -10,10 +10,60 @@ void func_0010B5D0(ModelPart *);
 void sceVu0CopyMatrix(void *, void *);
 void Matrix_Multiply(void *, void *, void *);
 void Vector_ApplyMatrix(void *, void *, void *);
-void Vector_Subtract(void *, void *, void *);
-float sqrtf(float);
 float atan2f(float, float);
 void Vector_MultiplyComponents(float *, float *, float *);
+extern float D_00413F80[];
+extern float D_004325A0[];
+extern f32 D_00431B30[4][4];
+
+/* Start handler of the kind that fades with the distance to the player: takes
+   the two distances and the two alphas from its source and starts invisible. */
+void func_001201E0(MapObject *object) {
+    MapObjectWorkFade *work = (MapObjectWorkFade *)object->work;
+    MapObjectUnk08Words *source;
+
+    if (object->model->unk100 & 1) {
+        MapObject_StartAnim(object, 4);
+    }
+    source = MAP_OBJECT_WORDS(object);
+    ((MapObjectWorkFade *)object->work)->near_distance = source->unk44;
+    work->far_distance = source->unk46;
+    work->near_alpha = source->unk48;
+    work->far_alpha = source->unk4A;
+    object->model->alpha = 0.0f;
+    MAP_OBJECT_BYTES(object)->step = 1;
+}
+
+/* Update handler of the fading kind: the alpha goes from near_alpha to far_alpha
+   as the distance to the player goes from near_distance to far_distance. */
+void func_00120278(MapObject *object) {
+    MapObjectWorkFade *work = (MapObjectWorkFade *)object->work;
+    Vector4 delta;
+    f32 distance;
+
+    if (object->model->unk100 & 1) {
+        MapObject_StartAnim(object, 4);
+        MapObject_StepAnim(object);
+    }
+    if (work->near_alpha == 0.0f && work->far_alpha == 0.0f) {
+        object->model->alpha = 127.0f;
+        return;
+    }
+    Vector_Subtract(&delta, &object->model->position, D_00413F80);
+    distance = sqrtf(delta.x * delta.x + delta.z * delta.z);
+    if (distance < work->near_distance) {
+        object->model->alpha = work->near_alpha;
+    } else if (work->far_distance < distance) {
+        object->model->alpha = work->far_alpha;
+    } else {
+        object->model->alpha = work->near_alpha + (work->far_alpha - work->near_alpha) * (distance - work->near_distance) / (work->far_distance - work->near_distance);
+    }
+    if (object->model->alpha < 0.0f) {
+        object->model->alpha = 0.0f;
+    } else if (object->model->alpha > 255.0f) {
+        object->model->alpha = 255.0f;
+    }
+}
 
 /* Rebuilds the model matrices of an object whose parts always face the camera:
    each part is put where it sits in the world and turned toward D_004325A0. */
