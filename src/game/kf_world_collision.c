@@ -14,7 +14,6 @@ typedef void (*MapObjectCircleTest)(MapObject *, f32 *, f32, f32);
     if (centre == (f32 *)&D_00413F80) { \
         ((PlayerState *)centre)->unk208 = (s32)(object); \
     }
-#define SCRATCH_FLAG (*(s32 *)0x70000010)
 // match: the last test is called for its value, which keeps it an ordinary call
 typedef int (*WallTest)(void *, void *, f32, void *, f32);
 // match: the last test is called for its value, which keeps it an ordinary call
@@ -712,7 +711,7 @@ void func_001C1C80(f32 *position, f32 *target) {
 }
 
 void func_001C2128(MapObject *object, f32 *origin, f32 *direction, f32 reach) {
-    SCRATCH_FLAG = 0;
+    COLLISION_RESULT->hit = 0;
     switch (object->unk04->kind) {
     case 1:
         func_001C2F30(object, (int)origin, (int)direction, reach);
@@ -1356,7 +1355,7 @@ s32 func_001C3910(AnimObject *object, s32 param1, s32 param2, f32 param3) {
         point2 = object->model->get_point(object->model, 2);
         point3 = object->model->get_point(object->model, 3);
         ((RayTriangleValue)Collision_RayTriangle)(point0, point1, point2, param1, param2, param3);
-        result = SCRATCH_FLAG;
+        result = COLLISION_RESULT->hit;
         if (result == 0) {
             result = ((RayTriangleValue)Collision_RayTriangle)(point0, point2, point3, param1, param2, param3);
         }
@@ -1450,8 +1449,8 @@ void func_001C3D00(CollisionOwner *owner, int mode, float factor) {
                 j = strip->vertex_count - 2;
                 do {
                     Collision_PointTriangle(vertex[0].unk00, vertex[1].unk00, vertex[2].unk00, mode, factor);
-                    if (*(int *)0x70000010 != 0) {
-                        *(int *)0x70000018 = func_001124E0(vertex->unk04, vertex->unk08, vertex->unk0C);
+                    if (COLLISION_RESULT->hit != 0) {
+                        COLLISION_RESULT->unk18 = func_001124E0(vertex->unk04, vertex->unk08, vertex->unk0C);
                         return;
                     }
                     vertex++;
@@ -1963,7 +1962,7 @@ int func_001C5170(CollisionOwner *owner, int context, float first_value, float s
         point_c = owner->model->get_point(owner->model, 2);
         point_d = owner->model->get_point(owner->model, 3);
         ((CapsuleTriangleValue)Collision_CapsuleTriangle)(point_a, point_b, point_c, context, second_value, first_value);
-        result = SCRATCH_FLAG;
+        result = COLLISION_RESULT->hit;
         if (result == 0) {
             return ((CapsuleTriangleValue)Collision_CapsuleTriangle)(point_a, point_c, point_d, context, second_value, first_value);
         }

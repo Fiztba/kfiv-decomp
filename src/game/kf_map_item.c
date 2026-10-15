@@ -57,7 +57,7 @@ void Player_AddItem(int);
 void *memset(void *, int, u32);
 
 extern GameDefinition item_name_defs[380];
-extern u32 D_004469D0;
+extern s32 D_004469D0;
 extern ItemNode *D_004469D4;            /* the items lying in the maps, a list */
 extern ItemNode *D_004469D8;            /* the one being picked up */
 extern s32 D_00447198;
@@ -227,18 +227,19 @@ void func_001C87D8(int map) {
     }
 }
 
-void func_001C8938(int arg0) {
-    ItemNode *p;
+/* Unlinks every item of a map from the list of the ones lying about and clears the map's item tables. */
+void func_001C8938(int map) {
+    ItemNode *node;
 
-    p = D_004469D4;
-    while (p != 0) {
-        if ((p->flags & 1) == arg0) {
-            p = func_001CA520(p);
+    node = D_004469D4;
+    while (node != 0) {
+        if ((node->flags & 1) == map) {
+            node = func_001CA520(node);
         } else {
-            p = p->next;
+            node = node->next;
         }
     }
-    func_001CA338(arg0);
+    func_001CA338(map);
 }
 
 /* Moves every item of a map by `offset`: the fixed items' definitions and models, and the
@@ -528,32 +529,35 @@ ItemNode *func_001C9580(int object) {
     return NULL;
 }
 
+/* Lets the dropped items that are still falling (flag bit 2) fall one more frame, faster each frame,
+   until they reach the floor below them. */
 void func_001C95B0(void) {
-    ItemNode *p;
+    ItemNode *node;
     int flags;
-    float s;
+    float height;
 
-    p = D_004469D4;
-    if (!(D_0038CC80[0] & 0x10) && p != 0) {
+    node = D_004469D4;
+    if (!(D_0038CC80[0] & 0x10) && node != 0) {
         do {
-            if (p->record != 0) {
-                flags = p->flags;
+            if (node->record != 0) {
+                flags = node->flags;
                 if (((u32)flags >> 2) & 1) {
-                    s = p->unk2C + p->unk30;
-                    p->unk2C = s;
-                    if (p->unk28 <= s) {
-                        ModelInstance *new_var = p->model;
-                        p->flags = flags & -5;
-                        do { } while (0);
-                        new_var->position.y = p->unk28;
+                    height = node->unk2C + node->unk30;
+                    node->unk2C = height;
+                    if (node->unk28 <= height) {
+                        // match: the model is read before the flags are stored, as retail schedules it
+                        ModelInstance *model = node->model;
+                        node->flags = flags & -5;
+                        do { } while (0); // match: keeps the model load ahead of the flag store
+                        model->position.y = node->unk28;
                     } else {
-                        p->model->position.y = s;
-                        p->unk30 = p->unk30 + 1.0f;
+                        node->model->position.y = height;
+                        node->unk30 += 1.0f;
                     }
                 }
             }
-            p = p->next;
-        } while (p != 0);
+            node = node->next;
+        } while (node != 0);
     }
 }
 
@@ -660,40 +664,43 @@ int func_001C9AB0(ItemNode *node) {
     return TRUE;
 }
 
-int func_001C9B00(ItemNode *arg0) {
-    MapObject *temp;
-    ItemNode *cur;
-    int var_v0;
+/* Whether node is on the list of items in use and does not belong to a kind 4 map object. */
+int func_001C9B00(ItemNode *node) {
+    MapObject *object;
+    ItemNode *head;
+    int result;
 
-    cur = D_004469D4;
-    if (arg0 == 0) {
+    head = D_004469D4;
+    if (node == 0) {
         return 0;
     }
-    if ((cur != arg0) && (arg0->prev == 0) && (arg0->next == 0)) {
+    if ((head != node) && (node->prev == 0) && (node->next == 0)) {
         return 0;
     }
-    temp = (MapObject *)arg0->unk08;
-    var_v0 = 1;
-    if (temp != 0) {
-        var_v0 = MAP_OBJECT_DEF_KIND(temp->unk04) != 4;
+    object = (MapObject *)node->unk08;
+    result = 1;
+    if (object != 0) {
+        result = MAP_OBJECT_DEF_KIND(object->unk04) != 4;
     }
-    return var_v0;
+    return result;
 }
 
-int func_001C9B58(int arg0, int arg1) {
+/* Makes the current map's fixed item with this id the one being picked up, if none is yet and it
+   is lying about; without may_put_back it cannot be put back. */
+int func_001C9B58(int item_id, int may_put_back) {
     int n;
-    ItemNode *p;
+    ItemNode *node;
 
-    n = func_001CA5B0(D_00446770, arg0);
+    n = func_001CA5B0(D_00446770, item_id);
     if (D_004469D8 != 0 || n < 0) {
         return 0;
     }
-    p = &D_0057E240[D_00446770][n];
-    if (D_004469D4 != p && p->prev == 0 && p->next == 0) {
+    node = &D_0057E240[D_00446770][n];
+    if (D_004469D4 != node && node->prev == 0 && node->next == 0) {
         return 0;
     }
-    D_004469D8 = p;
-    D_00447198 = arg1 == 0;
+    D_004469D8 = node;
+    D_00447198 = may_put_back == 0;
     D_004471A4 = 0;
     return 1;
 }
@@ -948,22 +955,23 @@ int func_001CA630(int item) {
     return TRUE;
 }
 
-int func_001CA788(int arg0) {
+/* Returns FALSE when an item of a kind the player may hold only one of lies dropped in any map. */
+int func_001CA788(int item) {
     int i;
     int j;
-    DroppedItemRecord *e;
-    ItemCommonDef *q;
+    DroppedItemRecord *record;
+    ItemCommonDef *common;
     char *base = (char *)D_00358928;
 
-    q = D_0041A6F8 + arg0;
+    common = D_0041A6F8 + item;
     for (i = 0; i < 0x80; i++) {
-        for (j = 0, e = (DroppedItemRecord *)(i * 0x140 + (int)base); j < 0x10; j++) {
-            if (e->used != 0 && e->item == arg0) {
-                if (arg0 >= 0x96 || (q->flags >> 1 & 1)) {
+        for (j = 0, record = (DroppedItemRecord *)(i * 0x140 + (int)base); j < 0x10; j++) {
+            if (record->used != 0 && record->item == item) {
+                if (item >= 0x96 || (common->flags >> 1 & 1)) {
                     return 0;
                 }
             }
-            e++;
+            record++;
         }
     }
     return 1;

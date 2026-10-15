@@ -13,7 +13,7 @@ void func_001D0800(void);
 void func_001C1858(f32, void *, void *, s32);
 float func_001D1260(float, float *, float *);
 void Collision_RayCylinder(f32, f32, f32, void *, void *, void *);
-void func_001C2128(void *, int, int, float);
+void func_001C2128(MapObject *, f32 *, f32 *, f32);
 void sceVu0SubVector(void *, void *, void *);
 void sceVu0Normalize(float *, float *);
 float sceVu0InnerProduct(float *, float *);
@@ -22,7 +22,7 @@ int func_001C9B00(void *);
 int func_001090E0(char *); // match: its u16 is halved as an int
 int Script_Start(int, int);
 int Script_IsRunning(int);
-int func_001C9AB0(ModelNode *);
+int func_001C9AB0(ItemNode *);
 extern GameStatus D_0038CC50;
 extern PlayerState D_00413F80;
 extern EventRunner D_00420D00;
@@ -157,7 +157,7 @@ void func_001D0970(void) {
                 sceVu0SubVector(delta, &object->model->position, &D_004325A0);
                 distance = sqrtf(delta[0] * delta[0] + delta[1] * delta[1] + delta[2] * delta[2]);
             } else {
-                func_001C2128(object, (int)&D_004325A0, (int)D_00420D00.unk10, reach);
+                func_001C2128(object, (f32 *)&D_004325A0, D_00420D00.unk10, reach);
                 if (COLLISION_RESULT->hit == 0) {
                     continue;
                 }
