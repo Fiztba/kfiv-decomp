@@ -7,7 +7,6 @@
 #include "kf_map_object.h"
 #include "kf_effect.h"
 
-#define SCRATCH_HIT_KIND (*(s32 *)0x70000018)
 #define IS_PLAYER(owner) ((owner) == (Entity *)&D_00413F80)
 #define LARGER(first, second) ((first) < (second) ? (second) : (first))
 /* rand() scaled to 0-99 (the factor is 2 to the power -31) */
@@ -34,7 +33,7 @@ s32 func_001B1B90(Unk1B1470Request *, Unk1B1470Extra *);
 void func_001B29C8(Unk1B1470Request *, Unk1B1470Extra *);
 void func_001B2F70(Unk1B1470Request *, Unk1B1470Extra *, Entity *, f32);
 void func_001B3AC0(Unk1B1470Request *, Unk1B1470Extra *, MapObject *);
-int func_001B3E78(char *, u8 *);
+int func_001B3E78(Unk1B1470Request *, Unk1B1470Extra *);
 void func_001C21C0(MapObject *, f32 *, f32);
 void Collision_SphereCylinder(void *, void *, f32, f32, f32);
 float sqrtf(float);
@@ -42,7 +41,7 @@ void Vector_Scale(float *, float *, float);
 void Vector_Subtract(void *, void *, void *);
 void Vector_Copy(void *, void *);
 void func_001C1C80(f32 *, f32 *);
-void func_001C2128(void *, int, int, float);
+void func_001C2128(MapObject *, f32 *, f32 *, f32);
 void Collision_CylinderArc(void *, void *, f32, f32, f32, f32, f32, f32);
 void Collision_CylinderArcPitch(void *, void *, f32, f32, f32, f32, f32, f32, f32, f32, f32);
 void Vu0_LoadMatrix(void *);
@@ -106,7 +105,7 @@ extern FxTableEntry D_00402DA8[];
 /* Runs an attack request against the world, by the request's shape (0 to 3). Only shapes
    0 and 3 do anything. */
 s32 func_001B1470(Unk1B1470Request *request, Unk1B1470Extra *extra) {
-    SCRATCH_HIT_KIND = 6;
+    COLLISION_RESULT->unk18 = 6;
     switch ((u8)((Unk1B1470RequestWord *)request)->flags & 3) {
     case 0:
         return func_001B1510(request, extra);
@@ -261,7 +260,7 @@ s32 func_001B1510(Unk1B1470Request *request, Unk1B1470Extra *extra) {
                 result = D_00402D88[kind](record->model, request, reach);
                 if (COLLISION_RESULT->hit != 0) {
                     // match: called as void, retail reuses $2 at once
-                    ((void (*)(char *, u8 *))func_001B3E78)((char *)request, (u8 *)extra);
+                    ((void (*)(Unk1B1470Request *, Unk1B1470Extra *))func_001B3E78)(request, extra);
                     switch (result) {
                     case 1:
                         result = 8;
@@ -415,7 +414,7 @@ s32 func_001B1B90(Unk1B1470Request *request, Unk1B1470Extra *extra) {
                 Vector_Subtract(direction, &D_00414780.points[1], &D_00414780.points[0]);
                 length = sqrtf(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
                 Vector_Scale(direction, direction, 1.0f / length);
-                func_001C2128(object, (int)&D_00414780.points[0], (int)direction, length);
+                func_001C2128(object, (f32 *)&D_00414780.points[0], direction, length);
                 if (COLLISION_RESULT->hit != 0) {
                     func_001B3AC0(request, extra, object);
                     return 4;
@@ -423,7 +422,7 @@ s32 func_001B1B90(Unk1B1470Request *request, Unk1B1470Extra *extra) {
                 Vector_Subtract(direction, &D_00414780.points[1], &D_004147A0.points[1]);
                 length = sqrtf(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
                 Vector_Scale(direction, direction, 1.0f / length);
-                func_001C2128(object, (int)&D_004147A0.points[1], (int)direction, length);
+                func_001C2128(object, (f32 *)&D_004147A0.points[1], direction, length);
                 if (COLLISION_RESULT->hit != 0) {
                     func_001B3AC0(request, extra, object);
                     return 4;
@@ -436,12 +435,12 @@ s32 func_001B1B90(Unk1B1470Request *request, Unk1B1470Extra *extra) {
     }
     func_001C1C80((f32 *)&D_00414780.points[0], (f32 *)&D_00414780.points[1]);
     if (COLLISION_RESULT->hit != 0) {
-        func_001B3E78((char *)request, (u8 *)extra);
+        func_001B3E78(request, extra);
         return 0x10;
     }
     func_001C1C80((f32 *)&D_00414780.points[1], (f32 *)&D_004147A0.points[1]);
     if (COLLISION_RESULT->hit != 0) {
-        func_001B3E78((char *)request, (u8 *)extra);
+        func_001B3E78(request, extra);
         return 0x10;
     }
     return 0;
@@ -1200,11 +1199,11 @@ void func_001B3AC0(Unk1B1470Request *request, Unk1B1470Extra *extra, MapObject *
     func_001BC0E0(object->unk08->unk30 != 0x1C && object->unk08->unk30 != 0xFF);
 }
 
-int func_001B3E78(char *arg0, u8 *arg1) {
-    if (*(char **)(arg0 + 0x48) == (char *)&D_00413F80) {
-        if (*arg1 == 0) {
-            func_001B4B10(*(s16 *)(arg1 + 0x24), 4);
-            if (*(int *)(arg1 + 4) == 0) {
+int func_001B3E78(Unk1B1470Request *request, Unk1B1470Extra *extra) {
+    if (IS_PLAYER(request->owner)) {
+        if (extra->unk00 == 0) {
+            func_001B4B10(extra->unk24, 4);
+            if (extra->unk04 == 0) {
                 return ((int (*)(void))func_001BBFC8)(); // match: a tail call, as if it returned int
             }
         }
@@ -1275,32 +1274,35 @@ void func_001B3ED8(EntityParamsUnk240PartUnk00 *out, Unk1B1470Request *request, 
     }
 }
 
-int func_001B49F8(int arg0, int arg1, int arg2, int arg3) {
-    float t0;
-    float t5;
-    float a;
-    float b;
-    float tmp;
-    float r;
+/* Damage from one strength of a hit: the strength cut by the resistance (out of 200), plus
+   what the base strength, and the base raised by the bonus in fiftieths, exceed half of it. */
+int func_001B49F8(int strength, int base, int bonus, int resistance) {
+    float base_strength;
+    float resist;
+    float base_excess;
+    float boosted_excess;
+    float boosted;
+    float damage;
 
-    t0 = (float)arg1;
-    t5 = (float)arg3;
-    a = ((t0 + t0) - t5) * 0.5f;
-    tmp = t0 + ((t0 * (float)arg2) / 50.0f);
-    b = ((tmp + tmp) - t5) * 0.5f;
-    r = ((float)arg0 * (200.0f - t5)) / 200.0f;
-    if (a > 0.0f) {
-        r = r + a * 0.6f;
+    base_strength = (float)base;
+    resist = (float)resistance;
+    base_excess = ((base_strength + base_strength) - resist) * 0.5f;
+    boosted = base_strength + ((base_strength * (float)bonus) / 50.0f);
+    boosted_excess = ((boosted + boosted) - resist) * 0.5f;
+    damage = ((float)strength * (200.0f - resist)) / 200.0f;
+    if (base_excess > 0.0f) {
+        damage += base_excess * 0.6f;
     }
-    if (b > 0.0f) {
-        r = r + b;
+    if (boosted_excess > 0.0f) {
+        damage += boosted_excess;
     }
-    return (int)r;
+    return (int)damage;
 }
 
-int func_001B4AA8(int arg0, int arg1, int arg2) {
-    float a = (float) arg0;
-    return (int)((a * a) / (a + (float) arg1 * 1.3f + ((float) arg2 + 1.0f) / 3.0f));
+/* Damage to the player from one strength of a hit, against the player's resistance and stat. */
+int func_001B4AA8(int strength, int resistance, int stat) {
+    float value = (float)strength;
+    return (int)((value * value) / (value + (float)resistance * 1.3f + ((float)stat + 1.0f) / 3.0f));
 }
 
 /* Adds experience to an item's record, rolling over into levels (levels below 0x33 reset to 0x32). */

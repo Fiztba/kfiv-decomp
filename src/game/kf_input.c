@@ -8,12 +8,12 @@ void func_001B5460(void);
 
 extern PadState D_00413DA8;
 extern PadState D_00413DB8[2];
-extern s16 D_0044692C;
-extern s16 D_0044692E;
-extern s16 D_00446930;
-extern s16 D_00446932;
-extern s16 D_00446934;
-extern s16 D_00446936;
+extern u16 D_0044692C;
+extern u16 D_0044692E;
+extern u16 D_00446930;
+extern u16 D_00446932;
+extern u16 D_00446934;
+extern u16 D_00446936;
 extern s16 D_00446938;
 extern s16 D_0044693A;
 extern u16 D_0044693C;

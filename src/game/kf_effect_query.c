@@ -2,9 +2,7 @@
 #include "kf_model.h"
 #include "kf_effect.h"
 #include "kf_vu0.h"
-
-#define SCRATCH_VECTOR ((void *)0x70000000)
-#define SCRATCH_MATRIX ((int *)0x70000010)
+#include "kf_collision.h"
 
 float func_001B0178(void *, void *);
 void func_001C1430(f32, void *, void *);
@@ -104,9 +102,9 @@ s16 func_001B0208(float radius, void *effect, void *motion, void *hit_point) {
     f32 stack_reserve[4]; // match: unused, keeps the retail stack frame size
 
     func_001C1430(actor->def->keyframe_end, &actor->model->position, motion);
-    if (*SCRATCH_MATRIX != 0) {
-        distance = func_001B0178(SCRATCH_VECTOR, &actor->model->position);
-        Vector_Copy(hit_point, SCRATCH_VECTOR);
+    if (COLLISION_RESULT->hit != 0) {
+        distance = func_001B0178(COLLISION_RESULT->point, &actor->model->position);
+        Vector_Copy(hit_point, COLLISION_RESULT->point);
         return absolute_value((distance - radius) / actor->def->speed);
     }
     return -1;
